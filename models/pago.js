@@ -7,7 +7,12 @@ module.exports = function(sequelize, DataTypes) {
     valor: DataTypes.FLOAT,
     forma_pago: DataTypes.STRING,
     descripcion: DataTypes.TEXT,
-    fecha_emision: DataTypes.DATE
+      fecha_emision: DataTypes.DATE,
+      fk_reservacion: {
+	  type: DataTypes.INTEGER,
+	  references: 'Reservacion',
+	  referencesKey: 'id_reservacion'
+      }
   },{
               timestamps: false,
 

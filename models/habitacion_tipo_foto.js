@@ -5,7 +5,13 @@ module.exports = function(sequelize, DataTypes) {
                                   autoIncrement:true,
                                   primaryKey:true
                                  },
-        ruta_foto: DataTypes.TEXT
+        ruta_foto: DataTypes.TEXT,
+	fk_habitacion_tipo:{
+	    type: DataTypes.INTEGER,
+	    references: 'Habitacion_Tipo',
+	    referencesKey: 'id_habitacion_tipo'
+	    
+	}
     },{
 	             timestamps: false,
 
@@ -28,10 +34,10 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                Habitacion_Tipo_Foto.belongsTo(models.Habitacion_Tipo, {
-		    foreignKey: 'id_habitacion_tipo',
-		    allowNull:true
-                });
+                // Habitacion_Tipo_Foto.belongsTo(models.Habitacion_Tipo, {
+		//     foreignKey: 'id_habitacion_tipo',
+		//     allowNull:true
+                // });
             }
         }
     });

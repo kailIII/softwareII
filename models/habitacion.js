@@ -7,7 +7,9 @@ module.exports = function(sequelize, DataTypes) {
 		     },
     numero: DataTypes.INTEGER,
     tarifa: DataTypes.FLOAT,
-    id_local: DataTypes.INTEGER
+      fk_local: {type: DataTypes.INTEGER,
+		 references: 'Local',
+		 referencesKey: 'id_local'}
   },{
              timestamps: false,
 
@@ -30,15 +32,15 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-	  Habitacion.belongsTo(models.Habitacion_Tipo,{
-	      foreignKey: 'id_habitacion_tipo',
-	      as:'id_tipo',
-	      allowNull: true
-	  });
-	  Habitacion.belongsTo(models.Local,{
-	      foreignKey: 'id_local',
-	      allowNull: false
-	  });
+	  // Habitacion.belongsTo(models.Habitacion_Tipo,{
+	  //     foreignKey: 'id_habitacion_tipo',
+	  //     as:'id_tipo',
+	  //     allowNull: true
+	  // });
+	  // Habitacion.belongsTo(models.Local,{
+	  //     foreignKey: 'id_local',
+	  //     allowNull: false
+	  // });
       }
     }
   });

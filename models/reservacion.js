@@ -1,9 +1,12 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var Reservacion = sequelize.define('Reservacion', {
+    var Reservacion = sequelize.define('Reservacion', {
+	id_reservacion:{type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement:true},
       id_cliente: {type: DataTypes.INTEGER,
-		   primaryKey: true,
-		   autoIncrement: true},
+		   references: 'Cliente',
+		   referencesKey: 'id_cliente'},
     fecha_inicio: DataTypes.DATE,
     fecha_fin: DataTypes.DATE
   },{
@@ -28,10 +31,10 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-	  Reservacion.belongsTo(models.Cliente,{
-	      foreignKey: 'id_cliente',
-	      allowNull: false
-	  });
+	  // Reservacion.belongsTo(models.Cliente,{
+	  //     foreignKey: 'id_cliente',
+	  //     allowNull: false
+	  // });
       }
     }
   });

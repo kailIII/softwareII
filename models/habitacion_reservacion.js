@@ -1,7 +1,19 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
     var Habitacion_Reservacion = sequelize.define('Habitacion_Reservacion', {
-        fecha_inicio: DataTypes.DATE
+        fecha_inicio:{type: DataTypes.DATE,
+		      primaryKey: true
+		     // references: 'Reservacion',
+		      //referencesKey: 'fecha_inicio'
+		     }
+	,   fk_cliente:{type: DataTypes.INTEGER,
+		      references: 'Reservacion',
+			referencesKey: 'id_cliente',
+			primaryKey: true},
+	fk_habitacion:{type: DataTypes.INTEGER,
+		      references: 'Habitacion',
+		       referencesKey: 'id_habitacion',
+		       primaryKey: true}
     },{
 	             timestamps: false,
 
@@ -24,15 +36,15 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                Habitacion_Reservacion.belongsTo(models.Habitacion,{
-                    foreignKey: 'id_habitacion',
-                    as:'id_hab',
-                    allowNull: false
-                });
-		                Habitacion_Reservacion.belongsTo(models.Reservacion,{
-				    foreignKey: 'id_cliente',
-                    allowNull: false
-                });
+                // Habitacion_Reservacion.belongsTo(models.Habitacion,{
+                //     foreignKey: 'id_habitacion',
+                //     as:'id_hab',
+                //     allowNull: false
+                // });
+		//                 Habitacion_Reservacion.belongsTo(models.Reservacion,{
+		// 		    foreignKey: 'id_cliente',
+                //     allowNull: false
+                // });
             }
         }
     });
