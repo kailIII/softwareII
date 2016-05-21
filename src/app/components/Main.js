@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react';
-import {AppBar, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
+import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import {deepOrange500} from 'material-ui/styles/colors';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -29,12 +29,12 @@ export default class Header extends Component {
 
   handleTouchTap() {
     this.setState({
-      open: true,
+      open: true
     });
   }
   handleToggle() {
     this.setState({open: !this.state.open});
-    console.log("open")
+      console.log("open");
    }
   handleClose() { this.setState({open: false}); }
   render() {
@@ -45,16 +45,15 @@ export default class Header extends Component {
             <Drawer
                   docked={false}
                   open={this.state.open}>
-                  <SelectableList
+                  <List
                       value={location.pathname}
-                      onChange={onChangeList}
                       >
                       <ListItem onTouchTap={this.handleClose}>Reservar Habitación</ListItem>
                       <ListItem onTouchTap={this.handleClose}>Clientes</ListItem>
                       <ListItem onTouchTap={this.handleClose}>Habitación</ListItem>
                       <ListItem onTouchTap={this.handleClose} value="/tipo-habitacion">Tipos de Habitación</ListItem>
                       <ListItem onTouchTap={this.handleClose}>Usuarios</ListItem>
-                </SelectableList>
+                </List>
         </Drawer>
             <AppBar title="Hotel Tabuba" isInitiallyOpen={true} onLeftIconButtonTouchTap={this.handleToggle} onLeftIconButtonClick={this.handleToggle}/>
         </div>
@@ -62,6 +61,6 @@ export default class Header extends Component {
   }
 }
 Header.childContextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: React.PropTypes.object.isRequired
 };
 export default Header;
