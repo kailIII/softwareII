@@ -11,10 +11,11 @@ first clone this repository. Then go to the project directory
 (for a 'live preview' on the browser open localhost:3000/webpack-dev-server/index.html)
 
 
-### Who do I talk to? ###
+### Who do I talk to? 
 
 ### Repo Owner
 * Andrés Cáceres: ascacere@espol.edu.ec
+
 ### Staff
 * Daniel Izquierdo: djizquier@gmail.com
 * Gabriel Aumala:   gaumala@espol.edu.ec
