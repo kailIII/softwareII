@@ -65,8 +65,11 @@ app.use(function(err, req, res, next) {
 });
 
 /*Sintaxis utilizada para regenerar las tablas en la base de datos, no afecta a los registros. Revisar modelos.*/
-models.sequelize.sync().then(function () {
+/*models.sequelize.sync().then(function () {
     app.listen(3000, function () {
         console.log('Application listening on  port 3000');
     });
-});
+});*/
+    app.listen(3000, function () {
+        console.log('Application listening on  port 3000');
+    });
