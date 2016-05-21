@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react';
-import {AppBar, Drawer, MenuItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
+import {AppBar, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import {deepOrange500} from 'material-ui/styles/colors';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -45,12 +45,17 @@ export default class Header extends Component {
             <Drawer
                   docked={false}
                   open={this.state.open}>
-                  <MenuItem onTouchTap={this.handleClose}>Reservar Habitación</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose}>Clientes</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose}>Habitación</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose}>Tipos de Habitación</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose}>Usuarios</MenuItem>
-            </Drawer>
+                  <SelectableList
+                      value={location.pathname}
+                      onChange={onChangeList}
+                      >
+                      <ListItem onTouchTap={this.handleClose}>Reservar Habitación</ListItem>
+                      <ListItem onTouchTap={this.handleClose}>Clientes</ListItem>
+                      <ListItem onTouchTap={this.handleClose}>Habitación</ListItem>
+                      <ListItem onTouchTap={this.handleClose} value="/tipo-habitacion">Tipos de Habitación</ListItem>
+                      <ListItem onTouchTap={this.handleClose}>Usuarios</ListItem>
+                </SelectableList>
+        </Drawer>
             <AppBar title="Hotel Tabuba" isInitiallyOpen={true} onLeftIconButtonTouchTap={this.handleToggle} onLeftIconButtonClick={this.handleToggle}/>
         </div>
     );

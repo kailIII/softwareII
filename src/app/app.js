@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, useRouterHistory} from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Header from './Main'; // Our custom react component
+import {createHashHistory} from 'history';
+import AppRoutes from './AppRoutes';
+import Header from './components/Main'; // Our custom react component
+
+
+// Helpers for debugging
+window.React = React;
+window.Perf = require('react-addons-perf');
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -11,4 +19,10 @@ injectTapEventPlugin();
 
 // Render the main app react component into the app div.
 // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
-ReactDOM.render(<Header />, document.getElementById('app'));
+ReactDOM.render(<Router
+    history= {useRouterHistory(createHashHistory)({queryKey:false})}
+    onUpdate={()=>window.scrollTo(0,0)}
+>
+{AppRoutes}
+</Router>,
+ document.getElementById('app'));
