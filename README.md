@@ -1,7 +1,7 @@
 # SOFTWARE II Project - Tabuba Hotel
 
 ###How To Install (dev mode)
-first clone this repository. Then go to the directory cd <project folder>
+first clone this repository. Then go to the project directory
 *  npm install -g bower
 *  npm install
 *  bower install
