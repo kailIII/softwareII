@@ -4,7 +4,8 @@
 first clone this repository. Then go to the project directory
 
 *  npm install
-*  npm start
+*  npm start 
+*  wait until you see on the console "webpack: bundle is now VALID."
 *  open the browser on localhost:3000
 
 (for a 'live preview' on the browser open localhost:3000/webpack-dev-server/index.html)
