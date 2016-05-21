@@ -2,16 +2,15 @@
 
 ###How To Install (dev mode)
 first clone this repository. Then go to the project directory
-*  npm install -g bower
+
 *  npm install
-*  bower install
 *  npm start
 *  open the browser on localhost:3000
 
 (for a 'live preview' on the browser open localhost:3000/webpack-dev-server/index.html)
 
 
-### Who do I talk to? 
+### Who do I talk to?
 
 ### Repo Owner
 * Andrés Cáceres: ascacere@espol.edu.ec
