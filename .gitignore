@@ -42,3 +42,7 @@ config
 
 #.idea directory
 .idea
+
+#tern
+.tern-port
+.ter-project
