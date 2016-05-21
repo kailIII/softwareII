@@ -1,4 +1,4 @@
-# PROYECTO DE SOFTWARE II - Hotel Tabuba
+# SOFTWARE II Project - Tabuba Hotel
 
 ###How To Install (dev mode)
 first clone this repository. Then go to the directory cd <project folder>
