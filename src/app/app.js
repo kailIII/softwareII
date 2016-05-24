@@ -5,24 +5,33 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import {createHashHistory} from 'history';
 import AppRoutes from './AppRoutes';
 import Header from './components/Main'; // Our custom react component
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Crear_Usuario from './components/pages/usuarios/crear_usuario';
+import Mostrar_Usuario from './components/pages/usuarios/mostrar_usuarios';
 
-
-// Helpers for debugging
-window.React = React;
-window.Perf = require('react-addons-perf');
-
-//Needed for onTouchTap
-//Can go away when react 1.0 release
-//Check this repo:
-//https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
-// Render the main app react component into the app div.
-// For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
-ReactDOM.render(<Router
-    history= {useRouterHistory(createHashHistory)({queryKey:false})}
-    onUpdate={()=>window.scrollTo(0,0)}
->
-{AppRoutes}
-</Router>,
- document.getElementById('app'));
+const App = () => (
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <Mostrar_Usuario />
+  </MuiThemeProvider>
+);
+
+ReactDOM.render(<App />,
+		document.getElementById('app'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
