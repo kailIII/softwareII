@@ -4,7 +4,7 @@
  */
 
 import React, {Component, PropTypes} from 'react';
-import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
+import {AppBar, List, Drawer, MenuItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import { Route, Router } from 'react-router';
 import Link from 'react-router';
 
@@ -50,11 +50,11 @@ export default class Header extends Component {
               open={this.state.open}
               onRequestChange={(open) => this.setState({open})}>
               <List>
-                  <ListItem >Reservar Habitación</ListItem>
-                  <ListItem onTouchTap={this.handleClose}>Clientes</ListItem>
-                  <ListItem onTouchTap={this.handleClose}>Habitación</ListItem>
-                  <ListItem onTouchTap={this.handleClose} value="/tipo-habitacion">Tipos de Habitación</ListItem>
-                  <ListItem onTouchTap={this.handleClose} linkButton={true}><a href="/#/usuario">Usuarios</a></ListItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/" >Reservar Habitación</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/"  >Clientes</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/"  >Habitación</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/tipo-habitacion"   value="/tipo-habitacion">Tipos de Habitación</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/usuario"   linkButton={true}>usuarios</MenuItem>
               </List>
             </Drawer>
 
