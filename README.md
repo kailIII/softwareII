@@ -1,5 +1,8 @@
 # SOFTWARE II Project - Tabuba Hotel
 
+you must install nodejs V >= 4 and npm first
+
+
 ###How To Install (dev mode)
 first clone this repository. Then go to the project directory
 *  To install mariadb visit https://downloads.mariadb.org/mariadb/repositories/
