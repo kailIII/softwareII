@@ -1,8 +1,14 @@
 # SOFTWARE II Project - Tabuba Hotel
 
+you must install nodejs V >= 4 :
+
+https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+
+and npm: sudo apt-get install npm
+
 ###How To Install (dev mode)
 first clone this repository. Then go to the project directory
-
+*  To install mariadb visit https://downloads.mariadb.org/mariadb/repositories/
 *  npm install
 *  npm start 
 *  wait until you see on the console "webpack: bundle is now VALID."

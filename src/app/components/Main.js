@@ -3,7 +3,7 @@
  * which incorporates components providedby material-ui.
  */
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import {deepOrange500} from 'material-ui/styles/colors';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -14,6 +14,10 @@ import { Route, Router } from 'react-router';
 
 const darkMuiTheme = getMuiTheme(darkBaseTheme);
 
+const contextTypes = {
+    router: PropTypes.object,
+    pushProfilesRoute: React.PropTypes.func
+};
 
 export default class Header extends Component {
   constructor(props, context) {
@@ -23,6 +27,7 @@ export default class Header extends Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
+ 
   getChildContext() {
     return {muiTheme: getMuiTheme(darkBaseTheme)};
   }
@@ -31,12 +36,24 @@ export default class Header extends Component {
     this.setState({
       open: true
     });
+      //        var value = this.value;
+      console.log(this);
+      var value = this.props.value;
+      //console.log("VALUE: " + value);
   }
   handleToggle() {
     this.setState({open: !this.state.open});
       console.log("open");
    }
-  handleClose() { this.setState({open: false}); }
+    handleClose() {
+              console.log(this);
+//      var value = this.value;
+//      console.log("VALUE: " + value);
+    this.setState({
+        open: false
+    });
+
+    }
   render() {
 
 
@@ -46,13 +63,12 @@ export default class Header extends Component {
                   docked={false}
                   open={this.state.open}>
                   <List
-                      value={location.pathname}
                       >
-                      <ListItem onTouchTap={this.handleClose}>Reservar Habitación</ListItem>
+                      <ListItem >Reservar Habitación</ListItem>
                       <ListItem onTouchTap={this.handleClose}>Clientes</ListItem>
                       <ListItem onTouchTap={this.handleClose}>Habitación</ListItem>
                       <ListItem onTouchTap={this.handleClose} value="/tipo-habitacion">Tipos de Habitación</ListItem>
-                      <ListItem onTouchTap={this.handleClose}>Usuarios</ListItem>
+            <ListItem onTouchTap={this.handleClose}  value="/usuario">Usuarios</ListItem>
                 </List>
         </Drawer>
             <AppBar title="Hotel Tabuba" isInitiallyOpen={true} onLeftIconButtonTouchTap={this.handleToggle} onLeftIconButtonClick={this.handleToggle}/>
@@ -61,6 +77,7 @@ export default class Header extends Component {
   }
 }
 Header.childContextTypes = {
-  muiTheme: React.PropTypes.object.isRequired
+    muiTheme: React.PropTypes.object.isRequired
 };
+
 export default Header;
