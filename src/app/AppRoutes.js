@@ -1,8 +1,8 @@
 import React from 'react';
 import {
     Route,
-    Redirect,
-    IndexRoute,
+    Router,
+    hashHistory,
 } from 'react-router';
 import Header from './components/Main';
 //import Home from './components/pages/home';
@@ -12,15 +12,16 @@ import Crear_Usuario from './components/pages/usuarios/crear_usuario';
 import Editar_Usuario from './components/pages/usuarios/editar_usuario';
 
 
-const AppRoutes = (
-        <Route path="/" component={Header} >
-        <Redirect from="usuario" to="/usuario/crear" />
-        <Route path="usuario" component={Mostrar_Usuarios}>
-        <Route path="crear" component={Crear_Usuario}/>
-        <Route path="editar" component={Editar_Usuario}/>
-        </Route>
-        </Route>
-);
+export default React.createClass ({
+    render(){
+        return (
+            <Router history={hashHistory}>
+              <Route path="/" component={Mostrar_Usuarios} />
+              <Route path="/usuario" component={Mostrar_Usuarios}/>
+              <Route path="/crear" component={Crear_Usuario}/>
+              <Route path="/editar" component={Editar_Usuario}/>
+            </Router>)
+    },
+});
 
 
-export default AppRoutes;
