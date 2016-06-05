@@ -16,10 +16,11 @@ export default React.createClass ({
     render(){
         return (
             <Router history={hashHistory}>
-              <Route path="/" component={Mostrar_Usuarios} />
-              <Route path="/usuario" component={Mostrar_Usuarios}/>
-              <Route path="/crear" component={Crear_Usuario}/>
-              <Route path="/editar" component={Editar_Usuario}/>
+              <Route path="/" component={Header} >
+                  <Route path="/usuario" component={Mostrar_Usuarios}/>
+                  <Route path="/usuario/crear" component={Crear_Usuario}/>
+                  <Route path="/usuario/editar" component={Editar_Usuario}/>
+              </Route>
             </Router>)
     },
 });
