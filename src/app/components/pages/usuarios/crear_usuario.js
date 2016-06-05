@@ -26,10 +26,6 @@ export default class Crear_Usuario extends React.Component{
  render() {
   return (
   <div>
-   <AppBar
-       title="Creacion de Usuario"
-       iconClassNameRight="muidocs-icon-navigation-expand-more"
-   />
    <Paper zDepth={2}>
     <TextField hintText="Nombre del Usuario" style={style} underlineShow={false} />
     <Divider />
