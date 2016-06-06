@@ -105,7 +105,6 @@ export default class Suites extends Component {
         <MuiThemeProvider muiTheme={muiTheme}>
                 
           <div>
-            <Header/>
             <AddSuiteModal ref="AddSuite" />
             <Dialog
               title="Eliminar Habitación"
