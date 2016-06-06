@@ -49,3 +49,7 @@ config
 
 #Vim
 *.swp
+
+#webpack
+public/bundle.js
+
