@@ -10,7 +10,6 @@ import Header from './components/Main';
 import Mostrar_Usuarios from './components/pages/usuarios/mostrar_usuarios';
 import Crear_Usuario from './components/pages/usuarios/crear_usuario';
 import Editar_Usuario from './components/pages/usuarios/editar_usuario';
-<<<<<<< HEAD
 import RoomTypesShow from './components/pages/tipos-habitacion/Page'
 import Suites from './components/pages/habitacion/Suites'
 
