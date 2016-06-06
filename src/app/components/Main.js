@@ -6,6 +6,7 @@
 import React, {Component, PropTypes} from 'react';
 import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import { Route, Router } from 'react-router';
+import Link from 'react-router';
 
 
 export default class Header extends Component {
@@ -16,7 +17,7 @@ export default class Header extends Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
- 
+
   handleTouchTap() {
     this.setState({
       open: true,
@@ -39,9 +40,9 @@ export default class Header extends Component {
 
     return (
         <div>
-            <AppBar 
-              title="Hotel Tabuba" 
-              onLeftIconButtonTouchTap={this.handleToggle} 
+            <AppBar
+              title="Hotel Tabuba"
+              onLeftIconButtonTouchTap={this.handleToggle}
               />
 
             <Drawer
@@ -53,7 +54,7 @@ export default class Header extends Component {
                   <ListItem onTouchTap={this.handleClose}>Clientes</ListItem>
                   <ListItem onTouchTap={this.handleClose}>Habitación</ListItem>
                   <ListItem onTouchTap={this.handleClose} value="/tipo-habitacion">Tipos de Habitación</ListItem>
-                  <ListItem onTouchTap={this.handleClose}  value="/usuario">Usuarios</ListItem>
+                  <ListItem onTouchTap={this.handleClose} linkButton={true}><a href="/#/usuario">Usuarios</a></ListItem>
               </List>
             </Drawer>
 
