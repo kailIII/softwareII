@@ -14,7 +14,7 @@ injectTapEventPlugin();
 
 const App = () => (
   <MuiThemeProvider muiTheme={getMuiTheme()}>
-    <Mostrar_Usuario />
+    <AppRoutes />
   </MuiThemeProvider>
 );
 

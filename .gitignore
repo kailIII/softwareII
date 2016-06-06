@@ -46,3 +46,6 @@ config
 #tern
 .tern-port
 .ter-project
+
+#Vim
+*.swp
