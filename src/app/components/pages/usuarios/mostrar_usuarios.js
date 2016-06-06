@@ -100,7 +100,7 @@ export default class Mostrar_Usuario extends React.Component{
 
   return (
    <div>
-    <Header />
+
     <br/>
 
     <FlatButton label ="Agregar Usuario" onTouchTap={this.handleOpen}>
