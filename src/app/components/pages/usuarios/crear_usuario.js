@@ -15,28 +15,50 @@ const style = {
 export default class Crear_Usuario extends React.Component{
  constructor(props) {
   super(props);
-  this.state = {value: 1};
-  
+     this.state = {tipo_usuario: "",
+                   password:""};
+     this._handleChange = this._handleChange.bind(this);
  }
+_handleChange(event,index,value){
+  console.log(event.currentTarget);
+  if(value === "ADMINISTRADOR" || value=== "CONTADOR" || value ==="SECRETARIO")
+   this.state.tipo_usuario = value;
 
- handleChange(event, index, value){
-
-  this.setfireState({value})}
- 
+  console.log(this.state);
+    }
+ cambioTipoUsuario(event, index, value){
+     this.setState({value
+                   });
+     console.log(value);
+     console.log(this.state);
+ }
+    cambioPassword(event,index,value){
+        this.setState({password:value
+                   });
+     console.log(value);
+     console.log(this.state);   
+    }
  render() {
   return (
   <div>
    <Paper zDepth={2}>
-    <TextField hintText="Nombre del Usuario" style={style} underlineShow={false} />
+    <TextField hintText="Usuario" style={style} underlineShow={false} />
     <Divider />
     <br/>
-    <SelectField maxHeight={300} value={this.state.value} onChange={this.handleChange}>
-     <MenuItem value={1} primaryText="ADMINISTRADOR" />
-     <MenuItem value={2} primaryText="SECRETARIO" />
-     <MenuItem value={3} primaryText="CONTADOR" />
+    <SelectField maxHeight={300} value={this.state.value} onChange={this._handleChange}>
+          <MenuItem value={"ADMINISTRADOR"} primaryText="ADMINISTRADOR" />
+          <MenuItem value={"SECRETARIO"} primaryText="SECRETARIO" />
+     <MenuItem value={"CONTADOR"}  primaryText="CONTADOR" />
         </SelectField>
         <Divider />
-        <TextField hintText="Contrasenia" style={style} underlineShow={false} />
+          <TextField
+      hintText="Password"
+      style={style}
+      underlineShow={true}
+      onChange={this.cambioPassword}
+      //errorText="Llene este campo" 
+      type="password"
+          />
         <Divider />
   </Paper>
   <br/>
