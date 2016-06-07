@@ -34,24 +34,6 @@ const styles = {
   },
 };
 
-const tilesData = [
-  {
-    img: 'images/room-types/room596_1_thumb.jpg',
-    title: 'Vista al Mar',
-    description: 'Cama King Size, DirecTV, nevera de 5 pies, a/c, baño privado.',
-  },
-  {
-    img: 'images/room-types/room595_1_thumb.jpg',
-    title: 'Single Room',
-    description: 'Cama Queen Size, DirecTV, nevera de 5 pies, a/c, baño privado',
-  },
-  {
-    img: 'images/room-types/room597_thumb.jpg',
-    title: 'Twin Room',
-    description: 'Posee una cama Queen y una Tween Size, DirecTV, nevera de 5 pies, a/c, baño privado',
-  },
-];
-
 export default class RoomTypesShow extends React.Component{
 
     constructor(props) {
@@ -59,6 +41,7 @@ export default class RoomTypesShow extends React.Component{
     this.state = {
       open: false,
       openSnackBar:false,
+      data:[],
     };
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
@@ -66,6 +49,21 @@ export default class RoomTypesShow extends React.Component{
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleTouchTapEditar = this.handleTouchTapEditar.bind(this);
   }
+
+  componentDidMount() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  };
 
   handleTouchTapEditar() {
   this.setState({
@@ -116,7 +114,7 @@ return(
       style={styles.gridList}
     >
 
-      {tilesData.map((tile) => (
+      {this.state.data.map((tile) => (
         <GridTile
           key={tile.img}
           title={tile.title}
