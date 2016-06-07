@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node app.js",
     "build": "webpack --progress --colors",
+    "test": "npm run build && npm start",
     "lint": "eslint src && echo \"eslint: no lint errors\""
   },
   "dependencies": {
