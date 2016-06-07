@@ -10,7 +10,6 @@ import SelectField from 'material-ui/SelectField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import {List, Drawer, ListItem, Dialog, FlatButton} from 'material-ui';
 import {deepOrange500} from 'material-ui/styles/colors';
-import Header from '../../Main';
 import Rol_Usuario from './helpers/rol_usuario';
 import CreateUserForm from './create_user';
 
@@ -66,7 +65,7 @@ export default class Mostrar_Usuario extends React.Component{
   super(props);
   this.state = {open: false};
   this.state_dialog = {
-   open: false
+   open: false,
   };
   this.handleTouchTap = this.handleTouchTap.bind(this);
   this.handleToggle = this.handleToggle.bind(this);
@@ -100,9 +99,6 @@ export default class Mostrar_Usuario extends React.Component{
 
   return (
    <div>
-
-    <br/>
-
     <FlatButton label ="Agregar Usuario" onTouchTap={this.handleOpen}>
      <Dialog
          title="Crear Usuario"
