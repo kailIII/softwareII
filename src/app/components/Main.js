@@ -51,8 +51,8 @@ export default class Header extends Component {
               onRequestChange={(open) => this.setState({open})}>
               <List>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/" >Reservar Habitación</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/"  >Clientes</MenuItem>
-                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/"  >Habitación</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#clientes/"  >Clientes</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/habitaciones"  >Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/tipo-habitacion"   value="/tipo-habitacion">Tipos de Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/usuario"   linkButton={true}>usuarios</MenuItem>
               </List>
