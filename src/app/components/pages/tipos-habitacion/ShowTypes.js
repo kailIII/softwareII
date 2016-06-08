@@ -43,7 +43,6 @@ export default class RoomTypesShow extends React.Component{
       openSnackBar:false,
       data:[],
     };
-    this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -83,26 +82,8 @@ export default class RoomTypesShow extends React.Component{
     handleClose  ()  {
       this.setState({open: false});
     };
-    handleTouchTap  (){
-      this.setState({
-        openSnackBar: true,
-      });
-    };
 
 render(){
-    const actions = [
-      <RaisedButton
-          label="Guardar"
-          onTouchTap={this.handleTouchTap}
-          backgroundColor="#add580"
-          style={styles.buttons}
-          />,
-      <RaisedButton
-          label="Atrás"
-          style={styles.buttons}
-          onTouchTap={this.handleClose}
-          />
-    ];
 
 return(
     <div>
@@ -142,12 +123,11 @@ return(
     </FloatingActionButton>
     <Dialog
           title="Añadir Nuevo Tipo de Habitación"
-          actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <NewTypeSuite />
+          <NewTypeSuite urlSave="/api/save_tipo_hab" />
         </Dialog>
         <Snackbar
             open={this.state.openSnackBar}
