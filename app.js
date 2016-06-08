@@ -41,6 +41,30 @@ app.post('/api/tipos_habitacion', function (req, res){
     });
 });
 
+app.post('/api/save_tipo_hab',function (req,res){
+    fs.readFile(TYPES_FILE, function(err, data){
+      if (err){
+        console.error(err);
+        process.exit(1);
+      }
+      var types = JSON.parse(data);
+
+      var newType = {
+        title: req.body.title,
+        img:"images/room-types/room595_thumb.jpg",
+        description: req.body.description,
+      };
+
+      types.push(newType);
+      fs.writeFile(TYPES_FILE, JSON.stringify(types, null, 4),function (err){
+      if (err){
+        console.error(err);
+        process.exit(1);
+      }
+      res.json(types);
+      });
+    });
+});
 models.sequelize.sync().then(function () {
     "use strict"
     app.listen(port, function () {
