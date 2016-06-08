@@ -12,7 +12,7 @@ import Crear_Usuario from './components/pages/usuarios/crear_usuario';
 import Editar_Usuario from './components/pages/usuarios/editar_usuario';
 import RoomTypesShow from './components/pages/tipos-habitacion/Page'
 import Suites from './components/pages/habitacion/Suites'
-
+import VerClientes from './components/pages/clientes/verClientes'
 
 export default React.createClass ({
     render(){
@@ -24,6 +24,7 @@ export default React.createClass ({
                   <Route path="/usuario/editar" component={Editar_Usuario}/>
                   <Route path="/tipo-habitacion" component={RoomTypesShow}/>
                   <Route path="/habitaciones" component={Suites}/>
+                  <Route path="/clientes" component={VerClientes}/>
               </Route>
             </Router>)
     },
