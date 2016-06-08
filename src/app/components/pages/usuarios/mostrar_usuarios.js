@@ -106,7 +106,7 @@ export default class Mostrar_Usuario extends React.Component{
          open={this.state.open}
          onRequestClose={this.handleClose}
          autoScrollBodyContent={true}>
-      < CreateUserForm/>
+      < CreateUserForm url="/api/usuarios/create" />
 </Dialog>
 </FlatButton>
 <br/>

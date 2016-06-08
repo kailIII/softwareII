@@ -57,6 +57,7 @@ export default class RoomTypesShow extends React.Component{
       type: 'POST',
       cache: false,
       success: function(data) {
+
         this.setState({data: data});
       }.bind(this),
       error: function(xhr, status, err) {
