@@ -44,7 +44,7 @@ export default class Login extends React.Component{
 
             <CardMedia  
             >
-              <img src='http://www.tabubahostal.com/images/photo_gallery/11.jpg' />
+              <img src='images/login-background/tabubaHostal.jpg' />
             </CardMedia>
           </Card>
 
