@@ -1,4 +1,6 @@
 import React from 'react';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
@@ -9,186 +11,192 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import {List, Drawer, ListItem, Dialog, FlatButton} from 'material-ui';
-import {deepOrange500} from 'material-ui/styles/colors';
+import {deepOrange500} from 'material-ui/styles/colors'
 import Rol_Usuario from './helpers/rol_usuario';
 import CreateUserForm from './create_user';
-
 /*Icono para eliminar usuario*/
 import IconButton from 'material-ui/IconButton';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete';
 /*Icono para editar Usuario*/
 import ActionsSettingsApplications from 'material-ui/svg-icons/action/settings-applications';
-const style = {
-    marginLeft: 20,
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+const showCheckB = false;
+import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
+var divTableStyle = {
+    padding:'10%',
+    background:blue50
+
 };
 
-const styles = {
-    smallIcon: {
-        width: 36,
-        height: 36,
-    },
-    mediumIcon: {
-        width: 48,
-        height: 48,
-    },
-    largeIcon: {
-        width: 60,
-        height: 60,
-    },
-    small: {
-        width: 72,
-        height: 72,
-        padding: 16,
-    },
-    medium: {
-        width: 96,
-        height: 96,
-        padding: 24,
-    },
-    large: {
-        width: 120,
-        height: 120,
-        padding: 30,
-    },
+var headerTableStyle = {
+    color:blue900
 };
 
-/* const IconButtonDeleteForever={
- *  <div>
- *   <IconButton>
- *    <ActionDeleteForever />
- *     </IconButton>
- *  </div>
- * }*/
 export default class Mostrar_Usuario extends React.Component{
 
-    constructor(props, context) {
+    constructor(props){
         super(props);
-        this.state = {open: false};
-        this.state_dialog = {
-            open: false,
-        };
-        this.handleTouchTap = this.handleTouchTap.bind(this);
-        this.handleToggle = this.handleToggle.bind(this);
+        this.state = {open: false,
+                      usuarios: null};
+        this.componentWillMount = this.componentWillMount.bind(this);
+
+        //metodos usados en esta clase
+        this.handleEditOpen = this.handleEditOpen.bind(this);
+        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleMostrarAgregarUsuario = this.handleMostrarAgregarUsuario.bind(this);
+	this.onCreateUserSubmit = this.onCreateUserSubmit.bind(this);
+        this.iconButtonElement = (
+                <IconButton
+            touch={true}
+            tooltip="more"
+            tooltipPosition="bottom-left"
+                >
+                <MoreVertIcon color={grey400} />
+                </IconButton>
+        );
+
+        this.rightIconMenu = (
+                <IconMenu iconButtonElement={this.iconButtonElement}>
+                <MenuItem onTouchTap={this.handleEditOpen}>Editar</MenuItem>
+                <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
+                </IconMenu>
+        );
+    }
+    componentDidMount(){
+    }
+    componentWillMount(){
+        $.ajax({
+            context:this,
+            url: '/api/usuarios/getAll',
+            dataType: 'json',
+            type: 'POST',
+            async:false,
+            cache: false
+        }).done(function (data) {
+            console.log("component did mount");
+            this.setState({usuarios:data});
+        });
     }
 
-    handleMostrarAgregarUsuario(){
-        this.state_dialog.open = true;
-        console.log(this);
-        console.log(this.state_dialog.open);
+    //llamar a los metodos de la clase CreateUsuarioForm mediante la propiedad ref
+    handleEditOpen(){
+        this.refs['create_user'].handleEditOpen();
     }
-    handleOpen(){
-        console.log(this);
+    handleAddOpen(){
+        this.refs['create_user'].handleAddOpen();
+    }
+    handleDeleteOpen(){
         this.setState({open: true});
     }
-    handleTouchTap(){
-        console.log("touch");
-    }
-    handleToggle(){
-        console.log("toggle");
-    }
     handleClose(){
-        console.log("close");
-        this.state_dialog.open = false;
         this.setState({open: false});
-    }
-    /*@function: iteramos los usuaarios en la base y los mostramos en la pagina.*/
-    componentDidMount(){
-	console.log("");
+    };
+    onCreateUserSubmit(){
+	var create_user = this.refs["create_user"];
+	   
+        /*peticion ajax*/
+        $.ajax({
+	    context:this,
+            url: create_user.props.url,
+            dataType: 'json',
+            type: 'POST',
+            async:false,
+            cache: false,
+            data:{
+                username: create_user.state.username,
+                password: create_user.state.password,
+                apellido: create_user.state.apellido,
+                nombre: create_user.state.nombre,
+                rol: create_user.state.rol.name
+            }
+        }).done(function (data) {
+	    console.log(data);
+            if(data.success === true){
+		//data.user = JSON.parse(data.user);
+		console.log(typeof(data.user));
+		this.setState({suarios:this.state.usuarios.push(data.user)});
+		                console.log(" creado el usuario");
+		console.log(this.state.usuarios);
+            }else{
+                console.log("no se pudo crear el usuario");
+            }
+        });
+	
     }
     render() {
-
+        console.log("render");
+        var rows = [];
+        const actions = [
+                <FlatButton
+            label="Cancelar"
+            primary={true}
+            onTouchTap={this.handleClose}
+                />,
+                <FlatButton
+            label="Aceptar"
+            primary={true}
+            onTouchTap={this.handleClose}
+                />,
+        ];
 
         return (
+
                 <div>
-                <FlatButton label ="Agregar Usuario" onTouchTap={this.handleOpen}>
+                <CreateUserForm ref='create_user' url='/api/usuarios/create'  onTouchTap={this.onCreateUserSubmit}/>
                 <Dialog
-            title="Crear Usuario"
-            modal={false}
+            title="Eliminar Usuario"
+            actions={actions}
+            modal={true}
             open={this.state.open}
-            onRequestClose={this.handleClose}
-            autoScrollBodyContent={true}>
-                < CreateUserForm url="/api/usuarios/create" />
+                >
+                Esta seguro que desea eliminar este usuario?
                 </Dialog>
-                </FlatButton>
-                <br/>
-                <Table>
-                <TableHeader>
+                <div style={divTableStyle}>
+                <Table >
+
+                <TableHeader
+            displaySelectAll={showCheckB}
+            adjustForCheckbox={showCheckB}
+                >
                 <TableRow>
-                <TableHeaderColumn>Rol</TableHeaderColumn>
-                <TableHeaderColumn>Usuario</TableHeaderColumn>
-                <TableHeaderColumn>Password</TableHeaderColumn>
-                <TableHeaderColumn></TableHeaderColumn>
+                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                <span style={{color: darkBlack}}><h3>Usuarios</h3></span>
+                </TableHeaderColumn>
+                <TableHeaderColumn colSpan="1" tooltip="Agregar Usuario" style={{textAlign: 'center'}}>
+                <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
+                <ContentAdd />
+                </FloatingActionButton>
+                </span>
+                </TableHeaderColumn>
+                </TableRow>
+                <TableRow>
+                <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
+                <TableHeaderColumn style={headerTableStyle}>Apellido</TableHeaderColumn>
+                <TableHeaderColumn style={headerTableStyle}>Usuario</TableHeaderColumn>
+                <TableHeaderColumn style={headerTableStyle}>Password</TableHeaderColumn>
                 <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
                 </TableHeader>
-                <TableBody>
-                <TableRow>
-                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-                <TableRowColumn>John Smith</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionsSettingsApplications/>
-                </IconButton>
-                </TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionDeleteForever />
-                </IconButton>
-                </TableRowColumn>
 
-            </TableRow>
-                <TableRow>
-                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-                <TableRowColumn>Randal White</TableRowColumn>
-                <TableRowColumn>Unemployed</TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionsSettingsApplications/>
-                </IconButton>
-                </TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionDeleteForever />
-                </IconButton>
-                </TableRowColumn>
+                <TableBody
+            displayRowCheckbox={showCheckB}>
+                {this.state.usuarios.map(function (usuario,i) {
+                    return (
+                            <TableRow key={i}>
+                            <TableRowColumn key={i}>{usuario.nombre}</TableRowColumn>
+                            <TableRowColumn key={i}>{usuario.apellido}</TableRowColumn>
+                            <TableRowColumn key={i}>{usuario.username}</TableRowColumn>
+                            <TableRowColumn key={i}>{usuario.password}</TableRowColumn>
+			                      <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
+                            </TableRow>
+                    );
+                },this)}
+            </TableBody>
 
-            </TableRow>
-                <TableRow>
-                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-                <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionsSettingsApplications/>
-                </IconButton>
-                </TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionDeleteForever />
-                </IconButton>
-                </TableRowColumn>
-                </TableRow>
-                <TableRow>
-                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-                <TableRowColumn>Steve Brown</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionsSettingsApplications/>
-                </IconButton>
-                </TableRowColumn>
-                <TableRowColumn>
-                <IconButton>
-                <ActionDeleteForever />
-                </IconButton>
-                </TableRowColumn>
-                </TableRow>
-                </TableBody>
-                </Table>
+            </Table>
+                </div>
                 </div>
         );
     }
