@@ -23,7 +23,6 @@ app.use(session({
     saveUninitialized:true
 }));
 
-
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -80,6 +79,3 @@ models.sequelize.sync().then(function () {
     });
 });
 
-
-/*app.listen(port, function () {
-    console.log('Application listening on  port ' + config.port);*/
