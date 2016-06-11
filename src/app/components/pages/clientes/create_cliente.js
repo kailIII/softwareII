@@ -1,9 +1,10 @@
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'material-ui/Dialog';
+import {blue50, blue900} from 'material-ui/styles/colors';
+
 export default class CreateClienteForm extends React.Component
 {
     constructor(props) {
@@ -18,8 +19,9 @@ export default class CreateClienteForm extends React.Component
             telefono: null,
             errorTelefono: null,
             nacionalidad: null,
-            errorNacionalidad: null
-
+            errorNacionalidad: null,
+            open: false,
+            modalTitle: 'Crear Cliente'
         };
 
 	/*funciones utilizadas*/
@@ -34,8 +36,11 @@ export default class CreateClienteForm extends React.Component
         this.validarNacionalidad = this.validarNacionalidad.bind(this);
         this.onTelefonoChange = this.onTelefonoChange.bind(this);
         this.validarTelefono = this.validarTelefono.bind(this);
-
+        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleEditOpen = this.handleEditOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
+
     onLastNameChange(event){
         this.validarLastName(event);
         this.setState({apellido:event.target.value});
@@ -49,6 +54,18 @@ export default class CreateClienteForm extends React.Component
         /*Validaciones*/
 
     }
+    handleAddOpen(){
+     this.setState({open: true, modalTitle:'Crear Cliente'});
+    };
+
+    handleEditOpen(){
+     this.setState({open: true, modalTitle:'Editar Cliente'});
+    };
+
+    handleClose(){
+        this.setState({open: false});
+    };
+
     validarNombre(event){
         const username = event.target.value;
         const alphanumeric = /^[a-zA-Z]+$/i;
@@ -132,43 +149,69 @@ export default class CreateClienteForm extends React.Component
         this.setState({telefono:event.target.value});
     }
     render(){
+        const actions = [
+          <FlatButton
+            label="Cancelar"
+            primary={true}
+            onTouchTap={this.handleClose}
+          />,
+          <FlatButton
+            label="Agregar"
+            primary={true}
+            onTouchTap={this.handleClose}
+          />,
+        ];
+
         return (
+            <Dialog
+              title={this.state.modalTitle}
+              actions={actions}
+              modal={true}
+              open={this.state.open}
+            >
+              <div style = {{color:blue900}}>
+                <hr/><br/>
                 <form>
-                <TextField
-            hintText="Nombre Completo"
-            value={this.state.nombre}
-            onChange={this.onNameChange}
-            errorText={this.state.errorNombre}
-                /><br />
-                <TextField
-            hintText="Apellido Completo"
-            value={this.state.apellido}
-            onChange={this.onLastNameChange}
-            errorText={this.state.errorApellido}
-                /><br />
-                <TextField
-            hintText="Telefono"
-            value={this.state.telefono}
-            onChange={this.onTelefonoChange}
-            errorText={this.state.errorTelefono}
-                /><br />
-		                <TextField
-            hintText="Cedula"
-            value={this.state.cedula}
-            onChange={this.onCedulaChange}
-            errorText={this.state.errorCedula}
-                /><br />
-		                <TextField
-            hintText="Nacionalidad"
-            value={this.state.nacionalidad}
-            onChange={this.onNacionalidadChange}
-            errorText={this.state.errorNacionalidad}
-                /><br />
-                <RaisedButton
-            label="Crear Cliente"
-            onClick={this.onCreateClientSubmit}
-                />
+                    <TextField
+                hintText="Nombre Completo"
+                value={this.state.nombre}
+                floatingLabelText="Nombre"
+                onChange={this.onNameChange}
+                errorText={this.state.errorNombre}
+                    /><br />
+                    <TextField
+                hintText="Apellido Completo"
+                floatingLabelText="Apellido"
+                value={this.state.apellido}
+                onChange={this.onLastNameChange}
+                errorText={this.state.errorApellido}
+                    /><br />
+                    <TextField
+                hintText="Telefono"
+                floatingLabelText="Telefono"
+                value={this.state.telefono}
+                onChange={this.onTelefonoChange}
+                errorText={this.state.errorTelefono}
+                    /><br />
+                            <TextField
+                hintText="Cedula"
+                floatingLabelText="Cedula"
+                value={this.state.cedula}
+                onChange={this.onCedulaChange}
+                errorText={this.state.errorCedula}
+                    /><br />
+                            <TextField
+                hintText="Nacionalidad"
+                floatingLabelText="Nacionalidad"
+                value={this.state.nacionalidad}
+                onChange={this.onNacionalidadChange}
+                errorText={this.state.errorNacionalidad}
+                    /><br />
+                    
                 </form>
+              </div> 
+            </Dialog>
+                
         );
     }
 }

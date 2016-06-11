@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
-import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
-import {deepOrange500} from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-import Divider from 'material-ui/Divider';
+import {Dialog, FlatButton, RaisedButton} from 'material-ui';
 import Subheader from 'material-ui/Subheader';
 import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
@@ -15,11 +10,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-const muiTheme = getMuiTheme({
-  palette: {
-    borderColor: cyan200,
-  }
-});
+import CreateClienteForm from './create_cliente'
 
 const showCheckB = false;
 
@@ -38,10 +29,13 @@ export default class VerClientes extends Component {
   constructor(props){
     super(props);
     this.state = {open: false};
-    //this.handleEditOpen = this.handleEditOpen.bind(this);
-    //this.handleAddOpen = this.handleAddOpen.bind(this);
+
+    //metodos usados en esta clase
+    this.handleEditOpen = this.handleEditOpen.bind(this);
+    this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    
     this.iconButtonElement = (
       <IconButton
         touch={true}
@@ -60,13 +54,14 @@ export default class VerClientes extends Component {
     );
   }
   
-  /*handleEditOpen(){
-    this.refs['AddSuite'].handleEditOpen();
+  //llamar a los metodos de la clase CreateClienteForm mediante la propiedad ref
+  handleEditOpen(){
+    this.refs['create_cliente'].handleEditOpen();
+  }
+  handleAddOpen(){
+    this.refs['create_cliente'].handleAddOpen();
   }
 
-  handleAddOpen(){
-    this.refs['AddSuite'].handleAddOpen();
-  }*/
 
   handleDeleteOpen(){
     this.setState({open: true});
@@ -92,11 +87,9 @@ export default class VerClientes extends Component {
     ];
 
     return (
-
-        <MuiThemeProvider muiTheme={muiTheme}>
                 
           <div>
-    
+            <CreateClienteForm ref='create_cliente' />
             <Dialog
               title="Eliminar Cliente"
               actions={actions}
@@ -171,7 +164,6 @@ export default class VerClientes extends Component {
           </div>
 
         </div>
-      </MuiThemeProvider>
     );
   }
 }

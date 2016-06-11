@@ -15,13 +15,9 @@
         "description": "Posee una cama Queen y una Tween Size, DirecTV, nevera de 5 pies, a/c, baño privado"
     },
     {
-        "title": "test",
+
+        "title": "",
         "img": "images/room-types/room595_thumb.jpg",
-        "description": "hola"
-    },
-    {
-        "title": "hola",
-        "img": "images/room-types/room595_thumb.jpg",
-        "description": "hola\n"
+        "description": ""
     }
 ]

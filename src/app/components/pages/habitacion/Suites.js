@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {AppBar, List, Drawer, ListItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
-import {deepOrange500} from 'material-ui/styles/colors';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Route, Router } from 'react-router';
-
-import Divider from 'material-ui/Divider';
+import {Dialog, FlatButton, RaisedButton} from 'material-ui';
 import Subheader from 'material-ui/Subheader';
 import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
@@ -17,21 +10,10 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-
-import Header from '../../Main';
 import AddSuiteModal from './AddSuite'; 
 import AddSuiteForm from './AddSuite';
 
-const muiTheme = getMuiTheme({
-  palette: {
-    borderColor: cyan200,
-  }
-});
-
-
-
 const showCheckB = false;
-
 var divTableStyle = {
   padding:'10%',
   background:blue50
@@ -83,6 +65,7 @@ export default class Suites extends Component {
 
   handleClose(){
     this.setState({open: false});
+    
   };
 
   render() {
@@ -101,9 +84,7 @@ export default class Suites extends Component {
     ];
 
     return (
-
-        <MuiThemeProvider muiTheme={muiTheme}>
-                
+         
           <div>
             <AddSuiteModal ref="AddSuite" />
             <Dialog
@@ -180,11 +161,6 @@ export default class Suites extends Component {
           </div>
 
         </div>
-      </MuiThemeProvider>
     );
   }
 }
-
-
-
-export default Suites;

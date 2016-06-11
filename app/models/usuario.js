@@ -5,8 +5,8 @@ module.exports = function(sequelize, DataTypes) {
         username: DataTypes.STRING,
         password: DataTypes.TEXT,
         rol: DataTypes.STRING,
-	nombre: DataTypes.STRING,
-	apellido: DataTypes.STRING
+	    nombre: DataTypes.STRING,
+	    apellido: DataTypes.STRING
     },{
         timestamps: false,
         freezeTableName: true,

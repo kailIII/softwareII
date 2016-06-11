@@ -2,11 +2,32 @@ import React,{Component} from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
+import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+import {blue50, cyan400} from 'material-ui/styles/colors';
+
+const paperStyle = {
+  height: 400,
+  width: 400,
+  top: '50%',
+  left: '50%',
+  marginTop:-200,
+  marginLeft:-200,
+  textAlign: 'center',
+  display: 'inline-block',
+  position:'fixed'
+};
+
+const cardHeaderStyle = {
+  textAlign: 'center',
+  background: blue50,
+}
 export default class LoginForm extends React.Component{
     /*@Constructor
       @params: props*/
@@ -82,8 +103,20 @@ export default class LoginForm extends React.Component{
         return (
                 <div>
 		            <AppBar
-              title="Hotel Tabuba"
+            title="Hotel Tabuba"
+	    showMenuIconButton = {false}
 		/>
+		 <Card>
+
+            <CardMedia>
+              <img src='images/login-background/tabubaHostal.jpg' />
+            </CardMedia>
+		</Card>
+
+	     <Paper style={paperStyle} zDepth={1} >
+            <h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
+            <Divider/>
+            <br/>
 		<br/>
                 <TextField
             hintText="Username"
@@ -103,6 +136,7 @@ export default class LoginForm extends React.Component{
                 <FlatButton label="Login" primary={true}
             onClick={this.onLoginSubmit}
                 />
+		</Paper>
                 </div>
         );
 
