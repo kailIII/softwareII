@@ -43,9 +43,12 @@ bower_components
 #.idea directory
 .idea
 
+#projectile
+.projectile
+
 #tern
 .tern-port
-.ter-project
+.tern-project
 
 #Vim
 *.swp

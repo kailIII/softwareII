@@ -96,7 +96,9 @@ export default class LoginForm extends React.Component{
 	    async:false,
 	    dataType:'json'
 	    
-	}).done();
+	}).done(function (result) {
+            console.log(result.sucess);
+	});
 	console.log(this.props.route);
     }
     render(){

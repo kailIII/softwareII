@@ -61,9 +61,30 @@ router.post('/login',function(req, res){
                 }
                 req.session.cookie ={username: username};
                 res.send({success: true});
-            }
+            }else{
+		res.send({success: false});
+	    }
         });
 });
 
-router.post('/checklogin');
+
+router.post('/checklogin',function (req, res) {
+    "use strict"
+    res.send({sucess:true});
+});
+
+/*@route: /api/usuarios/getAll
+  @POST
+  @Receives: nil
+  @Sends: users.
+*/
+router.post('/getAll',function (req, res) {
+    "use strict"
+    Usuario.findAll().then(function(users){
+	//console.log(typeof(users));
+	res.send(users);
+    });
+
+    
+})
 module.exports = router;

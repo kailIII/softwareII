@@ -3,6 +3,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import {blue50, blue900} from 'material-ui/styles/colors';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 export default class CreateUserForm extends React.Component
 {
     constructor(props) {
@@ -15,19 +18,35 @@ export default class CreateUserForm extends React.Component
             rol:{value:1, name:"ADMINISTRACION"},
             errorUsuario: null,
             errorNombre: null,
-            errorApellido: null
+            errorApellido: null,
+            open: false,
+            modalTitle: 'Crear Usuario'
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onRolChange = this.onRolChange.bind(this);
-        this.onCreateUserSubmit = this.onCreateUserSubmit.bind(this);
+        //this.onCreateUserSubmit = this.onCreateUserSubmit.bind(this);
         this.validarUsuario = this.validarUsuario.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
         this.validarNombre = this.validarNombre.bind(this);
         this.validarLastName = this.validarLastName.bind(this);
+        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleEditOpen = this.handleEditOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
+    handleAddOpen(){
+        this.setState({open: true, modalTitle:'Crear Cliente'});
+    };
+
+    handleEditOpen(){
+        this.setState({open: true, modalTitle:'Editar Cliente'});
+    };
+
+    handleClose(){
+        this.setState({open: false});
+    };
     onLastNameChange(event){
         this.validarLastName(event);
         this.setState({apellido:event.target.value});
@@ -42,32 +61,7 @@ export default class CreateUserForm extends React.Component
       @params: none
       @return: nil
     */
-    onCreateUserSubmit(){
-        console.log(this.state); //valores a enviar en formulari
-        /*Validaciones*/
 
-        /*peticion ajax*/
-        $.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            type: 'POST',
-            async:false,
-            cache: false,
-            data:{
-                username: this.state.username,
-                password: this.state.password,
-                apellido: this.state.apellido,
-                nombre: this.state.nombre,
-                rol: this.state.rol.name
-            }
-        }).done(function (data) {
-            if(data.success == true){
-                console.log("se creo el usuario");
-            }else{
-                console.log("no se pudo crear el usuario");
-            }
-        });
-    }
     validarNombre(event){
         const username = event.target.value;
         const alphanumeric = /^[a-zA-Z]+$/i;
@@ -168,7 +162,28 @@ export default class CreateUserForm extends React.Component
         console.log("cargo formulario");
     }
     render(){
+        const actions = [
+                <FlatButton
+            label="Cancelar"
+            primary={true}
+            onTouchTap={this.handleClose}
+                />,
+                <FlatButton
+            label="Agregar"
+            primary={true}
+            onTouchTap={this.props.onTouchTap}
+                />,
+        ];
+
         return (
+                <Dialog
+            title={this.state.modalTitle}
+            actions={actions}
+            modal={true}
+            open={this.state.open}
+                >
+                <div style = {{color:blue900}}>
+                <hr/><br/>
                 <form>
                 <TextField
             hintText="Nombre Completo"
@@ -200,11 +215,9 @@ export default class CreateUserForm extends React.Component
                 <MenuItem value={3}  primaryText="CONTADOR" />
                 </SelectField>
                 <br/>
-                <RaisedButton
-            label="Crear Usuario"
-            onClick={this.onCreateUserSubmit}
-                />
                 </form>
+                </div>
+                </Dialog>
         );
     }
 }
