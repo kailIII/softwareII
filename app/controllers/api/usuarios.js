@@ -37,4 +37,33 @@ router.post('/create', function (req, res){
 
 });
 
+
+/*@route: /api/usuarios/login
+  @POST
+  @Receives: username, password
+  @Sends: true and the  user if success, false and the user if not success.
+*/
+router.post('/login',function(req, res){
+    "use strict"
+    var username, password, apellido, rol, nombre;
+    username = req.body.username;
+    console.log(req.body.username);
+    password = req.body.password;
+    console.log(req.body.password);
+    Usuario.find({where: {username: username, password:password}})
+        .then(function(user) {
+            if(user !== null){
+                console.log("Usuario se autentico");
+                if(req.session.cookie.username){
+                    console.log("cookie ya creada");
+                    console.log("Usuario: ", req.session.cookie);
+
+                }
+                req.session.cookie ={username: username};
+                res.send({success: true});
+            }
+        });
+});
+
+router.post('/checklogin');
 module.exports = router;

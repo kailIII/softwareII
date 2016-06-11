@@ -37,21 +37,21 @@ export default class CreateUserForm extends React.Component
         this.setState({nombre:event.target.value});
     }
 
-/*@function: onCreateUserSubmit
-  @Submits form used to create a new user.
-  @params: none
-  @return: nil
-*/
+    /*@function: onCreateUserSubmit
+      @Submits form used to create a new user.
+      @params: none
+      @return: nil
+    */
     onCreateUserSubmit(){
         console.log(this.state); //valores a enviar en formulari
         /*Validaciones*/
 
-	/*peticion ajax*/
+        /*peticion ajax*/
         $.ajax({
             url: this.props.url,
             dataType: 'json',
             type: 'POST',
-	    async:false,
+            async:false,
             cache: false,
             data:{
                 username: this.state.username,
@@ -61,12 +61,12 @@ export default class CreateUserForm extends React.Component
                 rol: this.state.rol.name
             }
         }).done(function (data) {
-	    if(data.success == true){
-		console.log("se creo el usuario");		
-	    }else{
-		console.log("no se pudo crear el usuario");
-	    }
-	});
+            if(data.success == true){
+                console.log("se creo el usuario");
+            }else{
+                console.log("no se pudo crear el usuario");
+            }
+        });
     }
     validarNombre(event){
         const username = event.target.value;
@@ -165,7 +165,7 @@ export default class CreateUserForm extends React.Component
                   console.error(this.props.url, status, err.toString());
                   }.bind(this)
                   });*/
-	console.log("cargo formulario");
+        console.log("cargo formulario");
     }
     render(){
         return (
