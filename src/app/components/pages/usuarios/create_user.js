@@ -10,8 +10,8 @@ export default class CreateUserForm extends React.Component
         this.state={
             username: '',
             password: '',
-	    apellido:'',
-	    nombre:'',
+            apellido:'',
+            nombre:'',
             rol:{value:1, name:"ADMINISTRACION"},
             errorUsuario: null,
             errorNombre: null,
@@ -25,49 +25,76 @@ export default class CreateUserForm extends React.Component
         this.validarUsuario = this.validarUsuario.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
-	this.validarNombre = this.validarNombre.bind(this);
-		this.validarLastName = this.validarLastName.bind(this);
+        this.validarNombre = this.validarNombre.bind(this);
+        this.validarLastName = this.validarLastName.bind(this);
     }
     onLastNameChange(event){
-	this.validarLastName(event);
-	this.setState({apellido:event.target.value});
+        this.validarLastName(event);
+        this.setState({apellido:event.target.value});
     }
     onNameChange(event){
-	this.validarNombre(event);
-		this.setState({nombre:event.target.value});
+        this.validarNombre(event);
+        this.setState({nombre:event.target.value});
     }
+
+    /*@function: onCreateUserSubmit
+      @Submits form used to create a new user.
+      @params: none
+      @return: nil
+    */
     onCreateUserSubmit(){
-        console.log(this.state); //valores a enviar en formulario
+        console.log(this.state); //valores a enviar en formulari
         /*Validaciones*/
 
+        /*peticion ajax*/
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'POST',
+            async:false,
+            cache: false,
+            data:{
+                username: this.state.username,
+                password: this.state.password,
+                apellido: this.state.apellido,
+                nombre: this.state.nombre,
+                rol: this.state.rol.name
+            }
+        }).done(function (data) {
+            if(data.success == true){
+                console.log("se creo el usuario");
+            }else{
+                console.log("no se pudo crear el usuario");
+            }
+        });
     }
     validarNombre(event){
-	 const username = event.target.value;
-  const alphanumeric = /^[a-zA-Z]+$/i;
-  const usernameIsValid = alphanumeric.test(username);
-  var error;
+        const username = event.target.value;
+        const alphanumeric = /^[a-zA-Z]+$/i;
+        const usernameIsValid = alphanumeric.test(username);
+        var error;
 
-  if (usernameIsValid) {
-   error = null;
-  } else {
-   error = 'usuario solo tiene letras.';
-  }
+        if (usernameIsValid) {
+            error = null;
+        } else {
+            error = 'usuario solo tiene letras.';
+        }
 
-	this.setState({ errorNombre: error }); 
+        this.setState({ errorNombre: error });
     }
-        validarLastName(event){
-	 const username = event.target.value;
-  const alphanumeric = /^[a-zA-Z]+$/i;
-  const usernameIsValid = alphanumeric.test(username);
-  var error;
+    validarLastName(event){
+        const username = event.target.value;
+        const alphanumeric = /^[a-zA-Z]+$/i;
+        const usernameIsValid = alphanumeric.test(username);
+        var error;
 
-  if (usernameIsValid) {
-   error = null;
-  } else {
-   error = 'Apellido solo tiene letras.';
-  }
+        if (usernameIsValid) {
+            error = null;
+        } else {
+            error = 'Apellido solo tiene letras.';
+        }
 
-	this.setState({ errorApellido: error }); 
+        this.setState({ errorApellido: error });
     }
     validarUsuario(event){
         const username = event.target.value;
@@ -114,6 +141,31 @@ export default class CreateUserForm extends React.Component
             });
         }
         //console.log(this.state);
+    }
+
+    componentDidMount() {
+        /*        $.ajax({
+                  url: this.props.url,
+                  dataType: 'json',
+                  type: 'POST',
+                  cache: false,
+                  data:{
+                  username: this.state.username,
+                  password: this.state.password,
+                  apellido: this.state.apellido,
+                  nombre: this.state.nombre,
+                  rol: this.state.rol.name
+                  },
+                  success: function(data) {
+                  console.log(data);
+                  console.log("se creo el nuevo usuario en la base.");
+
+                  }.bind(this),
+                  error: function(xhr, status, err) {
+                  console.error(this.props.url, status, err.toString());
+                  }.bind(this)
+                  });*/
+        console.log("cargo formulario");
     }
     render(){
         return (

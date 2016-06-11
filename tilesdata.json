@@ -1,15 +1,23 @@
-[{
-  "img": "images/room-types/room596_1_thumb.jpg",
-  "title": "Vista al Mar",
-  "description": "Cama King Size, DirecTV, nevera de 5 pies, a/c, baño privado."
-},
-{
-  "img": "images/room-types/room595_1_thumb.jpg",
-  "title": "Single Room",
-  "description": "Cama Queen Size, DirecTV, nevera de 5 pies, a/c, baño privado"
-},
-{
-  "img": "images/room-types/room597_thumb.jpg",
-  "title": "Twin Room",
-  "description": "Posee una cama Queen y una Tween Size, DirecTV, nevera de 5 pies, a/c, baño privado"
-}]
+[
+    {
+        "title": "Vista al Mar",
+        "img": "images/room-types/room596_1_thumb.jpg",
+        "description": "Cama King Size, DirecTV, nevera de 5 pies, a/c, baño privado."
+    },
+    {
+        "title": "Single Room",
+        "img": "images/room-types/room595_1_thumb.jpg",
+        "description": "Cama Queen Size, DirecTV, nevera de 5 pies, a/c, baño privado"
+    },
+    {
+        "title": "Twin Room",
+        "img": "images/room-types/room597_thumb.jpg",
+        "description": "Posee una cama Queen y una Tween Size, DirecTV, nevera de 5 pies, a/c, baño privado"
+    },
+    {
+
+        "title": "",
+        "img": "images/room-types/room595_thumb.jpg",
+        "description": ""
+    }
+]

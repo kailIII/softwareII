@@ -10,10 +10,10 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-import AddSuiteModal from './AddSuite'; 
-import AddSuiteForm from './AddSuite';
+import CreateClienteForm from './create_cliente'
 
 const showCheckB = false;
+
 var divTableStyle = {
   padding:'10%',
   background:blue50
@@ -24,15 +24,18 @@ var headerTableStyle = {
   color:blue900
 };
 
-export default class Suites extends Component {
+export default class VerClientes extends Component {
 
   constructor(props){
     super(props);
     this.state = {open: false};
+
+    //metodos usados en esta clase
     this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    
     this.iconButtonElement = (
       <IconButton
         touch={true}
@@ -51,13 +54,14 @@ export default class Suites extends Component {
     );
   }
   
+  //llamar a los metodos de la clase CreateClienteForm mediante la propiedad ref
   handleEditOpen(){
-    this.refs['AddSuite'].handleEditOpen();
+    this.refs['create_cliente'].handleEditOpen();
+  }
+  handleAddOpen(){
+    this.refs['create_cliente'].handleAddOpen();
   }
 
-  handleAddOpen(){
-    this.refs['AddSuite'].handleAddOpen();
-  }
 
   handleDeleteOpen(){
     this.setState({open: true});
@@ -65,7 +69,6 @@ export default class Suites extends Component {
 
   handleClose(){
     this.setState({open: false});
-    
   };
 
   render() {
@@ -84,16 +87,16 @@ export default class Suites extends Component {
     ];
 
     return (
-         
+                
           <div>
-            <AddSuiteModal ref="AddSuite" />
+            <CreateClienteForm ref='create_cliente' />
             <Dialog
-              title="Eliminar Habitación"
+              title="Eliminar Cliente"
               actions={actions}
               modal={true}
               open={this.state.open}
             >
-              Esta seguro que desea eliminar esta Habitación?
+              Esta seguro que desea eliminar este cliente?
             </Dialog>
             <div style={divTableStyle}>
              <Table >
@@ -104,9 +107,9 @@ export default class Suites extends Component {
               >
                 <TableRow>
                   <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                    <span style={{color: darkBlack}}><h3>Habitaciones</h3></span>
+                    <span style={{color: darkBlack}}><h3>Clientes</h3></span>
                   </TableHeaderColumn>
-                  <TableHeaderColumn colSpan="1" tooltip="Agregar Habitación" style={{textAlign: 'center'}}>
+                  <TableHeaderColumn colSpan="1" tooltip="Agregar Cliente" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
                             <ContentAdd />
                           </FloatingActionButton>
@@ -115,9 +118,9 @@ export default class Suites extends Component {
                 </TableRow>
                 <TableRow>
                   <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
-                  <TableHeaderColumn style={headerTableStyle}>Tipo</TableHeaderColumn>
-                  <TableHeaderColumn style={headerTableStyle}>Capacidad</TableHeaderColumn>
-                  <TableHeaderColumn style={headerTableStyle}>Estado</TableHeaderColumn>
+                  <TableHeaderColumn style={headerTableStyle}>Cedula</TableHeaderColumn>
+                  <TableHeaderColumn style={headerTableStyle}>Nacionalidad</TableHeaderColumn>
+                  <TableHeaderColumn style={headerTableStyle}>Telefono</TableHeaderColumn>
                   <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
               </TableHeader>
@@ -126,32 +129,32 @@ export default class Suites extends Component {
                 displayRowCheckbox={showCheckB}
                 >
                 <TableRow>
-                  <TableRowColumn>Hab1</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
+                  <TableRowColumn>client1</TableRowColumn>
+                  <TableRowColumn>82839402738</TableRowColumn>
+                  <TableRowColumn>Ecuatoriano</TableRowColumn>
+                  <TableRowColumn>2736485</TableRowColumn>
                   <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
 
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Hab2</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
+                  <TableRowColumn>client2</TableRowColumn>
+                  <TableRowColumn>82839402738</TableRowColumn>
+                  <TableRowColumn>Ecuatoriano</TableRowColumn>
+                  <TableRowColumn>2736485</TableRowColumn>
                   <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Hab3</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
+                  <TableRowColumn>client3</TableRowColumn>
+                  <TableRowColumn>82839402738</TableRowColumn>
+                  <TableRowColumn>Ecuatoriano</TableRowColumn>
+                  <TableRowColumn>2736485</TableRowColumn>
                   <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Hab4</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
+                  <TableRowColumn>client4</TableRowColumn>
+                  <TableRowColumn>82839402738</TableRowColumn>
+                  <TableRowColumn>Ecuatoriano</TableRowColumn>
+                  <TableRowColumn>2736485</TableRowColumn>
                   <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
                 </TableRow>
               </TableBody>
@@ -164,3 +167,4 @@ export default class Suites extends Component {
     );
   }
 }
+

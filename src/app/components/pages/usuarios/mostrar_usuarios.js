@@ -19,37 +19,37 @@ import ActionDeleteForever from 'material-ui/svg-icons/action/delete';
 /*Icono para editar Usuario*/
 import ActionsSettingsApplications from 'material-ui/svg-icons/action/settings-applications';
 const style = {
- marginLeft: 20,
+    marginLeft: 20,
 };
 
 const styles = {
- smallIcon: {
-  width: 36,
-  height: 36,
- },
- mediumIcon: {
-  width: 48,
-  height: 48,
- },
- largeIcon: {
-  width: 60,
-  height: 60,
- },
- small: {
-  width: 72,
-  height: 72,
-  padding: 16,
- },
- medium: {
-  width: 96,
-  height: 96,
-  padding: 24,
- },
- large: {
-  width: 120,
-  height: 120,
-  padding: 30,
- },
+    smallIcon: {
+        width: 36,
+        height: 36,
+    },
+    mediumIcon: {
+        width: 48,
+        height: 48,
+    },
+    largeIcon: {
+        width: 60,
+        height: 60,
+    },
+    small: {
+        width: 72,
+        height: 72,
+        padding: 16,
+    },
+    medium: {
+        width: 96,
+        height: 96,
+        padding: 24,
+    },
+    large: {
+        width: 120,
+        height: 120,
+        padding: 30,
+    },
 };
 
 /* const IconButtonDeleteForever={
@@ -61,131 +61,135 @@ const styles = {
  * }*/
 export default class Mostrar_Usuario extends React.Component{
 
- constructor(props, context) {
-  super(props);
-  this.state = {open: false};
-  this.state_dialog = {
-   open: false,
-  };
-  this.handleTouchTap = this.handleTouchTap.bind(this);
-  this.handleToggle = this.handleToggle.bind(this);
-  this.handleClose = this.handleClose.bind(this);
-  this.handleOpen = this.handleOpen.bind(this);
-  this.handleMostrarAgregarUsuario = this.handleMostrarAgregarUsuario.bind(this);
- }
+    constructor(props, context) {
+        super(props);
+        this.state = {open: false};
+        this.state_dialog = {
+            open: false,
+        };
+        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
+        this.handleMostrarAgregarUsuario = this.handleMostrarAgregarUsuario.bind(this);
+    }
 
- handleMostrarAgregarUsuario(){
-  this.state_dialog.open = true;
-  console.log(this);
-  console.log(this.state_dialog.open);
- }
- handleOpen(){
-  console.log(this);
-  this.setState({open: true});
- }
- handleTouchTap(){
-  console.log("touch");
- }
- handleToggle(){
-  console.log("toggle");
- }
- handleClose(){
-  console.log("close");
-  this.state_dialog.open = false;
-  this.setState({open: false});
- }
- render() {
+    handleMostrarAgregarUsuario(){
+        this.state_dialog.open = true;
+        console.log(this);
+        console.log(this.state_dialog.open);
+    }
+    handleOpen(){
+        console.log(this);
+        this.setState({open: true});
+    }
+    handleTouchTap(){
+        console.log("touch");
+    }
+    handleToggle(){
+        console.log("toggle");
+    }
+    handleClose(){
+        console.log("close");
+        this.state_dialog.open = false;
+        this.setState({open: false});
+    }
+    /*@function: iteramos los usuaarios en la base y los mostramos en la pagina.*/
+    componentDidMount(){
+	console.log("");
+    }
+    render() {
 
 
-  return (
-   <div>
-    <FlatButton label ="Agregar Usuario" onTouchTap={this.handleOpen}>
-     <Dialog
-         title="Crear Usuario"
-         modal={false}
-         open={this.state.open}
-         onRequestClose={this.handleClose}
-         autoScrollBodyContent={true}>
-      < CreateUserForm/>
-</Dialog>
-</FlatButton>
-<br/>
-<Table>
- <TableHeader>
-  <TableRow>
-   <TableHeaderColumn>Rol</TableHeaderColumn>
-   <TableHeaderColumn>Usuario</TableHeaderColumn>
-   <TableHeaderColumn>Password</TableHeaderColumn>
-   <TableHeaderColumn></TableHeaderColumn>
-   <TableHeaderColumn></TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-     <TableRow>
-      <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-      <TableRowColumn>John Smith</TableRowColumn>
-      <TableRowColumn>Employed</TableRowColumn>
-      <TableRowColumn>
-       <IconButton>
-	<ActionsSettingsApplications/>
-</IconButton>
-</TableRowColumn>
-      <TableRowColumn>
-       <IconButton>
-        <ActionDeleteForever />
-            </IconButton>
-</TableRowColumn>
+        return (
+                <div>
+                <FlatButton label ="Agregar Usuario" onTouchTap={this.handleOpen}>
+                <Dialog
+            title="Crear Usuario"
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.handleClose}
+            autoScrollBodyContent={true}>
+                < CreateUserForm url="/api/usuarios/create" />
+                </Dialog>
+                </FlatButton>
+                <br/>
+                <Table>
+                <TableHeader>
+                <TableRow>
+                <TableHeaderColumn>Rol</TableHeaderColumn>
+                <TableHeaderColumn>Usuario</TableHeaderColumn>
+                <TableHeaderColumn>Password</TableHeaderColumn>
+                <TableHeaderColumn></TableHeaderColumn>
+                <TableHeaderColumn></TableHeaderColumn>
+                </TableRow>
+                </TableHeader>
+                <TableBody>
+                <TableRow>
+                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
+                <TableRowColumn>John Smith</TableRowColumn>
+                <TableRowColumn>Employed</TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionsSettingsApplications/>
+                </IconButton>
+                </TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionDeleteForever />
+                </IconButton>
+                </TableRowColumn>
 
-      </TableRow>
-      <TableRow>
-       <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-       <TableRowColumn>Randal White</TableRowColumn>
-       <TableRowColumn>Unemployed</TableRowColumn>
-       <TableRowColumn>
-	<IconButton>
-	 <ActionsSettingsApplications/>
-</IconButton>
-</TableRowColumn>
-       <TableRowColumn>
-	<IconButton>
-         <ActionDeleteForever />
-            </IconButton>
-</TableRowColumn>
+            </TableRow>
+                <TableRow>
+                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
+                <TableRowColumn>Randal White</TableRowColumn>
+                <TableRowColumn>Unemployed</TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionsSettingsApplications/>
+                </IconButton>
+                </TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionDeleteForever />
+                </IconButton>
+                </TableRowColumn>
 
-      </TableRow>
-      <TableRow>
-       <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-       <TableRowColumn>Stephanie Sanders</TableRowColumn>
-       <TableRowColumn>Employed</TableRowColumn>
-       <TableRowColumn>
-	<IconButton>
-	 <ActionsSettingsApplications/>
-</IconButton>
-</TableRowColumn>
-       <TableRowColumn>
-	<IconButton>
-         <ActionDeleteForever />
-            </IconButton>
-</TableRowColumn>
-      </TableRow>
-      <TableRow>
-       <TableRowColumn>< Rol_Usuario /></TableRowColumn>
-       <TableRowColumn>Steve Brown</TableRowColumn>
-       <TableRowColumn>Employed</TableRowColumn>
-       <TableRowColumn>
-	<IconButton>
-	 <ActionsSettingsApplications/>
-</IconButton>
-</TableRowColumn>
-<TableRowColumn>
- <IconButton>
-  <ActionDeleteForever />
-            </IconButton>
-</TableRowColumn>
-      </TableRow>
-    </TableBody>
-  </Table>
-   </div>
-  );
- }
+            </TableRow>
+                <TableRow>
+                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
+                <TableRowColumn>Stephanie Sanders</TableRowColumn>
+                <TableRowColumn>Employed</TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionsSettingsApplications/>
+                </IconButton>
+                </TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionDeleteForever />
+                </IconButton>
+                </TableRowColumn>
+                </TableRow>
+                <TableRow>
+                <TableRowColumn>< Rol_Usuario /></TableRowColumn>
+                <TableRowColumn>Steve Brown</TableRowColumn>
+                <TableRowColumn>Employed</TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionsSettingsApplications/>
+                </IconButton>
+                </TableRowColumn>
+                <TableRowColumn>
+                <IconButton>
+                <ActionDeleteForever />
+                </IconButton>
+                </TableRowColumn>
+                </TableRow>
+                </TableBody>
+                </Table>
+                </div>
+        );
+    }
 }

@@ -14,15 +14,46 @@ palette: {
 accent1Color: deepOrange500,
 },
 });
-
 export default class NewTypeSuite extends React.Component {
     constructor(props,context) {
     super(props);
     this.state = {
       open: false,
+      title: '',
+      description: '',
     };
+    this.handleTouchTap = this.handleTouchTap.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
   }
-
+  handleClose  ()  {
+      this.setState({open: false});
+    };
+  onTitleChange(event){
+  this.setState({title:event.target.value});
+    };
+    onDescriptionChange(event){
+    this.setState({description:event.target.value});
+    };
+    handleTouchTap (){
+      $.ajax({
+      url: this.props.urlSave,
+      dataType: 'json',
+      type: 'POST',
+      cache: false,
+      data: {title:this.state.title, description: this.state.description},
+      success: function(data) {
+        this.setState({
+            openSnackBar: true,
+            data: data,
+        });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+};
 
     render() {
 
@@ -67,6 +98,7 @@ export default class NewTypeSuite extends React.Component {
                 <div>
                     <TextField
                         floatingLabelText="Nombre de la Suite"
+                        onChange= {this.onTitleChange}
                         />
                     <br />
                     <div style={styles.group}>
@@ -82,9 +114,21 @@ export default class NewTypeSuite extends React.Component {
                         hintText="Descripción"
                         floatingLabelText="Descripción de la Habitación"
                         multiLine={true}
+                        onChange={this.onDescriptionChange}
                         rows={2}
                         />
                     <br />
+                          <RaisedButton
+          label="Guardar"
+          onTouchTap={this.handleTouchTap}
+          backgroundColor="#add580"
+          style={styles.buttons}
+          />,
+      <RaisedButton
+          label="Atrás"
+          style={styles.buttons}
+          onTouchTap={this.handleClose}
+          />
                 </div>
             </ClearFix>
 

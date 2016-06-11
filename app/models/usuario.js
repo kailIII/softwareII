@@ -4,7 +4,9 @@ module.exports = function(sequelize, DataTypes) {
         id_usuario: {type:DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
         username: DataTypes.STRING,
         password: DataTypes.TEXT,
-        rol: DataTypes.STRING
+        rol: DataTypes.STRING,
+	    nombre: DataTypes.STRING,
+	    apellido: DataTypes.STRING
     },{
         timestamps: false,
         freezeTableName: true,
