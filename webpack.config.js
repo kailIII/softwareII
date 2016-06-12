@@ -1,9 +1,16 @@
+const path = require('path')
+
 module.exports = {
   devtool: 'eval-source-map',
-  entry:  __dirname + "/src/app/app.js",
+  entry:  [
+      "./src/app/app.js",
+  ],
   output: {
-    path: __dirname + "/public",
+    path: "./public",
     filename: "bundle.js",
+  },
+  devServer: {
+      contentBase: 'public',
   },
     module: {
         loaders: [
