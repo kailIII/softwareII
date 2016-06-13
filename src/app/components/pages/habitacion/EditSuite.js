@@ -14,7 +14,7 @@ for( let i = 1; i<=5; i++ ){
   items.push(<MenuItem value={i} primaryText={i} />);
 }
 
-export default class AddSuiteModal extends React.Component {
+export default class EditSuiteModal extends React.Component {
   
   constructor(props) {
     super(props);
@@ -28,11 +28,11 @@ export default class AddSuiteModal extends React.Component {
       tarifa:0,
       suites:undefined,
       nombreValido:null,
-      tarifaValido:"Campo Requerido",
-      disabled:false
+      disabled:false,
+      oldName:"",
+      tarifaValido:null,
     };
-
-    this.handleAddOpen = this.handleAddOpen.bind(this);
+    this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleChangeNombre = this.handleChangeNombre.bind(this);
@@ -43,16 +43,9 @@ export default class AddSuiteModal extends React.Component {
     this.onKeypressTarifa = this.onKeypressTarifa.bind(this);
   }
 
-  handleAddOpen(){
-    this.setState({
-      open: true,
-      nombre:"",
-      tipo: "Single",
-      capacidad:1,
-      estado:"Limpia",
-      tarifa:0,
-    });
-  }
+  handleEditOpen(){
+    this.setState({open: true});
+  }  
 
   handleClose(){
     this.setState({open: false});
@@ -62,19 +55,25 @@ export default class AddSuiteModal extends React.Component {
     this.setState({openSnack: false});
   }
 
-  handleChangeNombre(event){
+  handleChangeNombre(event, index, value){
     var error=null, disabled=false, exp="";
-    this.setState({nombre: event.target.value});
+    var oldName = this.state.oldName;
     this.state.suites.map(function (suite){
-      exp = new RegExp("^"+suite.nombre+"\\s*$","i"); 
-      if( exp.test(event.target.value)){
-        console.log("true");
-        error='Ya existe una Habitación con este nombre';
-        disabled=true;
+      if(suite.nombre !== oldName){
+        exp = new RegExp("^"+suite.nombre+"\\s*$","i"); 
+        if( exp.test(event.target.value)){
+          console.log("true");
+          error='Ya existe una Habitación con este nombre';
+          disabled=true;
+        }
       }
       return suite;
     }, this);
-    this.setState({nombreValido:error, disabled:disabled});
+    this.setState({
+      nombreValido:error, 
+      disabled:disabled,
+      nombre:event.target.value
+    });
   }
 
   handleChangeTipo (event, index, value){
@@ -101,7 +100,7 @@ export default class AddSuiteModal extends React.Component {
     error="Error de formato";
     disabled=true;
    }
-   this.setState({tarifa:value, tarifaValido:error, disabled:disabled});
+   this.setState({tarifa:event.target.value, tarifaValido:error, disabled:disabled});
   }
 
   onKeypressTarifa(event){
@@ -113,7 +112,6 @@ export default class AddSuiteModal extends React.Component {
     }
   }
 
-
   render() {
     const actions = [
       <FlatButton
@@ -122,7 +120,7 @@ export default class AddSuiteModal extends React.Component {
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Agregar"
+        label="Actualizar"
         primary={true}
         onTouchTap={this.props.onTouchTap}
         disabled={this.state.disabled}
@@ -132,7 +130,7 @@ export default class AddSuiteModal extends React.Component {
     return (
       <div>
         <Dialog
-          title={"Nueva Habitación"}
+          title={"Editar Habitación"}
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -144,6 +142,7 @@ export default class AddSuiteModal extends React.Component {
               <TextField
                 hintText="Nombre"
                 floatingLabelText="Nombre"
+                value={this.state.nombre}
                 errorText={this.state.nombreValido}
                 onChange={this.handleChangeNombre}
               /><br />
@@ -158,6 +157,7 @@ export default class AddSuiteModal extends React.Component {
               <TextField
                 hintText="Tarifa"
                 floatingLabelText="Tarifa"
+                value={this.state.tarifa}
                 errorText={this.state.tarifaValido}
                 onChange={this.handleChangeTarifa}
                 onKeyDown={this.onKeypressTarifa}
@@ -181,7 +181,7 @@ export default class AddSuiteModal extends React.Component {
 
         <Snackbar
           open={this.state.openSnack}
-          message="Agregada nueva habitación"
+          message="Habitación actualizada"
           autoHideDuration={4000}
           onRequestClose={this.handleRequestClose}
         />

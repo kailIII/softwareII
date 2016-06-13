@@ -35,8 +35,10 @@ var models = require("./app/models");
 var TYPES_FILE = path.join(__dirname, 'tilesdata.json');
 
 var usuarios = require('./app/controllers/api/usuarios');
+var habitaciones = require('./app/controllers/api/habitaciones');
 
 app.use('/api/usuarios',usuarios);
+app.use('/api/habitaciones', habitaciones);
 app.post('/api/tipos_habitacion', function (req, res){
     "use strict"
     fs.readFile(TYPES_FILE, function(err, data){
