@@ -30,13 +30,44 @@ router.post('/create', function (req, res){
                 Usuario.create({username: username, password:password, apellido: apellido, rol: rol, nombre: nombre}).then(function(user){
                     console.log("se creo el usuario");
                     console.log(user);
-                    res.send({success:true, user:user});
+                    res.send({success:true, user:user,create:true});
                 });
             }
         });
 
 });
 
+/*@route: /api/usuarios/edit
+  @POST
+  @Receives: username, password, apellido, rol, nombre, id_usuario
+  @Sends: true and the  user if success, false and the user if not success.
+*/
+router.post('/edit', function (req, res){
+    "use strict"
+    var username, password, apellido, rol, nombre, id_usuario;
+    id_usuario = req.body.id_usuario;
+    username = req.body.username;
+    password = req.body.password;
+    apellido = req.body.apellido;
+    rol= req.body.rol;
+    nombre = req.body.nombre;
+    Usuario.find({where: {id_usuario: id_usuario}})
+        .then(function(user) {
+            if(user !== null){
+                user.username = username;
+                user.password = password;
+                user.apellido = apellido;
+                user.rol = rol;
+                user.nombre = nombre;
+                user.save().then(function() {
+                    res.send({success:true,create:false});
+                });
+            }else{
+                res.send({success:false});
+            }
+        });
+
+});
 
 /*@route: /api/usuarios/login
   @POST
@@ -62,8 +93,8 @@ router.post('/login',function(req, res){
                 req.session.cookie ={username: username};
                 res.send({success: true});
             }else{
-		res.send({success: false});
-	    }
+                res.send({success: false});
+            }
         });
 });
 
@@ -81,10 +112,19 @@ router.post('/checklogin',function (req, res) {
 router.post('/getAll',function (req, res) {
     "use strict"
     Usuario.findAll().then(function(users){
-	//console.log(typeof(users));
-	res.send(users);
+        //console.log(typeof(users));
+        res.send(users);
     });
 
     
-})
+});
+
+router.post('/delete',function (req,res) {
+    "use strict"
+    Usuario.destroy(
+        {where: {id_usuario: req.body.id_usuario}}
+    ).then(function(status){
+        res.send({success:true});
+    });
+});
 module.exports = router;

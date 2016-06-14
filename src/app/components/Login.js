@@ -21,7 +21,7 @@ const paperStyle = {
   marginLeft:-200,
   textAlign: 'center',
   display: 'inline-block',
-  position:'fixed'
+  position:'fixed',
 };
 
 const cardHeaderStyle = {
@@ -36,7 +36,7 @@ export default class LoginForm extends React.Component{
         this.state={
             username:"",
             password:"",
-            errorUsername:null
+            errorUsername:null,
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -78,8 +78,8 @@ export default class LoginForm extends React.Component{
             async:false,
             data:{
                 username: this.state.username,
-                password: this.state.password
-            }
+                password: this.state.password,
+            },
         }).done(function(data){
             if(data.success === true){
                 window.location ='/#/main/';
@@ -89,44 +89,44 @@ export default class LoginForm extends React.Component{
         });
     }
     componentDidMount(){
-	$.ajax({
-	    url: '/api/usuarios/checklogin',
-	    type: 'POST',
-	    cache:false,
-	    async:false,
-	    dataType:'json'
-	    
-	}).done(function (result) {
+        $.ajax({
+            url: '/api/usuarios/checklogin',
+            type: 'POST',
+            cache:false,
+            async:false,
+            dataType:'json',
+            
+        }).done(function (result) {
             console.log(result.sucess);
-	});
-	console.log(this.props.route);
+        });
+        console.log(this.props.route);
     }
     render(){
         return (
                 <div>
-		            <AppBar
+                            <AppBar
             title="Hotel Tabuba"
-	    showMenuIconButton = {false}
-		/>
-		 <Card>
+            showMenuIconButton = {false}
+                />
+                 <Card>
 
             <CardMedia>
               <img src='images/login-background/tabubaHostal.jpg' />
             </CardMedia>
-		</Card>
+                </Card>
 
-	     <Paper style={paperStyle} zDepth={1} >
+             <Paper style={paperStyle} zDepth={1} >
             <h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
             <Divider/>
             <br/>
-		<br/>
+                <br/>
                 <TextField
             hintText="Username"
             value={this.state.username}
             floatingLabelFixed={true}
             onChange={this.onUsernameChange}
             value={this.state.username}
-	    errorText={this.state.errorUsername}
+            errorText={this.state.errorUsername}
                 />
                 <br/>
                 <TextField
@@ -138,7 +138,8 @@ export default class LoginForm extends React.Component{
                 <FlatButton label="Login" primary={true}
             onClick={this.onLoginSubmit}
                 />
-		</Paper>
+                </Paper>
+
                 </div>
         );
 
