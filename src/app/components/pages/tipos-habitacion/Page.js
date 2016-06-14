@@ -39,7 +39,7 @@ accent1Color: deepOrange500,
         <MuiThemeProvider muiTheme={muiTheme}>
           <Paper style={styles.root}zDepth={5}>
             <ClearFix style={styles.exampleBlock}>
-                <RoomTypesShow url="/api/tipos_habitacion" />
+                <RoomTypesShow url="/api/tipos_habitacion/show" />
             </ClearFix>
           </Paper>
         </MuiThemeProvider>
