@@ -21,7 +21,7 @@ export default class CreateUserForm extends React.Component
             errorApellido: null,
             open: false,
             modalTitle: 'Crear Usuario',
-	    id_usuario: -1,
+            id_usuario: -1,
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
