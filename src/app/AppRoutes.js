@@ -24,10 +24,10 @@ class AppRoutes extends React.Component {
         return (
             <Provider store={store}>
                 <Router history={history}>
-                  <Route path="/" component={LoginForm}/>
-                  <Route path="/main" component={Header} >
-                      <Route path="/home" component={spreadsheet}/>
-                      <Route path="/usuario" component={Mostrar_Usuarios}/>
+					<Route path="/" component={LoginForm}/>
+					<Route path="/main" component={Header} >
+						<Route path="/home" component={spreadsheet}/>
+						<Route path="/usuario" component={Mostrar_Usuarios}/>
                       <Route path="/usuario/crear" component={Crear_Usuario}/>
                       <Route path="/usuario/editar" component={Editar_Usuario}/>
                       <Route path="/tipo-habitacion" component={RoomTypesShow}/>

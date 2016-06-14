@@ -21,7 +21,7 @@ const paperStyle = {
   marginLeft:-200,
   textAlign: 'center',
   display: 'inline-block',
-  position:'fixed'
+  position:'fixed',
 };
 
 const cardHeaderStyle = {
@@ -36,7 +36,7 @@ export default class LoginForm extends React.Component{
         this.state={
             username:"",
             password:"",
-            errorUsername:null
+            errorUsername:null,
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -45,7 +45,7 @@ export default class LoginForm extends React.Component{
         this.onLoginSubmit = this.onLoginSubmit.bind(this);
     }
 
-    /*@function: tests if the username's state has the needed pattern
+    /*@function: tests if the username s state has the needed pattern
       @params: event->value of state username
       @return: nil
     */
@@ -78,8 +78,8 @@ export default class LoginForm extends React.Component{
             async:false,
             data:{
                 username: this.state.username,
-                password: this.state.password
-            }
+                password: this.state.password,
+            },
         }).done(function(data){
             if(data.success === true){
                 window.location ='/#/main/';
@@ -89,58 +89,58 @@ export default class LoginForm extends React.Component{
         });
     }
     componentDidMount(){
-	$.ajax({
-	    url: '/api/usuarios/checklogin',
-	    type: 'POST',
-	    cache:false,
-	    async:false,
-	    dataType:'json'
-	    
-	}).done(function (result) {
+        $.ajax({
+            url: '/api/usuarios/checklogin',
+            type: 'POST',
+            cache:false,
+            async:false,
+            dataType:'json',
+
+        }).done(function (result) {
             console.log(result.sucess);
-	});
-	console.log(this.props.route);
+        });
+        console.log(this.props.route);
     }
     render(){
-        return (
-            <div>
-	            <AppBar
-                    title="Hotel Tabuba"
-        	        showMenuIconButton = {false}
-        		/>
-        		 <Card>
+      return (
+        <div>
+			<AppBar
+				title="Hotel Tabuba"
+				showMenuIconButton = {false}
+			/>
+			<Card>
 
-                    <CardMedia>
-                      <img src='images/login-background/tabubaHostal.jpg' />
-                    </CardMedia>
-        		</Card>
+				<CardMedia>
+					<img src='images/login-background/tabubaHostal.jpg' />
+				</CardMedia>
+			</Card>
 
-        	     <Paper style={paperStyle} zDepth={1} >
-                    <h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
-                    <Divider/>
-                    <br/>
-        		    <br/>
-                    <TextField
-                        hintText="Username"
-                        floatingLabelText="Username"
-                        value={this.state.username}
-                        onChange={this.onUsernameChange}
-                        value={this.state.username}
-            	        errorText={this.state.errorUsername}
-                    />
-                    <br/>
-                    <TextField
-                        hintText="Password"
-                        floatingLabelText="Password"
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.onPasswordChange}
-                    /><br /><br />
-                    <RaisedButton label="Login" primary={true}
-                        onClick={this.onLoginSubmit}
-                    />
-        		</Paper>
-            </div>
+			<Paper style={paperStyle} zDepth={1} >
+				<h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
+				<Divider/>
+				<br/>
+				<br/>
+				<TextField
+					hintText="Username"
+					value={this.state.username}
+					floatingLabelFixed={true}
+					onChange={this.onUsernameChange}
+					value={this.state.username}
+					errorText={this.state.errorUsername}
+				/>
+				<br/>
+				<TextField
+					hintText="Password"
+					type="password"
+					value={this.state.password}
+					onChange={this.onPasswordChange}
+				/><br />
+				<FlatButton label="Login" primary={true}
+					onClick={this.onLoginSubmit}
+				/>
+			</Paper>
+
+		</div>
         );
 
     }

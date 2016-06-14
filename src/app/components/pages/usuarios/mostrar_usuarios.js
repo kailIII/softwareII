@@ -23,14 +23,14 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 const showCheckB = false;
 import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
-var divTableStyle = {
+const divTableStyle = {
     padding:'10%',
-    background:blue50
+    background:blue50,
 
 };
 
-var headerTableStyle = {
-    color:blue900
+const headerTableStyle = {
+    color:blue900,
 };
 
 export default class Mostrar_Usuario extends React.Component{
@@ -38,31 +38,38 @@ export default class Mostrar_Usuario extends React.Component{
     constructor(props){
         super(props);
         this.state = {open: false,
-                      usuarios: null};
+                      usuarios: null,
+                      selectedRow: -1};
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.onRowSelection = this.onRowSelection.bind(this);
 
         //metodos usados en esta clase
         this.handleEditOpen = this.handleEditOpen.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
         this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-	this.onCreateUserSubmit = this.onCreateUserSubmit.bind(this);
+        this.onCreateEditUserSubmit = this.onCreateEditUserSubmit.bind(this);
         this.iconButtonElement = (
-                <IconButton
-            touch={true}
-            tooltip="more"
-            tooltipPosition="bottom-left"
-                >
+            <IconButton
+                touch={true}
+                tooltip="more"
+                tooltipPosition="bottom-left"
+            >
                 <MoreVertIcon color={grey400} />
                 </IconButton>
         );
 
         this.rightIconMenu = (
-                <IconMenu iconButtonElement={this.iconButtonElement}>
+            <IconMenu iconButtonElement={this.iconButtonElement}>
                 <MenuItem onTouchTap={this.handleEditOpen}>Editar</MenuItem>
                 <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
                 </IconMenu>
         );
+    }
+    onRowSelection(rowSelected){
+        if(rowSelected[0] !== undefined){
+            this.setState({selectedRow: rowSelected[0]});
+        }
     }
     componentDidMount(){
     }
@@ -73,7 +80,7 @@ export default class Mostrar_Usuario extends React.Component{
             dataType: 'json',
             type: 'POST',
             async:false,
-            cache: false
+            cache: false,
         }).done(function (data) {
             console.log("component did mount");
             this.setState({usuarios:data});
@@ -82,122 +89,213 @@ export default class Mostrar_Usuario extends React.Component{
 
     //llamar a los metodos de la clase CreateUsuarioForm mediante la propiedad ref
     handleEditOpen(){
+        this.refs["create_user"].setState({username:this.state.usuarios[this.state.selectedRow].username,
+                                           nombre:this.state.usuarios[this.state.selectedRow].nombre,                                     apellido:this.state.usuarios[this.state.selectedRow].apellido,                          password:this.state.usuarios[this.state.selectedRow].password});
+        const rol =this.state.usuarios[this.state.selectedRow].rol;
+        switch(rol){
+            case "ADMINISTRACION":{
+                this.refs["create_user"].setState({rol:{value:1, name:"ADMINISTRACION"}});
+                break;
+            }
+            case "SECRETARIO":{
+                this.refs["create_user"].setState({rol:{value:2, name:"SECRETARIO"}});
+                break;
+            }
+            case "CONTADOR":{
+                this.refs["create_user"].setState({rol:{value:3, name:"CONTADOR"}});
+                break;
+            }
+        }
+        this.refs['create_user'].setState({id_usuario: this.state.usuarios[this.state.selectedRow].id_usuario,
+        });
         this.refs['create_user'].handleEditOpen();
+
     }
     handleAddOpen(){
+        this.refs['create_user'].setState({id_usuario: -1});
         this.refs['create_user'].handleAddOpen();
     }
     handleDeleteOpen(){
         this.setState({open: true});
+        const id_usuario = this.state.usuarios[this.state.selectedRow].id_usuario;
+
+
     }
-    handleClose(){
-        this.setState({open: false});
-    };
-    onCreateUserSubmit(){
-	var create_user = this.refs["create_user"];
-	   
-        /*peticion ajax*/
+    aceptarEliminar(event){
+        console.log("evento");
+        const usuario = this.state.usuarios[this.state.selectedRow].usuario;
         $.ajax({
-	    context:this,
-            url: create_user.props.url,
+            context:this,
+            url: "/api/usuarios/delete",
             dataType: 'json',
             type: 'POST',
             async:false,
             cache: false,
             data:{
+                id_usuario: this.state.usuarios[this.state.selectedRow].id_usuario,
+            },
+        }).done(function(id_usuario) {
+            if(id_usuario!== null){
+                /* this.state.usuarios.filter(function (usuario_id) {
+                   return usuario_id !== this.state.usuarios[this.state.selectedRow].id_usuario;
+                   },this);*/
+                this.setState({usuarios:this.state.usuarios.filter(function (usuario) {
+                    return usuario.id_usuario !== this.state.usuarios[this.state.selectedRow].id_usuario
+                },this)});
+                this.setState({open: false});
+            }else{
+                console.log("No se pudo eliminar al usuario");
+            }
+        });
+    }
+
+    cancelarEliminar(event){
+        this.setState({open: false});
+    }
+    handleClose(){
+        this.setState({open: false});
+    };
+    onCreateEditUserSubmit(){
+        const create_user = this.refs["create_user"];
+        const id_usuario = this.refs["create_user"].state.id_usuario;
+        var url = '/api/usuarios/edit';
+        if(id_usuario === -1){
+            this.refs["create_user"].setState( {
+                username: '',
+                password: '',
+                apellido:'',
+                nombre:'',
+                rol:{value:1, name:"ADMINISTRACION"},
+                errorUsuario: null,
+                errorNombre: null,
+                errorApellido: null,
+                open: false,
+                modalTitle: 'Crear Usuario',
+                id_usuario: -1});
+            url = '/api/usuarios/create';
+        }
+        /*      console.log(this.state.usuarios);*/
+        /*peticion ajax*/
+        $.ajax({
+            context:this,
+            url: url,
+            dataType: 'json',
+            type: 'POST',
+            async:false,
+            cache: false,
+            data:{
+                id_usuario: create_user.state.id_usuario,
                 username: create_user.state.username,
                 password: create_user.state.password,
                 apellido: create_user.state.apellido,
                 nombre: create_user.state.nombre,
-                rol: create_user.state.rol.name
-            }
+                rol: create_user.state.rol.name,
+            },
         }).done(function (data) {
-	    console.log(data);
             if(data.success === true){
-		//data.user = JSON.parse(data.user);
-		console.log(typeof(data.user));
-		this.setState({suarios:this.state.usuarios.push(data.user)});
-		                console.log(" creado el usuario");
-		console.log(this.state.usuarios);
+                const parent = this;
+                if(data.create === false){
+                    this.setState({usuarios: this.state.usuarios.map(function(usuario,i) {
+                        if (usuario.id_usuario === this.refs["create_user"].state.id_usuario) {
+                            usuario["username"] = this.refs["create_user"].state.username;
+                            usuario["password"] = this.refs["create_user"].state.password;
+                            usuario["apellido"] = this.refs["create_user"].state.apellido;
+                            usuario["nombre"] = this.refs["create_user"].state.nombre;
+                            usuario["rol"] = this.refs["create_user"].state.rol;
+                        }
+                        return usuario;
+
+                    },this)}
+                    );
+                    console.log("se pudo editar el usuario");
+                }else if(data.create === true){
+		    this.setState({usuarios:this.state.usuarios.push(data.user)});
+		    console.log(this.state.usuarios);
+		    console.log("se pudo crear el usuario");
+                }
+                //console.log(this.state.usuarios);
+                this.setState({open:false});
             }else{
-                console.log("no se pudo crear el usuario");
+                console.log("no se pudo editar el usuario");
             }
         });
-	
+	this.refs["create_user"].setState({id_usuario:-1});
     }
     render() {
-        console.log("render");
         var rows = [];
+        console.log("render");
+        console.log(this.state.usuarios);
         const actions = [
-                <FlatButton
-            label="Cancelar"
-            primary={true}
-            onTouchTap={this.handleClose}
-                />,
-                <FlatButton
+            <FlatButton
+                label="Cancelar"
+                primary={true}
+                onTouchTap={this.cancelarEliminar.bind(this)}
+            />,
+            <FlatButton
             label="Aceptar"
             primary={true}
-            onTouchTap={this.handleClose}
-                />,
+            onTouchTap={this.aceptarEliminar.bind(this)}
+            />,
         ];
 
         return (
 
-                <div>
-                <CreateUserForm ref='create_user' url='/api/usuarios/create'  onTouchTap={this.onCreateUserSubmit}/>
+            <div>
+                <CreateUserForm ref='create_user' url='/api/usuarios/create'  onTouchTap={this.onCreateEditUserSubmit}/>
                 <Dialog
-            title="Eliminar Usuario"
-            actions={actions}
-            modal={true}
-            open={this.state.open}
+                    title="Eliminar Usuario"
+                    actions={actions}
+                    modal={true}
+                    open={this.state.open}
                 >
-                Esta seguro que desea eliminar este usuario?
+                    Esta seguro que desea eliminar este usuario?
                 </Dialog>
                 <div style={divTableStyle}>
-                <Table >
+                    <Table onRowSelection={this.onRowSelection}>
 
-                <TableHeader
-            displaySelectAll={showCheckB}
-            adjustForCheckbox={showCheckB}
-                >
-                <TableRow>
-                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                <span style={{color: darkBlack}}><h3>Usuarios</h3></span>
+                        <TableHeader
+                            displaySelectAll={showCheckB}
+                            adjustForCheckbox={showCheckB}
+                        >
+                            <TableRow>
+                                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                                    <span style={{color: darkBlack}}><h3>Usuarios</h3></span>
                 </TableHeaderColumn>
                 <TableHeaderColumn colSpan="1" tooltip="Agregar Usuario" style={{textAlign: 'center'}}>
-                <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
-                <ContentAdd />
+                    <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
+                        <ContentAdd />
                 </FloatingActionButton>
-                </span>
+                    </span>
                 </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
-                <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
-                <TableHeaderColumn style={headerTableStyle}>Apellido</TableHeaderColumn>
-                <TableHeaderColumn style={headerTableStyle}>Usuario</TableHeaderColumn>
-                <TableHeaderColumn style={headerTableStyle}>Password</TableHeaderColumn>
-                <TableHeaderColumn></TableHeaderColumn>
+                    <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
+                    <TableHeaderColumn style={headerTableStyle}>Apellido</TableHeaderColumn>
+                    <TableHeaderColumn style={headerTableStyle}>Usuario</TableHeaderColumn>
+                    <TableHeaderColumn style={headerTableStyle}>Password</TableHeaderColumn>
+                    <TableHeaderColumn style={headerTableStyle}>Rol</TableHeaderColumn>
+                    <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
                 </TableHeader>
 
                 <TableBody
-            displayRowCheckbox={showCheckB}>
-                {this.state.usuarios.map(function (usuario,i) {
-                    return (
-                            <TableRow key={i}>
-                            <TableRowColumn key={i}>{usuario.nombre}</TableRowColumn>
-                            <TableRowColumn key={i}>{usuario.apellido}</TableRowColumn>
-                            <TableRowColumn key={i}>{usuario.username}</TableRowColumn>
-                            <TableRowColumn key={i}>{usuario.password}</TableRowColumn>
-			                      <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
+                    displayRowCheckbox={showCheckB}>
+                    {this.state.usuarios.map(function (usuario,i) {
+                         return (
+                             <TableRow key={i}>
+                                 <TableRowColumn key={i}><p>{usuario.nombre}</p></TableRowColumn>
+                                 <TableRowColumn key={i}><p>{usuario.apellido}</p></TableRowColumn>
+                                 <TableRowColumn key={i}><p>{usuario.username}</p></TableRowColumn>
+                                 <TableRowColumn key={i}><p>{usuario.password}</p></TableRowColumn>                                                 <TableRowColumn key={i}>{usuario.rol}</TableRowColumn>
+                                 <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
                             </TableRow>
-                    );
-                },this)}
+                         );
+                     },this)}
             </TableBody>
 
             </Table>
                 </div>
-                </div>
+            </div>
         );
     }
 }
