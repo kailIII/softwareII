@@ -90,7 +90,9 @@ export default class Mostrar_Usuario extends React.Component{
     //llamar a los metodos de la clase CreateUsuarioForm mediante la propiedad ref
     handleEditOpen(){
         this.refs["create_user"].setState({username:this.state.usuarios[this.state.selectedRow].username,
-                                           nombre:this.state.usuarios[this.state.selectedRow].nombre,                                     apellido:this.state.usuarios[this.state.selectedRow].apellido,                          password:this.state.usuarios[this.state.selectedRow].password});
+                                           nombre:this.state.usuarios[this.state.selectedRow].nombre,
+                                           apellido:this.state.usuarios[this.state.selectedRow].apellido,
+                                           password:this.state.usuarios[this.state.selectedRow].password});
         const rol =this.state.usuarios[this.state.selectedRow].rol;
         switch(rol){
             case "ADMINISTRACION":{
@@ -195,23 +197,23 @@ export default class Mostrar_Usuario extends React.Component{
             if(data.success === true){
                 const parent = this;
                 if(data.create === false){
-                    this.setState({usuarios: this.state.usuarios.map(function(usuario,i) {
+		    this.state.usuarios.map(function(usuario,i) {
                         if (usuario.id_usuario === this.refs["create_user"].state.id_usuario) {
-                            usuario["username"] = this.refs["create_user"].state.username;
-                            usuario["password"] = this.refs["create_user"].state.password;
-                            usuario["apellido"] = this.refs["create_user"].state.apellido;
-                            usuario["nombre"] = this.refs["create_user"].state.nombre;
-                            usuario["rol"] = this.refs["create_user"].state.rol;
+                            usuario["username"] = this.refs["create_user"].state.username.toString();
+                            usuario["password"] = this.refs["create_user"].state.password.toString();
+                            usuario["apellido"] = this.refs["create_user"].state.apellido.toString();
+                            usuario["nombre"] = this.refs["create_user"].state.nombre.toString();
+                            usuario["rol"] = this.refs["create_user"].state.rol.toString();
                         }
                         return usuario;
 
-                    },this)}
-                    );
+                    },this);
+                    this.setState({usuarios:this.state.usuarios });
                     console.log("se pudo editar el usuario");
+                    this.setState({open:false});
                 }else if(data.create === true){
-		    this.setState({usuarios:this.state.usuarios.push(data.user)});
-		    console.log(this.state.usuarios);
-		    console.log("se pudo crear el usuario");
+                    this.state.usuarios.push(data.user)
+                    console.log("se pudo crear el usuario");
                 }
                 //console.log(this.state.usuarios);
                 this.setState({open:false});
@@ -219,7 +221,7 @@ export default class Mostrar_Usuario extends React.Component{
                 console.log("no se pudo editar el usuario");
             }
         });
-	this.refs["create_user"].setState({id_usuario:-1});
+        this.refs["create_user"].setState({id_usuario:-1});
     }
     render() {
         var rows = [];
@@ -232,9 +234,9 @@ export default class Mostrar_Usuario extends React.Component{
                 onTouchTap={this.cancelarEliminar.bind(this)}
             />,
             <FlatButton
-            label="Aceptar"
-            primary={true}
-            onTouchTap={this.aceptarEliminar.bind(this)}
+                label="Aceptar"
+                primary={true}
+                onTouchTap={this.aceptarEliminar.bind(this)}
             />,
         ];
 
