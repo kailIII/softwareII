@@ -10,9 +10,8 @@ and npm: sudo apt-get install npm
 first clone this repository. Then go to the project directory
 *  To install mariadb visit https://downloads.mariadb.org/mariadb/repositories/
 *  npm install
-*  npm start 
-*  wait until you see on the console "webpack: bundle is now VALID."
-*  open the browser on localhost:3000
+*  npm run-script dev
+*  open the browser on localhost:8080
 
 (for a 'live preview' on the browser open [localhost:8080/index.html](http://localhost:8080/index.html))
 ()
