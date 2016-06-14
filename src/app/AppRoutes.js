@@ -4,7 +4,7 @@ import {
  Router,
  hashHistory,
 } from 'react-router';
-import Header from './components/Main';
+import Header from './components/AppBarController';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 //import Home from './components/pages/home';
 /*MANEJO DE USUARIOS DEL SISTEMA*/
@@ -15,7 +15,7 @@ import RoomTypesShow from './components/pages/tipos-habitacion/Page';
 import Suites from './components/pages/habitacion/Suites';
 import VerClientes from './components/pages/clientes/verClientes';
 import LoginForm from './components/Login';
-import spreadsheet from './components/pages/spreadsheet/spreadsheetController'
+import spreadsheet from './components/pages/spreadsheet/SpreadsheetController'
 import { Provider } from 'react-redux'
 import store, { history } from './store'
 

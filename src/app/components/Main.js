@@ -38,10 +38,13 @@ export default class Header extends Component {
     }
   render() {
 
+    let titleString = "Hotel Tabuba"
+    if(this.props.isSelectingDate)
+      titleString = "Selecciona la fecha final de la reservación"
     return (
         <div>
             <AppBar
-              title="Hotel Tabuba"
+              title = {titleString}
               onLeftIconButtonTouchTap={this.handleToggle}
               />
 

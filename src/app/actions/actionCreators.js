@@ -1,7 +1,8 @@
-export function escogerHabitacion(roomId, day) {
+export function escogerHabitacion(roomIndex, dayIndex) {
+  console.log("escogerHabitacion", dayIndex);
     return  {
         type: 'ESCOGER_HABITACION',
-        roomId: roomId,
-        day: day,
+        roomIndex: roomIndex,
+        dayIndex: dayIndex,
     }
 }
