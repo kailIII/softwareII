@@ -7,6 +7,7 @@ import React, {Component, PropTypes} from 'react';
 import {AppBar, List, Drawer, MenuItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import { Route, Router } from 'react-router';
 import Link from 'react-router';
+import SpreadsheetStatus from '../../../constants/SpreadsheetStatus'
 
 
 export default class Header extends Component {
@@ -39,7 +40,7 @@ export default class Header extends Component {
   render() {
 
     let titleString = "Hotel Tabuba"
-    if(this.props.isSelectingDate)
+    if(this.props.spreadSheetStatus == SpreadsheetStatus.selectFecha)
       titleString = "Selecciona la fecha final de la reservación"
     return (
         <div>

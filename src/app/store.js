@@ -6,15 +6,18 @@ import rootReducer from './reducers/index';
 
 import rooms from './data/rooms';
 
+import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
+
 const defaultState = {
     rooms: rooms,
 
     spreadsheet: {
-        selection:  {
+        newReservation:  {
           roomIndex: -1,
-          dayIndex: -1,
+          startIndex: -1,
+          endIndex: -1,
         },
-        isSelectingDate: false,
+        status: SpreadsheetStatus.normal,
         firstDate: new Date(2016, 7, 19),
         totalDays: 7,
     },

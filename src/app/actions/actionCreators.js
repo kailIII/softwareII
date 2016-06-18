@@ -1,8 +1,15 @@
-export function escogerHabitacion(roomIndex, dayIndex) {
-  console.log("escogerHabitacion", dayIndex);
+export function escogerHabitacion(roomIndex, startIndex) {
     return  {
         type: 'ESCOGER_HABITACION',
         roomIndex: roomIndex,
-        dayIndex: dayIndex,
+        startIndex: startIndex,
+    }
+}
+
+export function escogerIntervalo(endIndex) {
+  console.log("Escoger intervalo")
+    return  {
+        type: 'ESCOGER_INTERVALO',
+        endIndex: endIndex,
     }
 }

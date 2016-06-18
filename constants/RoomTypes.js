@@ -1,8 +1,8 @@
-const disponible = 625;
-const reservado = 856;
-const ocupado = 765;
-const sucio = 432;
-const mantenimiento = 121;
+const disponible = 'DISPONIBLE';
+const reservado = 'RESERVADO';
+const ocupado = 'OCUPADO';
+const sucio = 'SUCIO';
+const mantenimiento = 'MANTENIMIENTO';
 
 module.exports  = {
   disponible: disponible,

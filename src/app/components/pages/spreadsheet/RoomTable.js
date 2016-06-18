@@ -5,6 +5,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import dateformat from 'dateformat';
 import RoomStatusIcon from './RoomStatusIcon';
 import * as RoomTypes from '../../../../../constants/RoomTypes'
+import * as SpreadsheetStatus from '../../../../../constants/SpreadsheetStatus'
 
 const firstColumnWidth = '30px'
 const firstHeaderStyle = {
@@ -14,18 +15,26 @@ const firstHeaderStyle = {
 class RoomCell extends React.Component {
 	constructor (props) {
 		super(props);
-		this.pickRoomDate = this.pickRoomDate.bind(this)
+		this.onRoomCellClicked = this.onRoomCellClicked.bind(this)
 	}
 
-	pickRoomDate() {
-		console.log("click", "clickedRoom: " + this.props.roomStatus+ '/' + RoomTypes.disponible)
-		if(this.props.roomStatus === RoomTypes.disponible)
-			this.props.dispatch(this.props.roomId, this.props.day)
+	onRoomCellClicked() {
+    console.log("onRoomCellClicked")
+    switch(this.props.spreadsheetStatus){
+      case SpreadsheetStatus.normal:
+    		if(this.props.roomStatus === RoomTypes.disponible)
+    			this.props.escogerHabitacion(this.props.roomIndex, this.props.dayIndex)
+        break;
+      case SpreadsheetStatus.selectFecha:
+        if(this.props.roomIsSelected && this.props.dayIndex >= this.props.startIndex)
+          this.props.escogerIntervalo(this.props.dayIndex)
+        break;
+    }
 	}
 
 	render (){
 		return (
-			<TableRowColumn onClick={this.pickRoomDate}>
+			<TableRowColumn onClick={this.onRoomCellClicked}>
 					<RoomStatusIcon roomStatus={this.props.roomStatus}/>
 			</TableRowColumn>
 	)}
@@ -77,10 +86,15 @@ constructor(props){
 													</TableRowColumn>
 
 													{roomData.days.map(function(status, j) {
+                            const roomIsSelected = i === this.props.newReservation.roomIndex
 															return (
-																<RoomCell key={i} day={this.props.indexToDate(j)}
-																    dayIndex={j} roomStatus={status} roomIndex={i}
-																	dispatch={this.props.escogerHabitacion}/>)
+																<RoomCell key={i} dayIndex={j}
+                                  roomStatus={status} roomIndex={i}
+                                    roomIsSelected={roomIsSelected}
+                                    spreadsheetStatus={this.props.status}
+                                    startIndex={this.props.newReservation.startIndex}
+                                    escogerIntervalo={this.props.escogerIntervalo}
+																	escogerHabitacion={this.props.escogerHabitacion}/>)
 														}, this)
 													}
 												</TableRow>)

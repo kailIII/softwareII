@@ -8,7 +8,8 @@ import roomTable from './RoomTable.js';
 function mapStateToProps(state) {
     return {
         rooms: state.rooms,
-        isSelectingDate: state.spreadsheet.isSelectingDate,
+        newReservation: state.spreadsheet.newReservation,
+        status: state.spreadsheet.status,
         firstDate: state.spreadsheet.firstDate,
         totalDays: state.spreadsheet.totalDays,
         indexToDate: function(i){
@@ -26,6 +27,3 @@ function mapDispatchToProps(dispatch){
 const controller = connect(mapStateToProps, mapDispatchToProps)(roomTable);
 
 export default controller;
-
-
-
