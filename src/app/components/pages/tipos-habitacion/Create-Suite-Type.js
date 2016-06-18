@@ -79,11 +79,13 @@ export default class NewTypeSuite extends React.Component {
           <RaisedButton
             label="Atrás"
             onTouchTap={this.handleClose}
+            style={styles.buttons}
           />,
           <RaisedButton
             label="Guardar"
             onTouchTap={this.handleClose}
             backgroundColor="#add580"
+            style={styles.buttons}
           />,
         ];
         const styles = {
