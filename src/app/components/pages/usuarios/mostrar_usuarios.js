@@ -197,7 +197,7 @@ export default class Mostrar_Usuario extends React.Component{
             if(data.success === true){
                 const parent = this;
                 if(data.create === false){
-		    this.state.usuarios.map(function(usuario,i) {
+                    this.state.usuarios.map(function(usuario,i) {
                         if (usuario.id_usuario === this.refs["create_user"].state.id_usuario) {
                             usuario["username"] = this.refs["create_user"].state.username.toString();
                             usuario["password"] = this.refs["create_user"].state.password.toString();
