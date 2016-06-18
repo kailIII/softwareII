@@ -1,19 +1,44 @@
 var request = require("request");
-var expect = require("chai").expect();
+var superagent = require("superagent");
+var expect = require("chai").expect;
 var app = require("../app");
 //Test del login en la app
-describe("Prueba del login", function () {
-    var url = "http://localhost:3000/api/usuarios/login";
-    it("login http request",function () {
-	request(app)
-	    .post("/api/usuarios/login")
-	    .expect(200)
-	    .send({"username":"root",
-		   "password":"123"})	    
-	    .end(function (err, res) {
-		if(err) return done(err);
-		res.body.should.have.property('success');
-		done();
-	    })
-    }) 
+
+describe("Funcionalidad de realizar login", function () {
+    it("login",function () {
+        superagent
+            .post("localhost:8080/api/usuarios/login")
+            .send({"username":"root",
+                   "password":"123"})
+            .end(function (err, res) {
+                //if(err) return done(err);
+                //res.body.should.have.property('success');
+                expect(res.body.success).to.equal(true);
+                done();
+            })
+    })
+});
+
+describe('carga del login', function(){
+    it('should respond to GET',function(done){
+        superagent
+            .get('http://localhost:8080')
+            .end(function(err, res){
+                expect(res.status).to.equal(200);
+                done();
+            })
+    })
+});
+
+describe("Funcionalidad de realizar login", function () {
+    it("login",function () {
+        superagent
+            .post("localhost:8080/api/usuarios/login")
+            .send({"username":"root",
+                   "password":"12345"})
+            .end(function (err, res) {
+                expect(res.body.success).to.equal(false);
+                done();
+            })
+    })
 });
