@@ -15,8 +15,8 @@ router.post('/show', function (req, res){
     tipos_habitacion.findAll().then(function(tipos){
         console.log("se muestran los tipos: ");
         var _tipos = JSON.parse(JSON.stringify(tipos));
-        console.log(_tipos)
-        res.json({tipos:_tipos});
+        console.log(_tipos);
+        res.json(_tipos);
         // return tipos;
     });
 });

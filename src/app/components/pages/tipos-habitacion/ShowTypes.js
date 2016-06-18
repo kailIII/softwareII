@@ -98,9 +98,9 @@ return(
 
       {this.state.data.map((tile) => (
         <GridTile
-          key={tile.img}
-          title={tile.title}
-          subtitle={<span>{tile.description}</span>}
+          key={tile.ruta_foto}
+          title={tile.tipo}
+          subtitle={<span>{tile.descripcion}</span>}
           actionIcon={
               <IconMenu
                   iconButtonElement={
@@ -113,7 +113,7 @@ return(
                 <MenuItem primaryText="Eliminar" />
                 </IconMenu>
       }>
-          <img src={tile.img} />
+          <img src={tile.ruta_foto} />
         </GridTile>
       ))}
     </GridList>
