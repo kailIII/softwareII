@@ -7,6 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import Dialog from 'material-ui/Dialog';
 
 
 const muiTheme = getMuiTheme({
@@ -19,19 +20,32 @@ export default class NewTypeSuite extends React.Component {
     super(props);
     this.state = {
       open: false,
+      modalTitle: "Añadir Nuevo Tipo de Habitación",
       title: '',
       description: '',
     };
+    this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleTouchTap = this.handleTouchTap.bind(this);
+    this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
   }
-  handleClose  ()  {
-      this.setState({open: false});
-    };
-  onTitleChange(event){
-  this.setState({title:event.target.value});
+
+  handleAddOpen(){
+    this.setState({open: true, modalTitle:"Nueva Habitacion"});
+  };
+
+  handleEditOpen(){
+    this.setState({open: true, modalTitle:"Editar Habitacion"});
+  };
+
+  handleClose(){
+    this.setState({open: false});
+  };
+
+    onTitleChange(event){
+      this.setState({title:event.target.value});
     };
     onDescriptionChange(event){
     this.setState({description:event.target.value});
@@ -46,11 +60,12 @@ export default class NewTypeSuite extends React.Component {
       success: function(data) {
         this.setState({
             openSnackBar: true,
+            open: false,
             data: data,
         });
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(this.props.urlSave, status, err.toString());
       }.bind(this)
     });
 };
@@ -60,7 +75,17 @@ export default class NewTypeSuite extends React.Component {
         const {
           layoutSideBySide,
         } = this.props;
-
+        const actions = [
+          <RaisedButton
+            label="Atrás"
+            onTouchTap={this.handleClose}
+          />,
+          <RaisedButton
+            label="Guardar"
+            onTouchTap={this.handleClose}
+            backgroundColor="#add580"
+          />,
+        ];
         const styles = {
             group: {
 
@@ -93,7 +118,12 @@ export default class NewTypeSuite extends React.Component {
         };
 
         return (
-
+            <Dialog
+                  title={this.state.modalTitle}
+                  modal={true}
+                  open={this.state.open}
+                  actions= {actions}
+                >
             <ClearFix style={styles.exampleBlock}>
                 <div>
                     <TextField
@@ -118,20 +148,9 @@ export default class NewTypeSuite extends React.Component {
                         rows={2}
                         />
                     <br />
-                          <RaisedButton
-          label="Guardar"
-          onTouchTap={this.handleTouchTap}
-          backgroundColor="#add580"
-          style={styles.buttons}
-          />,
-      <RaisedButton
-          label="Atrás"
-          style={styles.buttons}
-          onTouchTap={this.handleClose}
-          />
                 </div>
             </ClearFix>
-
+            </Dialog>
 )
     }
 }

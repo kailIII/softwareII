@@ -5,7 +5,6 @@ import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import NewTypeSuite from './Create-Suite-Type';
-import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton/IconButton';
@@ -43,10 +42,10 @@ export default class RoomTypesShow extends React.Component{
       openSnackBar:false,
       data:[],
     };
-    this.handleOpen = this.handleOpen.bind(this);
+    this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleTouchTapEditar = this.handleTouchTapEditar.bind(this);
+    this.handleEditOpen = this.handleEditOpen.bind(this);
   }
 
   componentDidMount() {
@@ -63,26 +62,24 @@ export default class RoomTypesShow extends React.Component{
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-  };
+  }
 
-  handleTouchTapEditar() {
-  this.setState({
-    open: true,
-  });
-  };
+  handleEditOpen() {
+  this.refs['AddSuiteType'].handleEditOpen();
+  }
 
   handleRequestClose() {
   this.setState({
     openSnackBar: false,
   });
-};
-    handleOpen () {
-      this.setState({open: true});
-    };
+}
+    handleAddOpen () {
+      this.refs['AddSuiteType'].handleAddOpen();
+    }
 
     handleClose  ()  {
       this.setState({open: false});
-    };
+    }
 
 render(){
 
@@ -98,7 +95,7 @@ return(
 
       {this.state.data.map((tile) => (
         <GridTile
-          key={tile.ruta_foto}
+          key={tile.id_habitacion_tipo}
           title={tile.tipo}
           subtitle={<span>{tile.descripcion}</span>}
           actionIcon={
@@ -119,17 +116,10 @@ return(
     </GridList>
 
   </div>
-  <FloatingActionButton onTouchTap={this.handleOpen} mini={true} style={styles.floatActionButton}>
+  <FloatingActionButton onTouchTap={this.handleAddOpen} mini={true} style={styles.floatActionButton}>
         <ContentAdd />
     </FloatingActionButton>
-    <Dialog
-          title="Añadir Nuevo Tipo de Habitación"
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <NewTypeSuite urlSave="/api/save_tipo_hab" />
-        </Dialog>
+          <NewTypeSuite ref="AddSuiteType" urlSave="/api/tipos_habitacion/save" />
         <Snackbar
             open={this.state.openSnackBar}
             message="Tipo de Habitación Añadida"
