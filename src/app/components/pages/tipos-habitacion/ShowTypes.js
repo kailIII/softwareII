@@ -106,7 +106,7 @@ return(
                     </IconButton>
                 }
               >
-                <MenuItem primaryText="Editar" onTouchTap={this.handleTouchTapEditar} />
+                <MenuItem primaryText="Editar" onTouchTap={this.handleEditOpen} />
                 <MenuItem primaryText="Eliminar" />
                 </IconMenu>
       }>

@@ -75,19 +75,6 @@ export default class NewTypeSuite extends React.Component {
         const {
           layoutSideBySide,
         } = this.props;
-        const actions = [
-          <RaisedButton
-            label="Atrás"
-            onTouchTap={this.handleClose}
-            style={styles.buttons}
-          />,
-          <RaisedButton
-            label="Guardar"
-            onTouchTap={this.handleClose}
-            backgroundColor="#add580"
-            style={styles.buttons}
-          />,
-        ];
         const styles = {
             group: {
 
@@ -118,6 +105,20 @@ export default class NewTypeSuite extends React.Component {
           },
 
         };
+
+        const actions = [
+          <RaisedButton
+            label="Atrás"
+            onTouchTap={this.handleClose}
+            style={styles.buttons}
+          />,
+          <RaisedButton
+            label="Guardar"
+            onTouchTap={this.handleTouchTap}
+            backgroundColor="#add580"
+            style={styles.buttons}
+          />,
+        ];
 
         return (
             <Dialog
