@@ -35,46 +35,13 @@ var models = require("./app/models");
 var TYPES_FILE = path.join(__dirname, 'tilesdata.json');
 
 var usuarios = require('./app/controllers/api/usuarios');
+var habitaciones = require('./app/controllers/api/habitaciones');
+var tipos_habitacion = require('./app/controllers/api/tipos_habitacion');
 
 app.use('/api/usuarios',usuarios);
-
-var tipos_habitacion = require('./app/controllers/api/tipos_habitacion');
+app.use('/api/habitaciones', habitaciones);
 app.use('/api/tipos_habitacion',tipos_habitacion);
-// app.post('/api/tipos_habitacion', function (req, res){
-//     "use strict"
-//     fs.readFile(TYPES_FILE, function(err, data){
-//         if (err){
-//             console.error(err);
-//             process.exit(1);
-//         }
-//         res.json(JSON.parse(data));
-//     });
-// });
 
-// app.post('/api/save_tipo_hab',function (req,res){
-//     fs.readFile(TYPES_FILE, function(err, data){
-//       if (err){
-//         console.error(err);
-//         process.exit(1);
-//       }
-//       var types = JSON.parse(data);
-//
-//       var newType = {
-//         title: req.body.title,
-//         img:"images/room-types/room595_thumb.jpg",
-//         description: req.body.description,
-//       };
-//
-//       types.push(newType);
-//       fs.writeFile(TYPES_FILE, JSON.stringify(types, null, 4),function (err){
-//       if (err){
-//         console.error(err);
-//         process.exit(1);
-//       }
-//       res.json(types);
-//       });
-//     });
-// });
 models.sequelize.sync().then(function () {
     "use strict"
     app.listen(port, function () {

@@ -71,7 +71,7 @@ export default class CreateClienteForm extends React.Component
         const alphanumeric = /^[a-zA-Z]+$/i;
         const usernameIsValid = alphanumeric.test(username);
         var error;
-
+        
         if (usernameIsValid) {
             error = null;
         } else {
