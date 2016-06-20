@@ -20,12 +20,12 @@ export default class NewTypeSuite extends React.Component {
     super(props);
     this.state = {
       open: false,
-      modalTitle: "Añadir Nuevo Tipo de Habitación",
-      title: '',
-      description: '',
+      modalTitle: '',
+	  title:'',
+	  description:'',
+	  idSelectedTile:-1
     };
     this.handleAddOpen = this.handleAddOpen.bind(this);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
@@ -46,29 +46,12 @@ export default class NewTypeSuite extends React.Component {
 
     onTitleChange(event){
       this.setState({title:event.target.value});
+	  console.log(this.state.title)
     };
     onDescriptionChange(event){
     this.setState({description:event.target.value});
+	console.log(this.state.description)
     };
-    handleTouchTap (){
-      $.ajax({
-      url: this.props.urlSave,
-      dataType: 'json',
-      type: 'POST',
-      cache: false,
-      data: {title:this.state.title, description: this.state.description},
-      success: function(data) {
-        this.setState({
-            openSnackBar: true,
-            open: false,
-            data: data,
-        });
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.urlSave, status, err.toString());
-      }.bind(this)
-    });
-};
 
     render() {
 
@@ -109,12 +92,13 @@ export default class NewTypeSuite extends React.Component {
         const actions = [
           <RaisedButton
             label="Atrás"
+			backgroundColor="#c4c4c4"
             onTouchTap={this.handleClose}
             style={styles.buttons}
           />,
           <RaisedButton
             label="Guardar"
-            onTouchTap={this.handleTouchTap}
+            onTouchTap={this.props.onTouchTap}
             backgroundColor="#add580"
             style={styles.buttons}
           />,
@@ -132,6 +116,7 @@ export default class NewTypeSuite extends React.Component {
                     <TextField
                         floatingLabelText="Nombre de la Suite"
                         onChange= {this.onTitleChange}
+						value={this.state.title}
                         />
                     <br />
                     <div style={styles.group}>
@@ -147,6 +132,7 @@ export default class NewTypeSuite extends React.Component {
                         hintText="Descripción"
                         floatingLabelText="Descripción de la Habitación"
                         multiLine={true}
+						value={this.state.description}
                         onChange={this.onDescriptionChange}
                         rows={2}
                         />
