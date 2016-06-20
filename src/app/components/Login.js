@@ -10,6 +10,7 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
 import {blue50, cyan400} from 'material-ui/styles/colors';
 
 const paperStyle = {

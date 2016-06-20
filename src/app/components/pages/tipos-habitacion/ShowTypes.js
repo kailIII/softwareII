@@ -63,7 +63,7 @@ export default class RoomTypesShow extends React.Component{
       type: 'POST',
       cache: false,
       success: function(data) {
-          console.log(data);
+        //   console.log(data);
         this.setState({tipos: data});
       }.bind(this),
       error: function(xhr, status, err) {
