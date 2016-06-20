@@ -7,7 +7,7 @@ import main from './Main';
 
 function mapStateToProps(state) {
     return {
-        isSelectingDate: state.spreadsheet.isSelectingDate,
+        spreadSheetStatus: state.spreadsheet.status,
     }
 }
 
