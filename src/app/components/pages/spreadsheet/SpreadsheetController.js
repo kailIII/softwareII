@@ -13,7 +13,7 @@ function mapStateToProps(state) {
         firstDate: state.spreadsheet.firstDate,
         totalDays: state.spreadsheet.totalDays,
         indexToDate: function(i){
-          return new Date(state.spreadsheet.firstDate.getYear(),
+          return new Date(state.spreadsheet.firstDate.getFullYear(),
                         state.spreadsheet.firstDate.getMonth(),
                         state.spreadsheet.firstDate.getDate() + i)
         },

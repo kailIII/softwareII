@@ -7,9 +7,21 @@ export function escogerHabitacion(roomIndex, startIndex) {
 }
 
 export function escogerIntervalo(endIndex) {
-  console.log("Escoger intervalo")
     return  {
         type: 'ESCOGER_INTERVALO',
         endIndex: endIndex,
+    }
+}
+
+export function cancelarNuevaReservacion() {
+    return  {
+        type: 'CANCEL_NEW_RESERVATION',
+    }
+}
+
+export function reservarHabitacion(newReservation) {
+    return  {
+        type: 'NEW_RESERVATION',
+        newReservation: newReservation,
     }
 }

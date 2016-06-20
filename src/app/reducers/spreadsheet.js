@@ -1,4 +1,11 @@
 import SpreadsheetStatus from '../../../constants/SpreadsheetStatus.js'
+
+const defaultNewReservation = {
+  roomIndex: -1,
+  startIndex: -1,
+  endIndex: -1,
+}
+
 function spreadsheet (state = [], action) {
   switch(action.type){
     case 'ESCOGER_HABITACION':
@@ -23,6 +30,15 @@ function spreadsheet (state = [], action) {
         }
 
       }
+      break;
+    case 'CANCEL_NEW_RESERVATION':
+      case 'NEW_RESERVATION':
+      return {
+        ...state,
+        newReservation:  { ...defaultNewReservation },
+        status: SpreadsheetStatus.normal,
+      }
+      break;
   }
   return state;
 }

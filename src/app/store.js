@@ -5,11 +5,13 @@ import { hashHistory } from 'react-router';
 import rootReducer from './reducers/index';
 
 import rooms from './data/rooms';
+import guests from './data/guests';
 
 import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
 
 const defaultState = {
     rooms: rooms,
+    guests: guests,
 
     spreadsheet: {
         newReservation:  {
@@ -18,7 +20,7 @@ const defaultState = {
           endIndex: -1,
         },
         status: SpreadsheetStatus.normal,
-        firstDate: new Date(2016, 7, 19),
+        firstDate: new Date(),
         totalDays: 7,
     },
 
