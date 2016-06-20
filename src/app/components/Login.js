@@ -10,7 +10,6 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
-import FlatButton from 'material-ui/FlatButton';
 import {blue50, cyan400} from 'material-ui/styles/colors';
 
 const paperStyle = {
@@ -105,38 +104,38 @@ export default class LoginForm extends React.Component{
     render(){
       return (
         <div>
-			<AppBar
-				title="Hotel Tabuba"
-				showMenuIconButton = {false}
-			/>
-			<Card>
-
-				<CardMedia>
-					<img src='images/login-background/tabubaHostal.jpg' />
-				</CardMedia>
-			</Card>
-
-			<Paper style={paperStyle} zDepth={1} >
-				<h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
-				<Divider/>
-				<br/>
-				<br/>
-				<TextField
-					hintText="Username"
-					value={this.state.username}
-					floatingLabelFixed={true}
-					onChange={this.onUsernameChange}
-					value={this.state.username}
-					errorText={this.state.errorUsername}
+				<AppBar
+						title="Hotel Tabuba"
+						showMenuIconButton = {false}
 				/>
-				<br/>
-				<TextField
-					hintText="Password"
-					type="password"
-					value={this.state.password}
-					onChange={this.onPasswordChange}
-				/><br />
-				<FlatButton label="Login" primary={true}
+				<Card>
+
+						<CardMedia>
+								<img src='images/login-background/tabubaHostal.jpg' />
+						</CardMedia>
+				</Card>
+
+				<Paper style={paperStyle} zDepth={1} >
+						<h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
+						<Divider/>
+						<br/>
+						<br/>
+						<TextField
+								hintText="Username"
+								value={this.state.username}
+								floatingLabelFixed={true}
+								onChange={this.onUsernameChange}
+								value={this.state.username}
+								errorText={this.state.errorUsername}
+						/>
+						<br/>
+						<TextField
+								hintText="Password"
+								type="password"
+								value={this.state.password}
+								onChange={this.onPasswordChange}
+						/><br />
+						<RaisedButton label="Login" primary={true}
 					onClick={this.onLoginSubmit}
 				/>
 			</Paper>
