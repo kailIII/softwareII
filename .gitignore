@@ -54,4 +54,3 @@ bower_components
 public/bundle.js
 
 #database
-config/configdb.json
