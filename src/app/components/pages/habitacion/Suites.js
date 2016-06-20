@@ -9,30 +9,47 @@ import MenuItem from 'material-ui/MenuItem';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Snackbar from 'material-ui/Snackbar';
 
-import AddSuiteModal from './AddSuite'; 
-import AddSuiteForm from './AddSuite';
+import AddSuiteModal from './AddSuite';
+import EditSuiteModal from './EditSuite';
 
 const showCheckB = false;
 var divTableStyle = {
   padding:'10%',
   background:blue50
-
 };
 
 var headerTableStyle = {
-  color:blue900
+  color:blue900,
+  textAlign:'center'
 };
+
+var columnTableStyle ={textAlign:'center'};
 
 export default class Suites extends Component {
 
   constructor(props){
     super(props);
-    this.state = {open: false};
+
+    this.state = {
+      open: false, 
+      suites: undefined, 
+      currentSuite:undefined,
+      openSnack: false,
+    };
+
     this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentDidMount = this.componentDidlMount.bind(this);
+    this.handleAddSuite = this.handleAddSuite.bind(this);
+    this.handleEditSuite = this.handleEditSuite.bind(this);
+    this.handleDeleteSuite = this.handleDeleteSuite.bind(this);
+    this.handleSnackClose = this.handleSnackClose.bind(this);
+
     this.iconButtonElement = (
       <IconButton
         touch={true}
@@ -43,30 +60,169 @@ export default class Suites extends Component {
       </IconButton>
     );
 
-    this.rightIconMenu = (
-      <IconMenu iconButtonElement={this.iconButtonElement}>
-        <MenuItem onTouchTap={this.handleEditOpen}>Editar</MenuItem>
-        <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
-      </IconMenu>
-    );
   }
   
-  handleEditOpen(){
-    this.refs['AddSuite'].handleEditOpen();
+  handleEditOpen(suite){
+    var editSuite = this.refs['EditSuite'];
+    this.setState({currentSuite: suite}); 
+    editSuite.setState({
+      nombre: suite.nombre,
+      tipo:suite.tipo,
+      capacidad:suite.capacidad,
+      estado:suite.estado,
+      oldName:suite.nombre,
+      tarifa:suite.tarifa
+    });
+    editSuite.handleEditOpen();
   }
 
   handleAddOpen(){
     this.refs['AddSuite'].handleAddOpen();
   }
 
-  handleDeleteOpen(){
-    this.setState({open: true});
+  handleDeleteOpen(suite){
+    this.setState({open: true, currentSuite: suite});
   }
 
   handleClose(){
     this.setState({open: false});
     
   };
+
+  componentWillMount(){
+    $.ajax({
+            context: this,
+            url: '/api/habitaciones/getSuites',
+            dataType: 'json',
+            type: 'POST',
+            async:false,
+            cache: false,
+        }).done(function (data) {
+           if(data.success !== false){
+            this.setState({suites: data.suites});
+           }else
+            console.log("no se pudo obtener habitaciones"); 
+        });
+  };
+
+  componentDidlMount(){
+    var addSuite = this.refs["AddSuite"];
+    var editSuite = this.refs["EditSuite"];
+    addSuite.setState({suites: this.state.suites});
+    editSuite.setState({suites: this.state.suites});
+  }
+
+  handleAddSuite(){
+    var addSuite = this.refs["AddSuite"];
+    $.ajax({
+            context: this,
+            url: '/api/habitaciones/create',
+            dataType: 'json',
+            type: 'POST',
+            async: false,
+            cache: false,
+            data:{
+                nombreHabitacion: addSuite.state.nombre,
+                tipoHabitacion: addSuite.state.tipo,
+                capacidad: addSuite.state.capacidad,
+                estado: addSuite.state.estado,
+                tarifa: addSuite.state.tarifa
+            }
+        }).done(function (data) {
+            if(data.success === true){
+                this.state.suites.push(data.suite);
+                this.setState({suites:this.state.suites});
+                addSuite.setState({
+                  open:false, 
+                  openSnack: true,
+                  suites:this.state.suites
+                });
+            }else{
+                console.log("no se pudo crear el usuario");
+            }
+        });
+
+    //this.componentWillMount();
+  }
+
+  handleEditSuite(){
+    var editSuite = this.refs["EditSuite"];
+    console.log(this.state.currentSuite.id_habitacion);
+    $.ajax({
+            context: this,
+            url: '/api/habitaciones/update',
+            dataType: 'json',
+            type: 'POST',
+            async: false,
+            cache: false,
+            data:{
+                suiteId: this.state.currentSuite.id_habitacion,
+                nombreHabitacion: editSuite.state.nombre,
+                tipoHabitacion: editSuite.state.tipo,
+                capacidad: editSuite.state.capacidad,
+                estado: editSuite.state.estado,
+                tarifa: editSuite.state.tarifa
+            }
+        }).done(function (data) {
+            if(data.success == true){
+
+                this.state.suites.map( function (suite){
+                  if(suite.id_habitacion === this.state.currentSuite.id_habitacion){
+                    suite.nombre = data.suite.nombre;
+                    suite.tipo = data.suite.tipo;
+                    suite.estado = data.suite.estado;
+                    suite.capacidad = data.suite.capacidad;
+                    suite.tarifa = data.suite.tarifa;
+                  }
+                  return suite;
+                }, this);
+
+                this.setState({suites:this.state.suites});
+                editSuite.setState({
+                  open:false, 
+                  openSnack: true,
+                  suites:this.state.suites
+                });
+            }else{
+                console.log("no se pudo editar el usuario");
+            }
+        });
+
+    //this.componentWillMount();
+  }
+
+  handleDeleteSuite(){
+    var addSuite = this.refs["AddSuite"];
+    var editSuite = this.refs["EditSuite"];
+    $.ajax({
+            context: this,
+            url: '/api/habitaciones/delete',
+            dataType: 'json',
+            type: 'POST',
+            async: false,
+            cache: false,
+            data:{
+                suiteId: this.state.currentSuite.id_habitacion         }
+        }).done(function (data) {
+            if(data.success == true){
+
+               var habs = this.state.suites.filter(function (suite){
+                  return suite.id_habitacion !== this.state.currentSuite.id_habitacion;
+               }, this);
+               this.setState({open: false, openSnack: true, suites:habs});
+               addSuite.setState({suites:habs});
+               editSuite.setState({suites:habs});
+            }else{
+                console.log("no se pudo eliminar");
+            }
+        });
+
+    //this.componentWillMount();
+  }
+
+  handleSnackClose(){
+    this.setState({openSnack: false});
+  }
 
   render() {
 
@@ -79,14 +235,15 @@ export default class Suites extends Component {
       <FlatButton
         label="Aceptar"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.handleDeleteSuite}
       />,
     ];
 
     return (
          
           <div>
-            <AddSuiteModal ref="AddSuite" />
+            <AddSuiteModal ref="AddSuite" onTouchTap={this.handleAddSuite}/>
+            <EditSuiteModal ref="EditSuite" onTouchTap={this.handleEditSuite}/>
             <Dialog
               title="Eliminar Habitación"
               actions={actions}
@@ -103,7 +260,7 @@ export default class Suites extends Component {
                 adjustForCheckbox={showCheckB}
               >
                 <TableRow>
-                  <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                  <TableHeaderColumn colSpan="5" style={{textAlign: 'center'}}>
                     <span style={{color: darkBlack}}><h3>Habitaciones</h3></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Habitación" style={{textAlign: 'center'}}>
@@ -118,6 +275,7 @@ export default class Suites extends Component {
                   <TableHeaderColumn style={headerTableStyle}>Tipo</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Capacidad</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Estado</TableHeaderColumn>
+                  <TableHeaderColumn style={headerTableStyle}>Tarifa</TableHeaderColumn>
                   <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
               </TableHeader>
@@ -125,38 +283,38 @@ export default class Suites extends Component {
               <TableBody
                 displayRowCheckbox={showCheckB}
                 >
-                <TableRow>
-                  <TableRowColumn>Hab1</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
-                  <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
-
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>Hab2</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
-                  <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>Hab3</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
-                  <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>Hab4</TableRowColumn>
-                  <TableRowColumn>Single</TableRowColumn>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>Limpia</TableRowColumn>
-                  <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
-                </TableRow>
+                { 
+                  this.state.suites.map(function (suite,i){
+                  return (
+                      <TableRow key={i}>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.nombre} </TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.tipo}</TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.capacidad}</TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.estado}</TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.tarifa}</TableRowColumn>
+                      <TableRowColumn style={columnTableStyle}>
+                        <span>
+                        {
+                          (<IconMenu iconButtonElement={this.iconButtonElement}>
+                            <MenuItem onTouchTap={this.handleEditOpen.bind(this,suite)}>Editar</MenuItem>
+                            <MenuItem onTouchTap={this.handleDeleteOpen.bind(this,suite)}>Eliminar</MenuItem>
+                          </IconMenu>)
+                        }
+                        </span>
+                      </TableRowColumn>
+                      </TableRow>
+                    );
+                }, this)}
               </TableBody>
 
             </Table>
+
+            <Snackbar
+              open={this.state.openSnack}
+              message="Habitación Eliminada"
+              autoHideDuration={4000}
+              onRequestClose={this.handleSnackClose}
+            />
 
           </div>
 
