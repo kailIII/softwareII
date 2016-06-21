@@ -227,7 +227,7 @@ export default class Mostrar_Usuario extends React.Component{
                             usuario["password"] = this.refs["create_user"].state.password.toString();
                             usuario["apellido"] = this.refs["create_user"].state.apellido.toString();
                             usuario["nombre"] = this.refs["create_user"].state.nombre.toString();
-                            usuario["rol"] = this.refs["create_user"].state.rol.toString();
+                            usuario["rol"] = this.refs["create_user"].state.rol.name + "";
                         }
                         return usuario;
 
