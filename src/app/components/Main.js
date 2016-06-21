@@ -7,6 +7,7 @@ import React, {Component, PropTypes} from 'react';
 import {AppBar, List, Drawer, MenuItem, Dialog, FlatButton, RaisedButton} from 'material-ui';
 import { Route, Router } from 'react-router';
 import Link from 'react-router';
+import SpreadsheetStatus from '../../../constants/SpreadsheetStatus'
 
 
 export default class Header extends Component {
@@ -38,10 +39,13 @@ export default class Header extends Component {
     }
   render() {
 
+    let titleString = "Hotel Tabuba"
+    if(this.props.spreadSheetStatus == SpreadsheetStatus.selectFecha)
+      titleString = "Selecciona la fecha final de la reservación"
     return (
         <div>
             <AppBar
-              title="Hotel Tabuba"
+              title = {titleString}
               onLeftIconButtonTouchTap={this.handleToggle}
               />
 
@@ -49,7 +53,7 @@ export default class Header extends Component {
               docked={false}
               open={this.state.open}
               onRequestChange={(open) => this.setState({open})}>
-            <List><MenuItem onTouchTap={this.handleClose} linkButton href="/#/main" >Reservar Habitación</MenuItem>
+            <List><MenuItem onTouchTap={this.handleClose} linkButton href="/#/home">Reservar Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#clientes/"  >Clientes</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/habitaciones"  >Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/tipo-habitacion"   value="/tipo-habitacion">Tipos de Habitación</MenuItem>

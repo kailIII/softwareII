@@ -7,6 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import Dialog from 'material-ui/Dialog';
 
 
 const muiTheme = getMuiTheme({
@@ -19,48 +20,44 @@ export default class NewTypeSuite extends React.Component {
     super(props);
     this.state = {
       open: false,
-      title: '',
-      description: '',
+      modalTitle: '',
+	  title:'',
+	  description:'',
+	  idSelectedTile:-1
     };
-    this.handleTouchTap = this.handleTouchTap.bind(this);
+    this.handleAddOpen = this.handleAddOpen.bind(this);
+    this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
   }
-  handleClose  ()  {
-      this.setState({open: false});
-    };
-  onTitleChange(event){
-  this.setState({title:event.target.value});
+
+  handleAddOpen(){
+    this.setState({open: true, modalTitle:"Nueva Habitacion"});
+  };
+
+  handleEditOpen(){
+    this.setState({open: true, modalTitle:"Editar Habitacion"});
+  };
+
+  handleClose(){
+    this.setState({open: false});
+  };
+
+    onTitleChange(event){
+      this.setState({title:event.target.value});
+	  console.log(this.state.title)
     };
     onDescriptionChange(event){
     this.setState({description:event.target.value});
+	console.log(this.state.description)
     };
-    handleTouchTap (){
-      $.ajax({
-      url: this.props.urlSave,
-      dataType: 'json',
-      type: 'POST',
-      cache: false,
-      data: {title:this.state.title, description: this.state.description},
-      success: function(data) {
-        this.setState({
-            openSnackBar: true,
-            data: data,
-        });
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-};
 
     render() {
 
         const {
           layoutSideBySide,
         } = this.props;
-
         const styles = {
             group: {
 
@@ -92,13 +89,34 @@ export default class NewTypeSuite extends React.Component {
 
         };
 
-        return (
+        const actions = [
+          <RaisedButton
+            label="Atrás"
+			backgroundColor="#c4c4c4"
+            onTouchTap={this.handleClose}
+            style={styles.buttons}
+          />,
+          <RaisedButton
+            label="Guardar"
+            onTouchTap={this.props.onTouchTap}
+            backgroundColor="#add580"
+            style={styles.buttons}
+          />,
+        ];
 
+        return (
+            <Dialog
+                  title={this.state.modalTitle}
+                  modal={true}
+                  open={this.state.open}
+                  actions= {actions}
+                >
             <ClearFix style={styles.exampleBlock}>
                 <div>
                     <TextField
                         floatingLabelText="Nombre de la Suite"
                         onChange= {this.onTitleChange}
+						value={this.state.title}
                         />
                     <br />
                     <div style={styles.group}>
@@ -114,24 +132,14 @@ export default class NewTypeSuite extends React.Component {
                         hintText="Descripción"
                         floatingLabelText="Descripción de la Habitación"
                         multiLine={true}
+						value={this.state.description}
                         onChange={this.onDescriptionChange}
                         rows={2}
                         />
                     <br />
-                          <RaisedButton
-          label="Guardar"
-          onTouchTap={this.handleTouchTap}
-          backgroundColor="#add580"
-          style={styles.buttons}
-          />,
-      <RaisedButton
-          label="Atrás"
-          style={styles.buttons}
-          onTouchTap={this.handleClose}
-          />
                 </div>
             </ClearFix>
-
+            </Dialog>
 )
     }
 }

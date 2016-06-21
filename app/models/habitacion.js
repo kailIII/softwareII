@@ -5,8 +5,11 @@ module.exports = function(sequelize, DataTypes) {
 		      primaryKey: true,
 		      autoIncrement: true
 		     },
-    numero: DataTypes.INTEGER,
-    tarifa: DataTypes.FLOAT,
+    nombre: DataTypes.STRING,
+    tipo:DataTypes.STRING,
+    capacidad: DataTypes.INTEGER,
+    estado: DataTypes.STRING,
+    tarifa:DataTypes.FLOAT,
       fk_local: {type: DataTypes.INTEGER,
 		 references: 'Local',
 		 referencesKey: 'id_local'}

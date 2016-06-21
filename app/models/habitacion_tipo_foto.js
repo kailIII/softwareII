@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 	    type: DataTypes.INTEGER,
 	    references: 'Habitacion_Tipo',
 	    referencesKey: 'id_habitacion_tipo'
-	    
+
 	}
     },{
 	             timestamps: false,
@@ -34,10 +34,12 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                // Habitacion_Tipo_Foto.belongsTo(models.Habitacion_Tipo, {
-		//     foreignKey: 'id_habitacion_tipo',
-		//     allowNull:true
-                // });
+            Habitacion_Tipo_Foto.belongsTo(models.Habitacion_Tipo, {
+		     foreignKey: 'id_habitacion_tipo',
+             as: 'Fotos',
+		     allowNull:true,
+             constraints: false
+                 });
             }
         }
     });

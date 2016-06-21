@@ -6,7 +6,8 @@ module.exports = function(sequelize, DataTypes) {
 			   autoIncrement:true
 			  },
     tipo: DataTypes.STRING,
-    descripcion: DataTypes.TEXT
+    descripcion: DataTypes.TEXT,
+    ruta_foto: DataTypes.TEXT
     },{
 	             timestamps: false,
 
@@ -30,6 +31,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        Habitacion_Tipo.hasMany(models.Habitacion_Tipo_Foto, {as: 'Fotos'});
       }
     }
   });
