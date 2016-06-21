@@ -19,9 +19,11 @@ export default class CreateUserForm extends React.Component
             errorUsuario: null,
             errorNombre: null,
             errorApellido: null,
+            errorPassword: false,
             open: false,
             modalTitle: 'Crear Usuario',
             id_usuario: -1,
+            disabled: false,
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -58,10 +60,10 @@ export default class CreateUserForm extends React.Component
     }
 
     /*@function: onCreateUserSubmit
-      @Submits form used to create a new user.
-      @params: none
-      @return: nil
-    */
+       @Submits form used to create a new user.
+       @params: none
+       @return: nil
+     */
 
     validarNombre(event){
         const username = event.target.value;
@@ -71,7 +73,11 @@ export default class CreateUserForm extends React.Component
 
         if (usernameIsValid) {
             error = null;
+            if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
+                this.setState({disabled:false});
+            }
         } else {
+            this.setState({disabled:true});
             error = 'usuario solo tiene letras.';
         }
 
@@ -85,8 +91,12 @@ export default class CreateUserForm extends React.Component
 
         if (usernameIsValid) {
             error = null;
+            if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
+                this.setState({disabled:false});
+            }
         } else {
             error = 'Apellido solo tiene letras.';
+            this.setState({disabled:true});
         }
 
         this.setState({ errorApellido: error });
@@ -99,7 +109,11 @@ export default class CreateUserForm extends React.Component
 
         if (usernameIsValid) {
             error = null;
+            if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
+                this.setState({disabled:false});
+            }
         } else {
+            this.setState({disabled:true});
             error = 'usuario solo tiene letras y numeros.';
         }
 
@@ -140,83 +154,84 @@ export default class CreateUserForm extends React.Component
 
     componentDidMount() {
         /*        $.ajax({
-                  url: this.props.url,
-                  dataType: 'json',
-                  type: 'POST',
-                  cache: false,
-                  data:{
-                  username: this.state.username,
-                  password: this.state.password,
-                  apellido: this.state.apellido,
-                  nombre: this.state.nombre,
-                  rol: this.state.rol.name
-                  },
-                  success: function(data) {
-                  console.log(data);
-                  console.log("se creo el nuevo usuario en la base.");
+           url: this.props.url,
+           dataType: 'json',
+           type: 'POST',
+           cache: false,
+           data:{
+           username: this.state.username,
+           password: this.state.password,
+           apellido: this.state.apellido,
+           nombre: this.state.nombre,
+           rol: this.state.rol.name
+           },
+           success: function(data) {
+           console.log(data);
+           console.log("se creo el nuevo usuario en la base.");
 
-                  }.bind(this),
-                  error: function(xhr, status, err) {
-                  console.error(this.props.url, status, err.toString());
-                  }.bind(this)
-                  });*/
+           }.bind(this),
+           error: function(xhr, status, err) {
+           console.error(this.props.url, status, err.toString());
+           }.bind(this)
+           });*/
         console.log("cargo formulario");
     }
     render(){
         const actions = [
-                <FlatButton
-            label="Cancelar"
-            primary={true}
-            onTouchTap={this.handleClose}
-                />,
-                <FlatButton
-            label="Agregar"
-            primary={true}
-            onTouchTap={this.props.onTouchTap}
-                />,
+            <FlatButton
+                label="Cancelar"
+                primary={true}
+                onTouchTap={this.handleClose}
+            />,
+            <FlatButton
+                label="Agregar"
+                primary={true}
+                disabled={this.state.disabled}
+                onTouchTap={this.props.onTouchTap}
+            />,
         ];
 
         return (
-                <Dialog
-            title={this.state.modalTitle}
-            actions={actions}
-            modal={true}
-            open={this.state.open}
-                >
+            <Dialog
+                title={this.state.modalTitle}
+                actions={actions}
+                modal={true}
+                open={this.state.open}
+            >
                 <div style = {{color:blue900}}>
-                <hr/><br/>
-                <form>
-                <TextField
-            hintText="Nombre Completo"
-            value={this.state.nombre}
-            onChange={this.onNameChange}
-            errorText={this.state.errorNombre}
-                /><br />
-                <TextField
-            hintText="Apellido Completo"
-            value={this.state.apellido}
-            onChange={this.onLastNameChange}
-            errorText={this.state.errorApellido}
-                /><br />
-                <TextField
-            hintText="Username"
-            value={this.state.username}
-            onChange={this.onUsernameChange}
-            errorText={this.state.errorUsuario}
-                /><br />
-                <TextField
-            hintText="Password"
-            type="password"
-            value={this.state.password}
-            onChange={this.onPasswordChange}
-                /><br />
-                <SelectField maxHeight={300} value={this.state.rol.value} onChange={this.onRolChange}>
-                <MenuItem value={1} primaryText="ADMINISTRADOR" />
-                <MenuItem value={2} primaryText="SECRETARIO" />
-                <MenuItem value={3}  primaryText="CONTADOR" />
+                    <hr/><br/>
+                    <form>
+                        <TextField
+                            hintText="Nombre Completo"
+                            value={this.state.nombre}
+                            onChange={this.onNameChange}
+                            errorText={this.state.errorNombre}
+                        /><br />
+                        <TextField
+                            hintText="Apellido Completo"
+                            value={this.state.apellido}
+                            onChange={this.onLastNameChange}
+                            errorText={this.state.errorApellido}
+                        /><br />
+                        <TextField
+                            hintText="Username"
+                            value={this.state.username}
+                            onChange={this.onUsernameChange}
+                            errorText={this.state.errorUsuario}
+                        /><br />
+                        <TextField
+                            hintText="Password"
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.onPasswordChange}
+                        /><br />
+                        <SelectField maxHeight={300} value={this.state.rol.value} onChange={this.onRolChange}>
+                            <MenuItem value={1} primaryText="ADMINISTRADOR" />
+                            <MenuItem value={2} primaryText="SECRETARIO" />
+                            <MenuItem value={3}  primaryText="CONTADOR" />
                 </SelectField>
                 <br/>
-                </form>
+                    </form>
                 </div>
                 </Dialog>
         );

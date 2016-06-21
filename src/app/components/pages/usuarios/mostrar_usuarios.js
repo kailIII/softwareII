@@ -1,4 +1,5 @@
 import React from 'react';
+import Snackbar from 'material-ui/Snackbar';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -39,7 +40,9 @@ export default class Mostrar_Usuario extends React.Component{
         super(props);
         this.state = {open: false,
                       usuarios: null,
-                      selectedRow: -1};
+                      selectedRow: -1,
+                      openSnack: false,
+                      mensaje:""};
         this.componentWillMount = this.componentWillMount.bind(this);
         this.onRowSelection = this.onRowSelection.bind(this);
 
@@ -49,6 +52,7 @@ export default class Mostrar_Usuario extends React.Component{
         this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.onCreateEditUserSubmit = this.onCreateEditUserSubmit.bind(this);
+        this.handleSnackClose = this.handleSnackClose.bind(this);
         this.iconButtonElement = (
             <IconButton
                 touch={true}
@@ -65,6 +69,9 @@ export default class Mostrar_Usuario extends React.Component{
                 <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
                 </IconMenu>
         );
+    }
+    handleSnackClose(){
+        this.setState({openSnack: false});
     }
     onRowSelection(rowSelected){
         if(rowSelected[0] !== undefined){
@@ -84,6 +91,8 @@ export default class Mostrar_Usuario extends React.Component{
         }).done(function (data) {
             console.log("component did mount");
             this.setState({usuarios:data});
+            this.setState({openSnack:true,
+                           mensaje:"Cargaron los Usuarios"});
         });
     }
 
@@ -145,8 +154,16 @@ export default class Mostrar_Usuario extends React.Component{
                     return usuario.id_usuario !== this.state.usuarios[this.state.selectedRow].id_usuario
                 },this)});
                 this.setState({open: false});
+                this.setState({
+                    openSnack:true,
+                    mensaje:"Se elimino el usuario de manera exitosa",
+                });
             }else{
                 console.log("No se pudo eliminar al usuario");
+                this.setState({
+                    openSnack:true,
+                    mensaje:"No se pudo eliminar el usuario",
+                });
             }
         });
     }
@@ -161,6 +178,13 @@ export default class Mostrar_Usuario extends React.Component{
         const create_user = this.refs["create_user"];
         const id_usuario = this.refs["create_user"].state.id_usuario;
         var url = '/api/usuarios/edit';
+        if(this.refs["create_user"].state.username === "" || this.refs["create_user"].state.password === "" || this.refs["create_user"].state.nombre === "" || this.refs["create_user"].state.apellido === ""){
+            this.setState({
+                openSnack:true,
+                mensaje:"No envie campos vacios.",
+            });
+            return;
+        }
         if(id_usuario === -1){
             this.refs["create_user"].setState( {
                 username: '',
@@ -203,22 +227,42 @@ export default class Mostrar_Usuario extends React.Component{
                             usuario["password"] = this.refs["create_user"].state.password.toString();
                             usuario["apellido"] = this.refs["create_user"].state.apellido.toString();
                             usuario["nombre"] = this.refs["create_user"].state.nombre.toString();
-                            usuario["rol"] = this.refs["create_user"].state.rol.toString();
+                            usuario["rol"] = this.refs["create_user"].state.rol.name + "";
                         }
                         return usuario;
 
                     },this);
                     this.setState({usuarios:this.state.usuarios });
                     console.log("se pudo editar el usuario");
+                    this.setState({
+                        openSnack:true,
+                        mensaje:"Se edito el usuario.",
+                    });
+                    this.refs["create_user"].setState({
+                        open: false,
+                    });
                     this.setState({open:false});
                 }else if(data.create === true){
                     this.state.usuarios.push(data.user)
                     console.log("se pudo crear el usuario");
+                    this.setState({
+                        openSnack:true,
+                        mensaje:"Se creo el usuario.",
+                    });
+                    this.refs["create_user"].setState({
+                        open: false,
+                    });
                 }
                 //console.log(this.state.usuarios);
                 this.setState({open:false});
             }else{
                 console.log("no se pudo editar el usuario");
+                this.setState({
+                    openSnack:true,
+                    mensaje:"No se pudo editar el usuario.",
+                    open: false,
+                });
+
             }
         });
         this.refs["create_user"].setState({id_usuario:-1});
@@ -243,7 +287,7 @@ export default class Mostrar_Usuario extends React.Component{
         return (
 
             <div>
-                <CreateUserForm ref='create_user' url='/api/usuarios/create'  onTouchTap={this.onCreateEditUserSubmit}/>
+                <CreateUserForm ref='create_user' url='/api/usuarios/create'  onTouchTap={this.onCreateEditUserSubmit} />
                 <Dialog
                     title="Eliminar Usuario"
                     actions={actions}
@@ -297,6 +341,13 @@ export default class Mostrar_Usuario extends React.Component{
 
             </Table>
                 </div>
+
+                <Snackbar
+                    open={this.state.openSnack}
+                    message={this.state.mensaje}
+                    autoHideDuration={2000}
+                    onRequestClose={this.handleSnackClose}
+                />
             </div>
         );
     }
