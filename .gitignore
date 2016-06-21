@@ -38,7 +38,7 @@ node_modules
 bower_components
 
 #config directory
-
+config/configdb.json
 
 #.idea directory
 .idea
