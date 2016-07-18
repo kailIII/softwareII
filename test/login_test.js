@@ -1,9 +1,8 @@
-var request = require("request");
-var superagent = require("superagent");
 var expect = require("chai").expect;
-var app = require("../app");
+//var app = require("../app");
 //Test del login en la app
 
+/**
 describe("Funcionalidad de realizar login", function () {
     it("login",function () {
         superagent
@@ -42,3 +41,5 @@ describe("Funcionalidad de realizar login", function () {
             })
     })
 });
+
+*/
