@@ -11,38 +11,38 @@ import SpreadsheetStatus from '../../../constants/SpreadsheetStatus'
 
 
 export default class Header extends Component {
-  constructor(props, context) {
-    super(props);
-    this.state = {open: false};
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
+    constructor(props, context) {
+        super(props);
+        this.state = {open: false};
+        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
 
-  handleTouchTap() {
-    this.setState({
-      open: true,
-    });
-  }
+    handleTouchTap() {
+        this.setState({
+            open: true,
+        });
+    }
 
-  handleToggle() {
-    this.setState({open: !this.state.open});
-      console.log("open");
-  }
+    handleToggle() {
+        this.setState({open: !this.state.open});
+        console.log("open");
+    }
 
-  handleClose() {
-    console.log(this);
-    this.setState({
-        open: false,
-    });
+    handleClose() {
+        console.log(this);
+        this.setState({
+            open: false,
+        });
 
     }
-  render() {
+    render() {
 
-    let titleString = "Hotel Tabuba"
-    if(this.props.spreadSheetStatus == SpreadsheetStatus.selectFecha)
-      titleString = "Selecciona la fecha final de la reservación"
-    return (
+        let titleString = "Hotel Tabuba"
+        if(this.props.spreadSheetStatus === SpreadsheetStatus.selectFecha)
+            titleString = "Selecciona la fecha final de la reservación"
+        return (
         <div>
             <AppBar
               title = {titleString}
@@ -64,7 +64,7 @@ export default class Header extends Component {
             {this.props.children}
         </div>
     );
-  }
+    }
 }
 
 export default Header;

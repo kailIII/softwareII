@@ -15,9 +15,9 @@ const defaultState = {
 
     spreadsheet: {
         newReservation:  {
-          roomIndex: -1,
-          startIndex: -1,
-          endIndex: -1,
+            roomIndex: -1,
+            startIndex: -1,
+            endIndex: -1,
         },
         status: SpreadsheetStatus.normal,
         firstDate: new Date(),

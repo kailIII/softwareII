@@ -14,54 +14,53 @@ const firstHeaderStyle = {
 }
 
 class RoomCell extends React.Component {
-	constructor (props) {
-		super(props);
-		this.onRoomCellClicked = this.onRoomCellClicked.bind(this)
-	}
-
-	onRoomCellClicked() {
-    switch(this.props.spreadsheetStatus){
-      case SpreadsheetStatus.normal:
-    		if(this.props.roomStatus === RoomTypes.disponible)
-    			this.props.escogerHabitacion(this.props.roomIndex, this.props.dayIndex)
-        break;
-      case SpreadsheetStatus.selectFecha:
-        if(this.props.roomIsSelected && this.props.dayIndex >= this.props.startIndex)
-          this.props.escogerIntervalo(this.props.dayIndex)
-        break;
+    constructor (props) {
+        super(props);
+        this.onRoomCellClicked = this.onRoomCellClicked.bind(this)
     }
-	}
 
-	render (){
-		return (
-			<TableRowColumn onTouchTap={this.onRoomCellClicked}>
-					<RoomStatusIcon roomStatus={this.props.roomStatus}/>
-			</TableRowColumn>
-	)}
+    onRoomCellClicked() {
+        switch(this.props.spreadsheetStatus){
+        case SpreadsheetStatus.normal:
+            if(this.props.roomStatus === RoomTypes.disponible)
+                this.props.escogerHabitacion(this.props.roomIndex, this.props.dayIndex)
+            break;
+        case SpreadsheetStatus.selectFecha:
+            if(this.props.roomIsSelected && this.props.dayIndex >= this.props.startIndex)
+                this.props.escogerIntervalo(this.props.dayIndex)
+            break;
+        }
+    }
+
+    render (){
+        return (
+			       <TableRowColumn onTouchTap={this.onRoomCellClicked}>
+					        <RoomStatusIcon roomStatus={this.props.roomStatus}/>
+			       </TableRowColumn>
+	  )}
 }
 
 class RoomTable extends React.Component {
-constructor(props){
+    constructor(props){
         super(props)
         this.getRoomNumberStyle = this.getRoomNumberStyle.bind(this)
     }
+
     getRoomNumberStyle() {
-          return  {
+        return  {
             backgroundColor: this.context.muiTheme.palette.primary1Color,
             color: 'white',
             width: firstColumnWidth,
             textAlign: 'center',
             fontSize: '22px',
-            }
         }
+    }
 
 
-        render() {
-
-				let columns = Array(this.props.totalDays)
-				let i = 0;
-				for(i = 0; i < columns.length; i++) columns[i] = 0
-
+    render() {
+        let columns = Array(this.props.totalDays)
+        let i = 0;
+        for(i = 0; i < columns.length; i++) columns[i] = 0
         return (
           <div>
   					<Table selectable={false}>
@@ -73,19 +72,19 @@ constructor(props){
                         <TableHeaderColumn>
                           {dateformat(this.props.indexToDate(i), "dd-mmm")}
                         </TableHeaderColumn>)
-                    }, this)
+                  }, this)
                   }
                 </TableRow>
               </TableHeader>
   						<TableBody displayRowCheckbox={false}>
   								{this.props.rooms.map(function (roomData, i) {
-  										return (
+                      return (
   												<TableRow  key={roomData.roomId}>
   													<TableRowColumn key={-1} style={this.getRoomNumberStyle()}>
   														<div >{roomData.roomId}</div>
   													</TableRowColumn>
 
-  													{roomData.days.map(function(status, j) {
+  												{roomData.days.map(function(status, j) {
                               const roomIsSelected = i === this.props.newReservation.roomIndex
   															return (
   																<RoomCell key={i} dayIndex={j}
@@ -102,7 +101,7 @@ constructor(props){
   								}
   						</TableBody>
   					</Table>
-            <NewReservationDialog open={this.props.status == SpreadsheetStatus.selectCliente}
+            <NewReservationDialog open={this.props.status === SpreadsheetStatus.selectCliente}
                 newReservation={this.props.newReservation}
                 reservarHabitacion={this.props.reservarHabitacion}
                 indexToDate={this.props.indexToDate} rooms={this.props.rooms}
@@ -114,7 +113,7 @@ constructor(props){
 };
 
 RoomTable.contextTypes = {
-      muiTheme: React.PropTypes.object.isRequired,
+    muiTheme: React.PropTypes.object.isRequired,
 };
 
 export default RoomTable;
