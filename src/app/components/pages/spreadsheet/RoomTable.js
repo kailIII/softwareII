@@ -7,6 +7,7 @@ import RoomStatusIcon from './RoomStatusIcon';
 import NewReservationDialog from './NewReservationDialog';
 import * as RoomTypes from '../../../../../constants/RoomTypes'
 import * as SpreadsheetStatus from '../../../../../constants/SpreadsheetStatus'
+import ResizableComponent from '../../ResizableComponent'
 
 const firstColumnWidth = '30px'
 const firstHeaderStyle = {
@@ -22,6 +23,7 @@ class RoomCell extends React.Component {
     onRoomCellClicked() {
         switch(this.props.spreadsheetStatus){
         case SpreadsheetStatus.normal:
+            this.props.openRoomInfo()
             if(this.props.roomStatus === RoomTypes.disponible)
                 this.props.escogerHabitacion(this.props.roomIndex, this.props.dayIndex)
             break;
@@ -40,9 +42,10 @@ class RoomCell extends React.Component {
 	  )}
 }
 
-class RoomTable extends React.Component {
+class RoomTable extends ResizableComponent {
     constructor(props){
         super(props)
+        this.state = { ...this.state, sidebarOpen: false}
         this.getRoomNumberStyle = this.getRoomNumberStyle.bind(this)
     }
 
@@ -56,20 +59,23 @@ class RoomTable extends React.Component {
         }
     }
 
-
     render() {
         let columns = Array(this.props.totalDays)
         let i = 0;
         for(i = 0; i < columns.length; i++) columns[i] = 0
+
+        const sidebarContent = <b>Sidebar content</b>;
+        const openRoomInfo = () => { this.state.sidebarOpen = true }
+
         return (
           <div>
-  					<Table selectable={false}>
+  					<Table height={this.state.height} selectable={false} fixedHeader={true}>
   						<TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
                   <TableHeaderColumn key={-1} style={firstHeaderStyle}></TableHeaderColumn>
                   { columns.map(function(it, i) {
                       return (
-                        <TableHeaderColumn>
+                        <TableHeaderColumn key={i}>
                           {dateformat(this.props.indexToDate(i), "dd-mmm")}
                         </TableHeaderColumn>)
                   }, this)
@@ -87,7 +93,7 @@ class RoomTable extends React.Component {
   												{roomData.days.map(function(status, j) {
                               const roomIsSelected = i === this.props.newReservation.roomIndex
   															return (
-  																<RoomCell key={i} dayIndex={j}
+  																<RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
                                     roomStatus={status} roomIndex={i}
                                       roomIsSelected={roomIsSelected}
                                       spreadsheetStatus={this.props.status}
