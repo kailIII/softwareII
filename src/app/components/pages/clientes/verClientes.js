@@ -15,103 +15,102 @@ import CreateClienteForm from './create_cliente'
 const showCheckB = false;
 
 var divTableStyle = {
-  padding:'10%',
-  background:blue50
+    padding:'10%',
+    background:blue50
 
 };
 
 var headerTableStyle = {
-  color:blue900
+    color:blue900
 };
 
 export default class VerClientes extends Component {
 
-  constructor(props){
-    super(props);
-    this.state = {open: false};
+    constructor(props){
+        super(props);
+        this.state = {open: false};
 
-    //metodos usados en esta clase
-    this.handleEditOpen = this.handleEditOpen.bind(this);
-    this.handleAddOpen = this.handleAddOpen.bind(this);
-    this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    
-    this.iconButtonElement = (
-      <IconButton
-        touch={true}
-        tooltip="more"
-        tooltipPosition="bottom-left"
-      >
-        <MoreVertIcon color={grey400} />
-      </IconButton>
-    );
+        //metodos usados en esta clase
+        this.handleEditOpen = this.handleEditOpen.bind(this);
+        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
-    this.rightIconMenu = (
-      <IconMenu iconButtonElement={this.iconButtonElement}>
-        <MenuItem onTouchTap={this.handleEditOpen}>Editar</MenuItem>
-        <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
-      </IconMenu>
-    );
-  }
-  
-  //llamar a los metodos de la clase CreateClienteForm mediante la propiedad ref
-  handleEditOpen(){
-    this.refs['create_cliente'].handleEditOpen();
-  }
-  handleAddOpen(){
-    this.refs['create_cliente'].handleAddOpen();
-  }
-
-
-  handleDeleteOpen(){
-    this.setState({open: true});
-  }
-
-  handleClose(){
-    this.setState({open: false});
-  };
-
-  render() {
-
-    const actions = [
-      <FlatButton
-        label="Cancelar"
-        primary={true}
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Aceptar"
-        primary={true}
-        onTouchTap={this.handleClose}
-      />,
-    ];
-
-    return (
-                
-          <div>
-            <CreateClienteForm ref='create_cliente' />
-            <Dialog
-              title="Eliminar Cliente"
-              actions={actions}
-              modal={true}
-              open={this.state.open}
+        this.iconButtonElement = (
+            <IconButton
+                touch={true}
+                tooltip="more"
+                tooltipPosition="bottom-left"
             >
-              Esta seguro que desea eliminar este cliente?
+              <MoreVertIcon color={grey400} />
+      </IconButton>
+        );
+
+        this.rightIconMenu = (
+            <IconMenu iconButtonElement={this.iconButtonElement}>
+              <MenuItem onTouchTap={this.handleEditOpen}>Editar</MenuItem>
+              <MenuItem onTouchTap={this.handleDeleteOpen}>Eliminar</MenuItem>
+      </IconMenu>
+        );
+    }
+
+    //llamar a los metodos de la clase CreateClienteForm mediante la propiedad ref
+    handleEditOpen(){
+        this.refs['create_cliente'].handleEditOpen();
+    }
+    handleAddOpen(){
+        this.refs['create_cliente'].handleAddOpen();
+    }
+
+
+    handleDeleteOpen(){
+        this.setState({open: true});
+    }
+
+    handleClose(){
+        this.setState({open: false});
+    };
+
+    render() {
+
+        const actions = [
+            <FlatButton
+                label="Cancelar"
+                primary={true}
+                onTouchTap={this.handleClose}
+            />,
+            <FlatButton
+                label="Aceptar"
+                primary={true}
+                onTouchTap={this.handleClose}
+            />,
+        ];
+
+        return (
+
+            <div>
+              <CreateClienteForm ref='create_cliente' />
+              <Dialog
+                  title="Eliminar Cliente"
+                  actions={actions}
+                  modal={true}
+                  open={this.state.open}
+              >
+                Esta seguro que desea eliminar este cliente?
             </Dialog>
             <div style={divTableStyle}>
-             <Table >
-              
-              <TableHeader
-                displaySelectAll={showCheckB}
-                adjustForCheckbox={showCheckB}
-              >
-                <TableRow>
-                  <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                    <span style={{color: darkBlack}}><h3>Clientes</h3></span>
+              <Table >
+
+                <TableHeader
+                    displaySelectAll={showCheckB}
+                    adjustForCheckbox={showCheckB}>
+                  <TableRow>
+                    <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                      <span style={{color: darkBlack}}><h3>Clientes</h3></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Cliente" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
-                            <ContentAdd />
+                      <ContentAdd />
                           </FloatingActionButton>
                     </span>
                   </TableHeaderColumn>
@@ -126,8 +125,8 @@ export default class VerClientes extends Component {
               </TableHeader>
 
               <TableBody
-                displayRowCheckbox={showCheckB}
-                >
+                  displayRowCheckbox={showCheckB}
+              >
                 <TableRow>
                   <TableRowColumn>client1</TableRowColumn>
                   <TableRowColumn>82839402738</TableRowColumn>
@@ -161,10 +160,9 @@ export default class VerClientes extends Component {
 
             </Table>
 
-          </div>
+            </div>
 
-        </div>
-    );
-  }
+            </div>
+        );
+    }
 }
-

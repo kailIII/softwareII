@@ -3,7 +3,7 @@ const selectFecha = 'FECHAS';
 const selectCliente = 'CLIENTES';
 
 module.exports  = {
-  normal: normal,
+    normal: normal,
   selectFecha: selectFecha,
   selectCliente: selectCliente,
 }
