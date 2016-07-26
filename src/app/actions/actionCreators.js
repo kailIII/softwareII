@@ -25,3 +25,20 @@ export function reservarHabitacion(newReservation) {
         newReservation: newReservation,
     }
 }
+
+export function displayInfo(roomIndex, dayIndex, clientName, startDate, endDate) {
+    return  {
+        type: 'DISPLAY_INFO',
+        roomIndex: roomIndex,
+        dayIndex: dayIndex,
+        clientName: clientName,
+        startDate: startDate,
+        endDate: endDate,
+    }
+}
+
+export function cancelarDisplayInfo() {
+    return  {
+        type: 'CANCEL_DISPLAY_INFO',
+    }
+}
