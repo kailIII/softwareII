@@ -88,4 +88,18 @@ describe("Proceso de reservacion de habitacion", function () {
         expect(newReservationResult.endIndex).to.be.equal(-1)
         expect(newReservationResult.roomIndex).to.be.equal(-1)
     })
+
+    it("Mostrar la nueva reservacion", function(){
+        let startDate = new Date()
+        startDate.setDate(startDate.getDate + selectedStartDay)
+        let endDate = new Date()
+        endDate.setDate(endDate.getDate + selectedEndDay)
+        const displayAction = actionCreators.displayInfo(selectedRoom, selectedEndDay,
+        'Michael Galarza', startDate, endDate)
+        const newSpreadsheet = spreadsheet(state.spreadsheet, displayAction)
+
+        expect(newSpreadsheet).to.be.not.equal(state.spreadsheet)
+        expect(newSpreadsheet.status).to.be.equal(SpreadsheetStatus.displayInfo)
+        expect(newSpreadsheet.roomInfo.roomIndex).to.be.equal(selectedRoom)
+    })
 });
