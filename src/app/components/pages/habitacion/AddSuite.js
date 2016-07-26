@@ -14,6 +14,8 @@ for( let i = 1; i<=5; i++ ){
   items.push(<MenuItem value={i} primaryText={i} />);
 }
 
+var tipoItems = [];
+
 export default class AddSuiteModal extends React.Component {
   
   constructor(props) {
@@ -21,36 +23,56 @@ export default class AddSuiteModal extends React.Component {
     this.state = {
       open: false,  
       openSnack: false,
-      nombre:"",
-      tipo: "Single",
+      numero:"",
+      tipos: [],
+      tipo: "",
       capacidad:1,
       estado:"Limpia",
-      tarifa:0,
       suites:undefined,
-      nombreValido:null,
+      numeroValido:null,
       tarifaValido:"Campo Requerido",
-      disabled:false
+      disabled:true
     };
 
     this.handleAddOpen = this.handleAddOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleChangeNombre = this.handleChangeNombre.bind(this);
+    this.handleChangeNumero = this.handleChangeNumero.bind(this);
     this.handleChangeTipo = this.handleChangeTipo.bind(this);
     this.handleChangeCapacidad = this.handleChangeCapacidad.bind(this);
     this.handleChangeEstado = this.handleChangeEstado.bind(this);
-    this.handleChangeTarifa = this.handleChangeTarifa.bind(this);
-    this.onKeypressTarifa = this.onKeypressTarifa.bind(this);
+    this.onKeypressNumero = this.onKeypressNumero.bind(this);
+  }
+
+  componentWillMount(){
+    $.ajax({
+      context: this,
+      url: '/api/tipos_habitacion/show',
+      dataType: 'json',
+      type: 'POST',
+      async: false,
+      cache: false,
+      
+    }).done(function (data){
+        console.log("TipoHabitaciones");
+        if(data !== null){
+          for(let i=0; i<data.length; i++){
+            this.state.tipos.push(data[i].tipo);
+            this.setState({tipos: this.state.tipos});
+            tipoItems.push(<MenuItem value={data[i].tipo} primaryText={data[i].tipo} />);
+          }
+        }
+    });
   }
 
   handleAddOpen(){
+    console.log(this.state.tipos[0]);
     this.setState({
       open: true,
-      nombre:"",
-      tipo: "Single",
-      capacidad:1,
-      estado:"Limpia",
-      tarifa:0,
+      numero: "",
+      tipo: this.state.tipos[0],
+      capacidad: 1,
+      estado: "Limpia"
     });
   }
 
@@ -62,19 +84,20 @@ export default class AddSuiteModal extends React.Component {
     this.setState({openSnack: false});
   }
 
-  handleChangeNombre(event){
+  handleChangeNumero(event){
     var error=null, disabled=false, exp="";
-    this.setState({nombre: event.target.value});
+    this.setState({numero: event.target.value});
     this.state.suites.map(function (suite){
-      exp = new RegExp("^"+suite.nombre+"\\s*$","i"); 
+      exp = new RegExp("^"+suite.numero+"\\s*$","i"); 
       if( exp.test(event.target.value)){
         console.log("true");
-        error='Ya existe una Habitación con este nombre';
+        error='Ya existe una Habitación con este numero';
         disabled=true;
       }
+      if(event.target.value == "") disabled=true;
       return suite;
     }, this);
-    this.setState({nombreValido:error, disabled:disabled});
+    this.setState({numeroValido:error, disabled:disabled});
   }
 
   handleChangeTipo (event, index, value){
@@ -89,26 +112,11 @@ export default class AddSuiteModal extends React.Component {
     this.setState({estado: value});
   }
 
-  handleChangeTarifa(event, index, value){
-   var exp = /^\d+(\.\d{1,2})?$/i, empty = /^\s*$/i;
-   var error =null, disabled=false;
-
-   if(empty.test(event.target.value)){
-      error="Campo Requerido";
-      disabled=true;
-   }
-   else if(!exp.test(event.target.value)){
-    error="Error de formato";
-    disabled=true;
-   }
-   this.setState({tarifa:value, tarifaValido:error, disabled:disabled});
-  }
-
-  onKeypressTarifa(event){
+  onKeypressNumero(event){
     var chr = event.key;
     var exp = /^[0-9]$/i
     console.log(chr);
-    if (!exp.test(chr) && chr!=='Backspace' && chr!=='.') {
+    if (!exp.test(chr) && chr!=='Backspace'){ //&& chr!=='Backspace' && chr!=='.') {
       event.preventDefault();
     }
   }
@@ -142,27 +150,18 @@ export default class AddSuiteModal extends React.Component {
 
             <div>
               <TextField
-                hintText="Nombre"
-                floatingLabelText="Nombre"
-                errorText={this.state.nombreValido}
-                onChange={this.handleChangeNombre}
+                hintText="Numero"
+                floatingLabelText="Numero"
+                errorText={this.state.numeroValido}
+                onChange={this.handleChangeNumero}
+                onKeyDown={this.onKeypressNumero}
               /><br />
               <br />
               Tipo:
               <DropDownMenu value={this.state.tipo} onChange={this.handleChangeTipo}>
-              
-                  <MenuItem  value={"Single"} primaryText="Single" />
-                  <MenuItem  value={"Twin"} primaryText="Twin" />
+                  {tipoItems}
               </DropDownMenu>
-              <br />
-              <TextField
-                hintText="Tarifa"
-                floatingLabelText="Tarifa"
-                errorText={this.state.tarifaValido}
-                onChange={this.handleChangeTarifa}
-                onKeyDown={this.onKeypressTarifa}
-              />
-              <br />
+              
               Capacidad:
               <DropDownMenu value={this.state.capacidad} onChange={this.handleChangeCapacidad}>
                  {items}

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -8,7 +7,7 @@ import Snackbar from 'material-ui/Snackbar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class CreateClienteForm extends React.Component
+export default class UpdateClienteForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -30,7 +29,7 @@ export default class CreateClienteForm extends React.Component
             disable:false
         };
 
-	/*funciones utilizadas*/
+    /*funciones utilizadas*/
         this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.validarNombre = this.validarNombre.bind(this);
@@ -43,7 +42,7 @@ export default class CreateClienteForm extends React.Component
         this.onTelefonoChange = this.onTelefonoChange.bind(this);
         this.validarTelefono = this.validarTelefono.bind(this);
         this.onMailChange = this.onMailChange.bind(this);
-        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleEditOpen = this.handleEditOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
     }
@@ -61,24 +60,8 @@ export default class CreateClienteForm extends React.Component
         /*Validaciones*/
 
     }
-    handleAddOpen(){
-         this.setState({
-            open: true,
-            apellido:'',
-            errorApellido: null,
-            nombre:'',
-            errorNombre: null,
-            cedula: "",
-            errorCedula: null,
-            telefono: "",
-            errorTelefono: null,
-            nacionalidad: "Ecuatoriana",
-            errorNacionalidad: null,
-            mail:'',
-            errorMail:null,
-            openSnack: false,
-            disable:false
-        });
+    handleEditOpen(){
+     this.setState({open: true});
     };
 
     handleClose(){
@@ -193,7 +176,7 @@ export default class CreateClienteForm extends React.Component
             onTouchTap={this.handleClose}
           />,
           <FlatButton
-            label="Agregar"
+            label="Actualizar"
             primary={true}
             onTouchTap={this.props.onTouchTap}
             disabled={this.state.disabled}
@@ -203,7 +186,7 @@ export default class CreateClienteForm extends React.Component
         return (
             <div>
                 <Dialog
-                  title={"Nuevo Cliente"}
+                  title={"Editar Cliente"}
                   actions={actions}
                   modal={true}
                   open={this.state.open}
@@ -266,7 +249,7 @@ export default class CreateClienteForm extends React.Component
 
                 <Snackbar
                   open={this.state.openSnack}
-                  message="Agregado nuevo Cliente"
+                  message="Cliente actualizado"
                   autoHideDuration={4000}
                   onRequestClose={this.handleRequestClose}
                 />

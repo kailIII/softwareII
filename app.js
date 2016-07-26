@@ -37,10 +37,12 @@ var TYPES_FILE = path.join(__dirname, 'tilesdata.json');
 var usuarios = require('./app/controllers/api/usuarios');
 var habitaciones = require('./app/controllers/api/habitaciones');
 var tipos_habitacion = require('./app/controllers/api/tipos_habitacion');
+var clientes = require('./app/controllers/api/clientes');
 
 app.use('/api/usuarios',usuarios);
 app.use('/api/habitaciones', habitaciones);
 app.use('/api/tipos_habitacion',tipos_habitacion);
+app.use('/api/clientes', clientes);
 
 models.sequelize.sync().then(function () {
     "use strict"
