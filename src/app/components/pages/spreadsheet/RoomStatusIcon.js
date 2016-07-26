@@ -5,10 +5,10 @@ import {
 } from 'material-ui/styles/colors'
 import * as RoomTypes from '../../../../../constants/RoomTypes.js';
 
-  
+
 class RoomStatusIcon extends React.Component {
 
-    
+
 
     getIcon(){
         switch(this.props.roomStatus){
@@ -35,11 +35,11 @@ class RoomStatusIcon extends React.Component {
 
 RoomStatusIcon.propTypes = {
     roomStatus: React.PropTypes.oneOf([
-        RoomTypes.disponible, 
-        RoomTypes.reservado, 
-        RoomTypes.ocupado, 
-        RoomTypes.sucio, 
-        RoomTypes.mantenimiento, 
+        RoomTypes.disponible,
+        RoomTypes.reservado,
+        RoomTypes.ocupado,
+        RoomTypes.sucio,
+        RoomTypes.mantenimiento,
     ]),
 };
 

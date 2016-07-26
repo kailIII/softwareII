@@ -5,6 +5,13 @@ const defaultNewReservation = {
     startIndex: -1,
     endIndex: -1,
 }
+const defaultDisplayInfo = {
+    roomIndex: -1,
+    dayIndex: -1,
+    clientName: '',
+    startDate: new Date(),
+    endDate: new Date(),
+}
 
 function spreadsheet (state = [], action) {
     switch(action.type){
@@ -17,6 +24,7 @@ function spreadsheet (state = [], action) {
                 startIndex: action.startIndex,
                 emdIndex: -1,
             },
+            displayInfo: { ...defaultDisplayInfo },
 
         }
         break;
@@ -38,7 +46,25 @@ function spreadsheet (state = [], action) {
             newReservation:  { ...defaultNewReservation },
             status: SpreadsheetStatus.normal,
         }
-        break;
+    case 'DISPLAY_INFO':
+        return {
+            ...state,
+            roomInfo: {
+                roomIndex: action.roomIndex,
+                dayIndex: action.dayIndex,
+                clientName: action.clientName,
+                startDate: action.startDate,
+                endDate: action.endDate,
+            },
+            newReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.displayInfo,
+        }
+    case 'CANCEL_DISPLAY_INFO':
+        return {
+            ...state,
+            roomInfo:  { ...defaultDisplayInfo },
+            status: SpreadsheetStatus.normal,
+        }
     }
     return state;
 }

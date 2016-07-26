@@ -5,9 +5,8 @@ class ResizableComponent extends React.Component {
 
     constructor(props){
         super(props)
-        this.state = {width : '0px', height : '0px',
-          totalVerticalMargin: this.props.initialMarginY,
-          totalHorizontalMargin: this.props.initialMarginX }
+        this.state = {height : '0px',
+          totalVerticalMargin: this.props.initialMarginY || 0 }
         this.updateDimensions = this.updateDimensions.bind(this)
     }
 
@@ -16,12 +15,10 @@ class ResizableComponent extends React.Component {
         const d = document
         const documentElement = d.documentElement
         const body = d.getElementsByTagName('body')[0]
-        const width = (w.innerWidth || documentElement.clientWidth
-          || body.clientWidth) - (this.state.totalHorizontalMargin || 0)
         const height = (w.innerHeight|| documentElement.clientHeight
           || body.clientHeight) - (this.state.totalVerticalMargin || 0)
 
-        this.setState({width: `${width}px`, height: `${height}px`});
+        this.setState({height: `${height}px`});
     }
 
     componentWillMount() {
