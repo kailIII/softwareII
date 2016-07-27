@@ -135,6 +135,7 @@ class Show_Payments extends React.Component {
                                <ShowPaymentsForm
 				   payments ={this.props.payments}
 				   cedula = {guest["cedula"]}
+				   nombre_guest ={guest["nombre"]}
 			       />
                              </span></TableRowColumn>
                             </TableRow>

@@ -24,7 +24,7 @@ export default class CreateClienteForm extends React.Component
             modalTitle: 'Crear Cliente'
         };
 
-	/*funciones utilizadas*/
+        /*funciones utilizadas*/
         this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.validarNombre = this.validarNombre.bind(this);
@@ -89,7 +89,7 @@ export default class CreateClienteForm extends React.Component
         if (usernameIsValid) {
             error = null;
         } else {
-            error = 'Apellido solo tiene letras.';
+            error = 'Apellido solo tiene letras, longitud < 30';
         }
 
         this.setState({ errorApellido: error });

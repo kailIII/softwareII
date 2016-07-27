@@ -1,6 +1,8 @@
 import React from 'react';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Dialog from 'material-ui/Dialog';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
@@ -32,10 +34,15 @@ export default class ShowPaymentsForm extends React.Component {
             payments: [],
         }
         this.handleOpen = this.handleOpen.bind(this);
+	this.handleAddOpen = this.handleAddOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
     }
 
+    handleAddOpen(){
+	console.log("agregar nuevo pago a guest");
+	
+    }
     handleOpen(){
         this.setState({open: true});
 
@@ -54,8 +61,6 @@ export default class ShowPaymentsForm extends React.Component {
         let temp_payments = all_payments.filter(function (payment) {
             return payment["cedula"] === this.props.cedula;
         },this);
-	console.log("imprimiendo payments");
-	console.log(temp_payments);
         this.setState({payments: temp_payments});
     }
 
@@ -72,7 +77,7 @@ export default class ShowPaymentsForm extends React.Component {
             <div>
               <RaisedButton label="Mostrar Pagos" onTouchTap={this.handleOpen} />
               <Dialog
-                  title="Scrollable Dialog"
+                  title="Agregar Pago"
                   actions={actions}
                   modal={false}
                   open={this.state.open}
@@ -88,11 +93,18 @@ export default class ShowPaymentsForm extends React.Component {
                         <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
                           <span style={{color: darkBlack}}><h3>Pagos</h3></span>
                 </TableHeaderColumn>
+		<TableHeaderColumn colSpan="1" tooltip={"Agregar pago a "+this.props.nombre_guest} style={{textAlign: 'center'}}>
+                  <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
+                    <ContentAdd />
+                </FloatingActionButton>
+                  </span>
+                </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
                   <TableHeaderColumn>Cantidad</TableHeaderColumn>
                   <TableHeaderColumn>Descripcion</TableHeaderColumn>
                   <TableHeaderColumn>Pagado?</TableHeaderColumn>
+		  <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
                 </TableHeader>
                 <TableBody
@@ -103,8 +115,8 @@ export default class ShowPaymentsForm extends React.Component {
                              <TableRowColumn key={i}>{payment.valor}</TableRowColumn>
                              <TableRowColumn key={i}>{payment.description}</TableRowColumn>
 			     {(payment.pagado
-			      ? <TableRowColumn key={i}>Item pagado</TableRowColumn>
-			      : <TableRowColumn key={i}>Item no pagado</TableRowColumn>
+			      ? <TableRowColumn key={i}>Pagado</TableRowColumn>
+			      : <TableRowColumn key={i}>No pagado</TableRowColumn>
 			      )}
                             </TableRow>
                        );
