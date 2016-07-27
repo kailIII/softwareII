@@ -24,15 +24,18 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 const showCheckB = false;
 import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
-const divTableStyle = {
-    padding:'10%',
-    background:blue50,
 
+const divTableStyle = {
+    padding:'5%',
+    background:blue50,
 };
 
 const headerTableStyle = {
     color:blue900,
+    textAlign:'center'
 };
+
+var columnTableStyle ={textAlign:'center'};
 
 export default class Mostrar_Usuario extends React.Component{
 
@@ -304,8 +307,8 @@ export default class Mostrar_Usuario extends React.Component{
                             adjustForCheckbox={showCheckB}
                         >
                             <TableRow>
-                                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                                    <span style={{color: darkBlack}}><h3>Usuarios</h3></span>
+                                <TableHeaderColumn colSpan="5" style={{textAlign: 'center'}}>
+                                    <span style={{color: darkBlack}}><h2>Usuarios</h2></span>
                 </TableHeaderColumn>
                 <TableHeaderColumn colSpan="1" tooltip="Agregar Usuario" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
@@ -329,11 +332,12 @@ export default class Mostrar_Usuario extends React.Component{
                     {this.state.usuarios.map(function (usuario,i) {
                          return (
                              <TableRow key={i}>
-                                 <TableRowColumn key={i}><p>{usuario.nombre}</p></TableRowColumn>
-                                 <TableRowColumn key={i}><p>{usuario.apellido}</p></TableRowColumn>
-                                 <TableRowColumn key={i}><p>{usuario.username}</p></TableRowColumn>
-                                 <TableRowColumn key={i}><p>{usuario.password}</p></TableRowColumn>                                                 <TableRowColumn key={i}>{usuario.rol}</TableRowColumn>
-                                 <TableRowColumn><span>{this.rightIconMenu}</span></TableRowColumn>
+                                 <TableRowColumn key={i} style={columnTableStyle}><p>{usuario.nombre}</p></TableRowColumn>
+                                 <TableRowColumn key={i} style={columnTableStyle}><p>{usuario.apellido}</p></TableRowColumn>
+                                 <TableRowColumn key={i} style={columnTableStyle}><p>{usuario.username}</p></TableRowColumn>
+                                 <TableRowColumn key={i} style={columnTableStyle}><p>{usuario.password}</p></TableRowColumn>                                                 
+                                 <TableRowColumn key={i} style={columnTableStyle}>{usuario.rol}</TableRowColumn>
+                                 <TableRowColumn style={columnTableStyle}><span>{this.rightIconMenu}</span></TableRowColumn>
                             </TableRow>
                          );
                      },this)}

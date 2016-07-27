@@ -16,7 +16,7 @@ import EditSuiteModal from './EditSuite';
 
 const showCheckB = false;
 var divTableStyle = {
-  padding:'10%',
+  padding:'5%',
   background:blue50
 };
 
@@ -250,7 +250,7 @@ export default class Suites extends Component {
               >
                 <TableRow>
                   <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                    <span style={{color: darkBlack}}><h3>Habitaciones</h3></span>
+                    <span style={{color: darkBlack}}><h2>Habitaciones</h2></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Habitación" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>

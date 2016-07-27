@@ -56,6 +56,7 @@ export default class EditSuiteModal extends React.Component {
     }).done(function (data){
         console.log("TipoHabitaciones");
         if(data !== null){
+          tipoItems.splice(0,tipoItems.length);
           for(let i=0; i<data.length; i++){
             this.state.tipos.push(data[i].tipo);
             this.setState({tipos: this.state.tipos});
@@ -116,9 +117,14 @@ export default class EditSuiteModal extends React.Component {
     var chr = event.key;
     var exp = /^[0-9]$/i
     console.log(chr);
-    if (!exp.test(chr) && chr!=='Backspace'){ //&& chr!=='Backspace' && chr!=='.') {
+    if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
       event.preventDefault();
-    }
+    }else if(this.state.numero.length>3 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+    {
+      event.preventDefault();  
+    } 
   }
 
   render() {

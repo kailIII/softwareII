@@ -4,7 +4,7 @@ node_js:
 
 
 before_script:
-  - "npm run build;npm install -g mocha;npm install express;npm install request;node app.js & "
+  - "npm run build;npm install -g mocha;npm install express;npm install request;npm install glob;npm install superagent;node app.js & "
 
 script: "mocha"
 

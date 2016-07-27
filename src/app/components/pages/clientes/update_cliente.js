@@ -13,15 +13,10 @@ export default class UpdateClienteForm extends React.Component
         super(props);
         this.state={
             apellido:'',
-            errorApellido: null,
             nombre:'',
-            errorNombre: null,
             cedula: "",
-            errorCedula: null,
             telefono: "",
-            errorTelefono: null,
             nacionalidad: "Ecuatoriana",
-            errorNacionalidad: null,
             mail:'',
             errorMail:null,
             open: false,
@@ -32,27 +27,25 @@ export default class UpdateClienteForm extends React.Component
     /*funciones utilizadas*/
         this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
-        this.validarNombre = this.validarNombre.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
-        this.validarLastName = this.validarLastName.bind(this);
         this.onCedulaChange = this.onCedulaChange.bind(this);
-        this.validarCedula = this.validarCedula.bind(this);
         this.onNacionalidadChange = this.onNacionalidadChange.bind(this);
-        this.validarNacionalidad = this.validarNacionalidad.bind(this);
         this.onTelefonoChange = this.onTelefonoChange.bind(this);
-        this.validarTelefono = this.validarTelefono.bind(this);
         this.onMailChange = this.onMailChange.bind(this);
         this.handleEditOpen = this.handleEditOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.onKeypressNombre = this.onKeypressNombre.bind(this);
+        this.onKeypressApellido = this.onKeypressApellido.bind(this);
+        this.onKeypressTelefono = this.onKeypressTelefono.bind(this);
+        this.onKeypressCedula = this.onKeypressCedula.bind(this);
+        this.onKeypressMail = this.onKeypressMail.bind(this);
     }
 
     onLastNameChange(event){
-        this.validarLastName(event);
         this.setState({apellido:event.target.value});
     }
     onNameChange(event){
-        this.validarNombre(event);
         this.setState({nombre:event.target.value});
     }
     onCreateClientSubmit(){
@@ -72,91 +65,85 @@ export default class UpdateClienteForm extends React.Component
         this.setState({openSnack: false});
     }
 
-    validarNombre(event){
-        const username = event.target.value;
-        const alphanumeric = /^[a-zA-Z]+$/i;
-        const usernameIsValid = alphanumeric.test(username);
-        var error;
+    onKeypressNombre(event){
+        var chr = event.key;
+        var exp = /^[a-z]$/i
+        console.log(chr);
+        if (!exp.test(chr) && chr!=='Backspace' && chr!==' ' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+          event.preventDefault();
+        }else if(this.state.nombre.length>=25 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        {
+          event.preventDefault();  
+        } 
+    }
+
+    onKeypressApellido(event){
+        var chr = event.key;
+        var exp = /^[a-z]$/i
+        console.log(chr);
+        if (!exp.test(chr) && chr!=='Backspace' && chr!==' ' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+          event.preventDefault();
+        }else if(this.state.apellido.length>=25 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        {
+          event.preventDefault();  
+        } 
+    }
+
+    onKeypressCedula(event){
+        var chr = event.key;
+        var exp = /^[0-9]$/i
+        console.log(chr);
+        if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+          event.preventDefault();
+        }else if(this.state.cedula.length>=10 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        {
+          event.preventDefault();  
+        } 
         
-        if (usernameIsValid) {
-            error = null;
-        } else {
-            error = 'usuario solo tiene letras.';
-        }
-
-        this.setState({ errorNombre: error });
     }
-    validarLastName(event){
-        const username = event.target.value;
-        const alphanumeric = /^[a-zA-Z]+$/i;
-        const usernameIsValid = alphanumeric.test(username);
-        var error;
 
-        if (usernameIsValid) {
-            error = null;
-        } else {
-            error = 'Apellido solo tiene letras.';
+    onKeypressTelefono(event){
+        var chr = event.key;
+        var exp = /^[0-9]$/i
+        console.log(chr);
+        if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+          event.preventDefault();
+        }else if(this.state.telefono.length>=10 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        {
+          event.preventDefault();  
         }
-
-        this.setState({ errorApellido: error });
     }
-    validarCedula(event){
-        const username = event.target.value;
-        const alphanumeric = /^[0-9]+$/i;
-        const usernameIsValid = alphanumeric.test(username);
-        var error;
 
-        if (usernameIsValid) {
-            error = null;
-        } else {
-            error = 'la cedula solo tiene numeros.';
+    onKeypressMail(event){
+        var chr = event.key;
+        if(this.state.mail.length>=30 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        {
+          event.preventDefault();  
         }
-
-        this.setState({ errorCedula: error });
     }
-    validarTelefono(event){
-        const username = event.target.value;
-        const alphanumeric = /^[0-9]+$/i;
-        const usernameIsValid = alphanumeric.test(username);
-        var error;
 
-        if (usernameIsValid) {
-            error = null;
-        } else {
-            error = 'El telefono solo tiene  numeros..';
-        }
-
-        this.setState({ errorTelefono: error });
-    }
-    validarNacionalidad(event){
-        const username = event.target.value;
-        const alphanumeric = /^[0-9]+$/i;
-        const usernameIsValid = alphanumeric.test(username);
-        var error;
-
-        if (usernameIsValid) {
-            error = null;
-        } else {
-            error = 'la nacionalidad es solo letras..';
-        }
-
-        this.setState({ errorNacionalidad: error });
-    }
     onCedulaChange(event){
-        this.validarCedula(event);
         this.setState({cedula:event.target.value});
     }
     onNacionalidadChange(event, index, value){
         this.setState({nacionalidad:value});
     }
     onTelefonoChange(event){
-        this.validarTelefono(event);
         this.setState({telefono:event.target.value});
     }
     onMailChange(event){
-        const exp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        const exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var error=null, disabled=false;
-        if(exp.test(event.target.value)){
+        if(!exp.test(event.target.value) && event.target.value !== ""){
             error="Correo no valido";
             disabled=true;
         }
@@ -199,28 +186,28 @@ export default class UpdateClienteForm extends React.Component
                     value={this.state.nombre}
                     floatingLabelText="Nombre"
                     onChange={this.onNameChange}
-                    errorText={this.state.errorNombre}
+                    onKeyDown={this.onKeypressNombre}
                         /><br />
                         <TextField
                     hintText="Apellido"
                     floatingLabelText="Apellido"
                     value={this.state.apellido}
                     onChange={this.onLastNameChange}
-                    errorText={this.state.errorApellido}
+                    onKeyDown={this.onKeypressApellido}
                         /><br />
                         <TextField
                     hintText="Telefono"
                     floatingLabelText="Telefono"
                     value={this.state.telefono}
                     onChange={this.onTelefonoChange}
-                    errorText={this.state.errorTelefono}
+                    onKeyDown={this.onKeypressTelefono}
                         /><br />
                                 <TextField
                     hintText="Cedula"
                     floatingLabelText="Cedula"
                     value={this.state.cedula}
                     onChange={this.onCedulaChange}
-                    errorText={this.state.errorCedula}
+                    onKeyDown={this.onKeypressCedula}
                         /><br />
                   Nacionalidad:
                   <DropDownMenu value={this.state.nacionalidad} onChange={this.onNacionalidadChange}>
@@ -241,6 +228,7 @@ export default class UpdateClienteForm extends React.Component
                     value={this.state.mail}
                     onChange={this.onMailChange}
                     errorText={this.state.errorMail}
+                    onKeyDown={this.onKeypressMail}
                         /><br />
                         
                     </form>

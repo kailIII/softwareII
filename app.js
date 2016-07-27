@@ -44,7 +44,7 @@ app.use('/api/habitaciones', habitaciones);
 app.use('/api/tipos_habitacion',tipos_habitacion);
 app.use('/api/clientes', clientes);
 
-models.sequelize.sync().then(function () {
+models.sequelize.sync(/*{force:true}*/).then(function () {
     "use strict"
     app.listen(port, function () {
         console.log('Application listening on  port ' + config.port);

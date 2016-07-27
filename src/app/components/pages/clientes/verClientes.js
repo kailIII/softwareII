@@ -16,7 +16,7 @@ import UpdateClienteForm from './update_cliente';
 
 const showCheckB = false;
 var divTableStyle = {
-  padding:'10%',
+  padding:'5%',
   background:blue50
 
 };
@@ -266,7 +266,7 @@ export default class VerClientes extends Component {
               >
                 <TableRow>
                   <TableHeaderColumn colSpan="6" style={{textAlign: 'center'}}>
-                    <span style={{color: darkBlack}}><h3>Clientes</h3></span>
+                    <span style={{color: darkBlack}}><h2>Clientes</h2></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Cliente" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
