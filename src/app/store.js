@@ -8,30 +8,29 @@ import rooms from './data/rooms';
 import guests from './data/guests';
 import payments from './data/payments';
 import clients from './data/clients';
+import reservations from './data/reservations';
 
 import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
-
+const today = new Date()
 const defaultState = {
     rooms: rooms,
     guests: guests,
     payments: payments,
     clients: clients,
+    reservations: reservations,
+
     spreadsheet: {
-        newReservation:  {
+        latestReservation:  {
             roomIndex: -1,
+            roomNumber: -1,
             startIndex: -1,
-            endIndex: -1,
-        },
-        roomInfo: {
-            roomIndex: -1,
-            dayIndex: -1,
+            totalDays: -1,
             clientName: '',
-            startDate: new Date(),
-            endDate: new Date(),
         },
+        reservationIndex: 0,
         status: SpreadsheetStatus.normal,
-        firstDate: new Date(),
-        totalDays: 7,
+        firstDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
+        totalDays: 12,
     },
 
 };

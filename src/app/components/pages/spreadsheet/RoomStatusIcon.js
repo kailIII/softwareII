@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import {
-    purple500,
+    cyan700,
 } from 'material-ui/styles/colors'
 import * as RoomTypes from '../../../../../constants/RoomTypes.js';
 
@@ -11,17 +11,20 @@ class RoomStatusIcon extends React.Component {
 
 
     getIcon(){
+        //style to center the avatar. lineHeight is 40 because the avatar from material-ui
+        // has height of 40px
+        const centerStyle = {margin: 'auto', display: 'block', textAlign:'center', lineHeight:'40px'}
         switch(this.props.roomStatus){
         case RoomTypes.disponible:
             return (<div />)
         case RoomTypes.reservado:
-            return (<Avatar backgroundColor={purple500} >R</Avatar>)
+            return (<Avatar style={centerStyle} backgroundColor={cyan700} >R</Avatar>)
         case RoomTypes.ocupado:
-            return (<Avatar backgroundColor={purple500} >O</Avatar>)
+            return (<Avatar style={centerStyle} backgroundColor={cyan700} >O</Avatar>)
         case RoomTypes.sucio:
-            return (<Avatar backgroundColor={purple500} >S</Avatar>)
+            return (<Avatar backgroundColor={cyan700} >S</Avatar>)
         case RoomTypes.mantenimiento:
-            return (<Avatar backgroundColor={purple500} >M</Avatar>)
+            return (<Avatar backgroundColor={cyan700} >M</Avatar>)
         }
 
         return (<p>RIP</p>)

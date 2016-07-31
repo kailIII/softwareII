@@ -2,67 +2,43 @@ import SpreadsheetStatus from '../../../constants/SpreadsheetStatus.js'
 
 const defaultNewReservation = {
     roomIndex: -1,
+    roomNumber: 0,
     startIndex: -1,
-    endIndex: -1,
-}
-const defaultDisplayInfo = {
-    roomIndex: -1,
-    dayIndex: -1,
+    totalDays: -1,
     clientName: '',
-    startDate: new Date(),
-    endDate: new Date(),
 }
+
 
 function spreadsheet (state = [], action) {
     switch(action.type){
-    case 'ESCOGER_HABITACION':
+    case 'CREATE_NEW_RESERVATION':
         return {
             ...state,
-            status : SpreadsheetStatus.selectFecha,
-            newReservation : {
-                roomIndex: action.roomIndex,
-                startIndex: action.startIndex,
-                emdIndex: -1,
-            },
-            displayInfo: { ...defaultDisplayInfo },
-
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.reservationDialog,
         }
-        break;
-    case 'ESCOGER_INTERVALO':
-        return {
-            ...state,
-            status : SpreadsheetStatus.selectCliente,
-            newReservation: {
-                ...(state.newReservation),
-                endIndex: action.endIndex,
-            },
-
-        }
-        break;
     case 'CANCEL_NEW_RESERVATION':
+        return {
+            ...state,
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.normal,
+        }
     case 'NEW_RESERVATION':
         return {
             ...state,
-            newReservation:  { ...defaultNewReservation },
+            latestReservation:  { ...action.newReservation, roomId: action.roomId },
             status: SpreadsheetStatus.normal,
         }
     case 'DISPLAY_INFO':
         return {
             ...state,
-            roomInfo: {
-                roomIndex: action.roomIndex,
-                dayIndex: action.dayIndex,
-                clientName: action.clientName,
-                startDate: action.startDate,
-                endDate: action.endDate,
-            },
-            newReservation:  { ...defaultNewReservation },
+            displayReservationIndex: action.reservationIndex,
+            latestReservation:  { ...defaultNewReservation },
             status: SpreadsheetStatus.displayInfo,
         }
     case 'CANCEL_DISPLAY_INFO':
         return {
             ...state,
-            roomInfo:  { ...defaultDisplayInfo },
             status: SpreadsheetStatus.normal,
         }
     }

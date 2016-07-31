@@ -8,6 +8,7 @@ import {AppBar, List, Drawer, MenuItem, Dialog, FlatButton, RaisedButton} from '
 import { Route, Router } from 'react-router';
 import Link from 'react-router';
 import SpreadsheetStatus from '../../../constants/SpreadsheetStatus'
+import SpreadsheetMenu from './pages/spreadsheet/SpreadsheetMenu'
 
 
 export default class Header extends Component {
@@ -17,6 +18,7 @@ export default class Header extends Component {
         this.handleTouchTap = this.handleTouchTap.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.getRightIcon = this.getRightIcon.bind(this);
     }
 
     handleTouchTap() {
@@ -31,11 +33,20 @@ export default class Header extends Component {
     }
 
     handleClose() {
-        console.log(this);
         this.setState({
             open: false,
         });
 
+    }
+
+    getRightIcon(){
+        switch(this.props.currentRoute){
+        case '/home':
+            return (<SpreadsheetMenu
+              crearNuevaReservacion={this.props.crearNuevaReservacion}
+               />)
+        }
+        return <div />
     }
     render() {
 
@@ -45,7 +56,7 @@ export default class Header extends Component {
         return (
         <div>
             <AppBar
-              title = {titleString}
+              title = {titleString} iconElementRight={this.getRightIcon()}
               onLeftIconButtonTouchTap={this.handleToggle}
               />
 

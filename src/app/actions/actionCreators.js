@@ -6,10 +6,10 @@ export function escogerHabitacion(roomIndex, startIndex) {
     }
 }
 
-export function escogerIntervalo(endIndex) {
+export function escogerIntervalo(totalDays) {
     return  {
         type: 'ESCOGER_INTERVALO',
-        endIndex: endIndex,
+        totalDays: totalDays,
     }
 }
 
@@ -19,26 +19,57 @@ export function cancelarNuevaReservacion() {
     }
 }
 
-export function reservarHabitacion(newReservation) {
+export function crearNuevaReservacion() {
     return  {
-        type: 'NEW_RESERVATION',
-        newReservation: newReservation,
+        type: 'CREATE_NEW_RESERVATION',
     }
 }
 
-export function displayInfo(roomIndex, dayIndex, clientName, startDate, endDate) {
+export function reservarHabitacion(newReservation, roomId) {
+    return  {
+        type: 'NEW_RESERVATION',
+        newReservation: newReservation,
+        roomId: roomId,
+    }
+}
+
+export function displayInfo(reservationIndex) {
     return  {
         type: 'DISPLAY_INFO',
-        roomIndex: roomIndex,
-        dayIndex: dayIndex,
-        clientName: clientName,
-        startDate: startDate,
-        endDate: endDate,
+        reservationIndex: reservationIndex,
     }
 }
 
 export function cancelarDisplayInfo() {
     return  {
         type: 'CANCEL_DISPLAY_INFO',
+    }
+}
+
+export function checkIn(reservationIndex) {
+    return  {
+        type: 'CHECK_IN',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function checkOut(reservationIndex) {
+    return  {
+        type: 'CHECK_OUT',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function undoCheckIn(reservationIndex) {
+    return  {
+        type: 'UNDO_CHECK_IN',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function undoCheckOut(reservationIndex) {
+    return  {
+        type: 'UNDO_CHECK_OUT',
+        reservationIndex: reservationIndex,
     }
 }
