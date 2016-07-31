@@ -16,7 +16,7 @@ import EditSuiteModal from './EditSuite';
 
 const showCheckB = false;
 var divTableStyle = {
-  padding:'10%',
+  padding:'5%',
   background:blue50
 };
 
@@ -44,7 +44,7 @@ export default class Suites extends Component {
     this.handleDeleteOpen = this.handleDeleteOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
-    this.componentDidMount = this.componentDidlMount.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleAddSuite = this.handleAddSuite.bind(this);
     this.handleEditSuite = this.handleEditSuite.bind(this);
     this.handleDeleteSuite = this.handleDeleteSuite.bind(this);
@@ -66,12 +66,11 @@ export default class Suites extends Component {
     var editSuite = this.refs['EditSuite'];
     this.setState({currentSuite: suite}); 
     editSuite.setState({
-      nombre: suite.nombre,
+      numero: suite.numero,
       tipo:suite.tipo,
       capacidad:suite.capacidad,
       estado:suite.estado,
-      oldName:suite.nombre,
-      tarifa:suite.tarifa
+      oldNumero:suite.numero
     });
     editSuite.handleEditOpen();
   }
@@ -105,7 +104,7 @@ export default class Suites extends Component {
         });
   };
 
-  componentDidlMount(){
+  componentDidMount(){
     var addSuite = this.refs["AddSuite"];
     var editSuite = this.refs["EditSuite"];
     addSuite.setState({suites: this.state.suites});
@@ -122,15 +121,14 @@ export default class Suites extends Component {
             async: false,
             cache: false,
             data:{
-                nombreHabitacion: addSuite.state.nombre,
+                numeroHabitacion: addSuite.state.numero,
                 tipoHabitacion: addSuite.state.tipo,
                 capacidad: addSuite.state.capacidad,
                 estado: addSuite.state.estado,
-                tarifa: addSuite.state.tarifa
             }
         }).done(function (data) {
             if(data.success === true){
-                this.state.suites.push(data.suite);
+                this.state.suites.push(data.suite[0]);
                 this.setState({suites:this.state.suites});
                 addSuite.setState({
                   open:false, 
@@ -141,13 +139,10 @@ export default class Suites extends Component {
                 console.log("no se pudo crear el usuario");
             }
         });
-
-    //this.componentWillMount();
   }
 
   handleEditSuite(){
     var editSuite = this.refs["EditSuite"];
-    console.log(this.state.currentSuite.id_habitacion);
     $.ajax({
             context: this,
             url: '/api/habitaciones/update',
@@ -157,22 +152,20 @@ export default class Suites extends Component {
             cache: false,
             data:{
                 suiteId: this.state.currentSuite.id_habitacion,
-                nombreHabitacion: editSuite.state.nombre,
+                numeroHabitacion: editSuite.state.numero,
                 tipoHabitacion: editSuite.state.tipo,
                 capacidad: editSuite.state.capacidad,
-                estado: editSuite.state.estado,
-                tarifa: editSuite.state.tarifa
+                estado: editSuite.state.estado
             }
         }).done(function (data) {
             if(data.success == true){
 
                 this.state.suites.map( function (suite){
                   if(suite.id_habitacion === this.state.currentSuite.id_habitacion){
-                    suite.nombre = data.suite.nombre;
-                    suite.tipo = data.suite.tipo;
-                    suite.estado = data.suite.estado;
-                    suite.capacidad = data.suite.capacidad;
-                    suite.tarifa = data.suite.tarifa;
+                    suite.numero = data.suite[0].numero;
+                    suite.tipo = data.suite[0].tipo;
+                    suite.estado = data.suite[0].estado;
+                    suite.capacidad = data.suite[0].capacidad;
                   }
                   return suite;
                 }, this);
@@ -187,8 +180,6 @@ export default class Suites extends Component {
                 console.log("no se pudo editar el usuario");
             }
         });
-
-    //this.componentWillMount();
   }
 
   handleDeleteSuite(){
@@ -216,8 +207,6 @@ export default class Suites extends Component {
                 console.log("no se pudo eliminar");
             }
         });
-
-    //this.componentWillMount();
   }
 
   handleSnackClose(){
@@ -260,8 +249,8 @@ export default class Suites extends Component {
                 adjustForCheckbox={showCheckB}
               >
                 <TableRow>
-                  <TableHeaderColumn colSpan="5" style={{textAlign: 'center'}}>
-                    <span style={{color: darkBlack}}><h3>Habitaciones</h3></span>
+                  <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                    <span style={{color: darkBlack}}><h2>Habitaciones</h2></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Habitación" style={{textAlign: 'center'}}>
                     <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
@@ -271,11 +260,10 @@ export default class Suites extends Component {
                   </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
-                  <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
+                  <TableHeaderColumn style={headerTableStyle}>Numero</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Tipo</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Capacidad</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Estado</TableHeaderColumn>
-                  <TableHeaderColumn style={headerTableStyle}>Tarifa</TableHeaderColumn>
                   <TableHeaderColumn></TableHeaderColumn>
                 </TableRow>
               </TableHeader>
@@ -287,11 +275,10 @@ export default class Suites extends Component {
                   this.state.suites.map(function (suite,i){
                   return (
                       <TableRow key={i}>
-                      <TableRowColumn key={i} style={columnTableStyle}>{suite.nombre} </TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{suite.numero} </TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{suite.tipo}</TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{suite.capacidad}</TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{suite.estado}</TableRowColumn>
-                      <TableRowColumn key={i} style={columnTableStyle}>{suite.tarifa}</TableRowColumn>
                       <TableRowColumn style={columnTableStyle}>
                         <span>
                         {

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -8,7 +7,7 @@ import Snackbar from 'material-ui/Snackbar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class CreateClienteForm extends React.Component
+export default class UpdateClienteForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -19,12 +18,13 @@ export default class CreateClienteForm extends React.Component
             telefono: "",
             nacionalidad: "Ecuatoriana",
             mail:'',
+            errorMail:null,
             open: false,
             openSnack: false,
-            disable:false,
+            disable:false
         };
 
-        /*funciones utilizadas*/
+    /*funciones utilizadas*/
         this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
@@ -32,7 +32,7 @@ export default class CreateClienteForm extends React.Component
         this.onNacionalidadChange = this.onNacionalidadChange.bind(this);
         this.onTelefonoChange = this.onTelefonoChange.bind(this);
         this.onMailChange = this.onMailChange.bind(this);
-        this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleEditOpen = this.handleEditOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.onKeypressNombre = this.onKeypressNombre.bind(this);
@@ -53,18 +53,8 @@ export default class CreateClienteForm extends React.Component
         /*Validaciones*/
 
     }
-    handleAddOpen(){
-         this.setState({
-            open: true,
-            apellido:'',
-            nombre:'',
-            cedula: "",
-            telefono: "",
-            nacionalidad: "Ecuatoriana",
-            mail:'',
-            openSnack: false,
-            disable:false
-        });
+    handleEditOpen(){
+     this.setState({open: true});
     };
 
     handleClose(){
@@ -129,7 +119,7 @@ export default class CreateClienteForm extends React.Component
                 && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
         {
           event.preventDefault();  
-        }  
+        }
     }
 
     onKeypressMail(event){
@@ -173,7 +163,7 @@ export default class CreateClienteForm extends React.Component
             onTouchTap={this.handleClose}
           />,
           <FlatButton
-            label="Agregar"
+            label="Actualizar"
             primary={true}
             onTouchTap={this.props.onTouchTap}
             disabled={this.state.disabled}
@@ -183,7 +173,7 @@ export default class CreateClienteForm extends React.Component
         return (
             <div>
                 <Dialog
-                  title={"Nuevo Cliente"}
+                  title={"Editar Cliente"}
                   actions={actions}
                   modal={true}
                   open={this.state.open}
@@ -247,7 +237,7 @@ export default class CreateClienteForm extends React.Component
 
                 <Snackbar
                   open={this.state.openSnack}
-                  message="Agregado nuevo Cliente"
+                  message="Cliente actualizado"
                   autoHideDuration={4000}
                   onRequestClose={this.handleRequestClose}
                 />

@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes) {
         id_cliente: {type: DataTypes.INTEGER,
                      primaryKey: true, autoIncrement:true},
         nombre: DataTypes.STRING,
+        apellido: DataTypes.STRING,
         cedula: DataTypes.STRING,
         telefono: DataTypes.STRING,
         mail: DataTypes.STRING,

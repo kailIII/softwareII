@@ -20,6 +20,13 @@ const defaultState = {
             startIndex: -1,
             endIndex: -1,
         },
+        roomInfo: {
+            roomIndex: -1,
+            dayIndex: -1,
+            clientName: '',
+            startDate: new Date(),
+            endDate: new Date(),
+        },
         status: SpreadsheetStatus.normal,
         firstDate: new Date(),
         totalDays: 7,

@@ -14,37 +14,60 @@ for( let i = 1; i<=5; i++ ){
   items.push(<MenuItem value={i} primaryText={i} />);
 }
 
+var tipoItems = [];
+
 export default class EditSuiteModal extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
+      tipos: [],
       open: false,  
       openSnack: false,
-      nombre:"",
+      numero:"",
       tipo: "Single",
       capacidad:1,
       estado:"Limpia",
-      tarifa:0,
       suites:undefined,
-      nombreValido:null,
-      disabled:false,
-      oldName:"",
-      tarifaValido:null,
+      numeroValido:null,
+      disabled:true,
+      oldNumero:-1,
     };
+
     this.handleEditOpen = this.handleEditOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleChangeNombre = this.handleChangeNombre.bind(this);
+    this.handleChangeNumero = this.handleChangeNumero.bind(this);
     this.handleChangeTipo = this.handleChangeTipo.bind(this);
     this.handleChangeCapacidad = this.handleChangeCapacidad.bind(this);
     this.handleChangeEstado = this.handleChangeEstado.bind(this);
-    this.handleChangeTarifa = this.handleChangeTarifa.bind(this);
-    this.onKeypressTarifa = this.onKeypressTarifa.bind(this);
+    this.onKeypressNumero = this.onKeypressNumero.bind(this);
+  }
+
+  componentWillMount(){
+    $.ajax({
+      context: this,
+      url: '/api/tipos_habitacion/show',
+      dataType: 'json',
+      type: 'POST',
+      async: false,
+      cache: false,
+      
+    }).done(function (data){
+        console.log("TipoHabitaciones");
+        if(data !== null){
+          tipoItems.splice(0,tipoItems.length);
+          for(let i=0; i<data.length; i++){
+            this.state.tipos.push(data[i].tipo);
+            this.setState({tipos: this.state.tipos});
+            tipoItems.push(<MenuItem value={data[i].tipo} primaryText={data[i].tipo} />);
+          }
+        }
+    });
   }
 
   handleEditOpen(){
-    this.setState({open: true});
+    this.setState({open: true, tipo: this.state.tipos[0]});
   }  
 
   handleClose(){
@@ -55,24 +78,26 @@ export default class EditSuiteModal extends React.Component {
     this.setState({openSnack: false});
   }
 
-  handleChangeNombre(event, index, value){
+  handleChangeNumero(event, index, value){
     var error=null, disabled=false, exp="";
-    var oldName = this.state.oldName;
+    var oldNumero = this.state.oldNumero;
+    this.setState({numero: event.target.value});
     this.state.suites.map(function (suite){
-      if(suite.nombre !== oldName){
-        exp = new RegExp("^"+suite.nombre+"\\s*$","i"); 
-        if( exp.test(event.target.value)){
+      if(suite.numero !== oldNumero){
+        exp = new RegExp("^"+suite.numero+"\\s*$","i"); 
+        if(exp.test(event.target.value)){
           console.log("true");
-          error='Ya existe una Habitación con este nombre';
+          error='Ya existe una Habitación con este numero';
           disabled=true;
         }
       }
+      if(event.target.value == "") disabled=true;
       return suite;
     }, this);
+
     this.setState({
-      nombreValido:error, 
+      numeroValido:error, 
       disabled:disabled,
-      nombre:event.target.value
     });
   }
 
@@ -88,28 +113,18 @@ export default class EditSuiteModal extends React.Component {
     this.setState({estado: value});
   }
 
-  handleChangeTarifa(event, index, value){
-   var exp = /^\d+(\.\d{1,2})?$/i, empty = /^\s*$/i;
-   var error =null, disabled=false;
-
-   if(empty.test(event.target.value)){
-      error="Campo Requerido";
-      disabled=true;
-   }
-   else if(!exp.test(event.target.value)){
-    error="Error de formato";
-    disabled=true;
-   }
-   this.setState({tarifa:event.target.value, tarifaValido:error, disabled:disabled});
-  }
-
-  onKeypressTarifa(event){
+  onKeypressNumero(event){
     var chr = event.key;
     var exp = /^[0-9]$/i
     console.log(chr);
-    if (!exp.test(chr) && chr!=='Backspace' && chr!=='.') {
+    if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
       event.preventDefault();
-    }
+    }else if(this.state.numero.length>3 && chr !== 'Backspace' && chr!=='Tab' 
+                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+    {
+      event.preventDefault();  
+    } 
   }
 
   render() {
@@ -140,29 +155,19 @@ export default class EditSuiteModal extends React.Component {
 
             <div>
               <TextField
-                hintText="Nombre"
-                floatingLabelText="Nombre"
-                value={this.state.nombre}
-                errorText={this.state.nombreValido}
-                onChange={this.handleChangeNombre}
+                hintText="Numero"
+                floatingLabelText="Numero"
+                value={this.state.numero}
+                errorText={this.state.numeroValido}
+                onChange={this.handleChangeNumero}
+                onKeyDown={this.onKeypressNumero}
               /><br />
               <br />
               Tipo:
               <DropDownMenu value={this.state.tipo} onChange={this.handleChangeTipo}>
-              
-                  <MenuItem  value={"Single"} primaryText="Single" />
-                  <MenuItem  value={"Twin"} primaryText="Twin" />
+                  {tipoItems}
               </DropDownMenu>
-              <br />
-              <TextField
-                hintText="Tarifa"
-                floatingLabelText="Tarifa"
-                value={this.state.tarifa}
-                errorText={this.state.tarifaValido}
-                onChange={this.handleChangeTarifa}
-                onKeyDown={this.onKeypressTarifa}
-              />
-              <br />
+              
               Capacidad:
               <DropDownMenu value={this.state.capacidad} onChange={this.handleChangeCapacidad}>
                  {items}

@@ -8,5 +8,5 @@ const days = [
     K.disponible,
     K.reservado,
 ]
-
+    
 module.exports = days;

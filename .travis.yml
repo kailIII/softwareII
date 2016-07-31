@@ -4,8 +4,8 @@ node_js:
 
 
 before_script:
-  - "npm run build;node app.js & "
+  - "npm run build;npm install -g mocha;npm install express;npm install request;npm install glob;npm install superagent;node app.js & "
 
-script: "npm test"
+script: "mocha"
 
 after_script: "killall -f node"

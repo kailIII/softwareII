@@ -1,18 +1,19 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Habitacion = sequelize.define('Habitacion', {
-      id_habitacion: {type: DataTypes.INTEGER,
-		      primaryKey: true,
-		      autoIncrement: true
-		     },
-    nombre: DataTypes.STRING,
-    tipo:DataTypes.STRING,
+    id_habitacion: {type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+       },
+    numero: DataTypes.INTEGER,
     capacidad: DataTypes.INTEGER,
-    estado: DataTypes.STRING,
-    tarifa:DataTypes.FLOAT,
-      fk_local: {type: DataTypes.INTEGER,
+    estado: DataTypes.STRING, 
+    fk_local: {type: DataTypes.INTEGER,
 		 references: 'Local',
-		 referencesKey: 'id_local'}
+		 referencesKey: 'id_local'},
+    fk_tipo: {type: DataTypes.INTEGER,
+     references: 'Habitacion_Tipo',
+     referencesKey: 'id_habitacion_tipo'}
   },{
              timestamps: false,
 

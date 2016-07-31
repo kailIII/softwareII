@@ -40,25 +40,25 @@ export default class Header extends Component {
     render() {
 
         let titleString = "Hotel Tabuba"
-        if(this.props.spreadSheetStatus == SpreadsheetStatus.selectFecha)
+        if(this.props.spreadSheetStatus === SpreadsheetStatus.selectFecha)
             titleString = "Selecciona la fecha final de la reservación"
         return (
-            <div>
-              <AppBar
-                  title = {titleString}
-                  onLeftIconButtonTouchTap={this.handleToggle}
+        <div>
+            <AppBar
+              title = {titleString}
+              onLeftIconButtonTouchTap={this.handleToggle}
               />
 
-              <Drawer
-                  docked={false}
-                  open={this.state.open}
-                  onRequestChange={(open) => this.setState({open})}>
-                <List><MenuItem onTouchTap={this.handleClose} linkButton href="/#/home">Reservar Habitación</MenuItem>
+            <Drawer
+              docked={false}
+              open={this.state.open}
+              onRequestChange={(open) => this.setState({open})}>
+            <List><MenuItem onTouchTap={this.handleClose} linkButton href="/#/home">Reservar Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#clientes/"  >Clientes</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/habitaciones"  >Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/tipo-habitacion"   value="/tipo-habitacion">Tipos de Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/usuario"   linkButton={true}>usuarios</MenuItem>
-		  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/payments"   linkButton={true}>Pagos</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/payments"   linkButton={true}>Pagos</MenuItem>
               </List>
             </Drawer>
 
