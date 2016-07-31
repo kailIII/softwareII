@@ -24,7 +24,7 @@ export default class CreateClienteForm extends React.Component
             disable:false,
         };
 
-	/*funciones utilizadas*/
+        /*funciones utilizadas*/
         this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);

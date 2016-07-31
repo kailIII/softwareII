@@ -13,24 +13,24 @@ import Divider from 'material-ui/Divider';
 import {blue50, cyan400} from 'material-ui/styles/colors';
 
 const paperStyle = {
-  height: 400,
-  width: 400,
-  top: '50%',
-  left: '50%',
-  marginTop:-200,
-  marginLeft:-200,
-  textAlign: 'center',
-  display: 'inline-block',
-  position:'fixed',
+    height: 400,
+    width: 400,
+    top: '50%',
+    left: '50%',
+    marginTop:-200,
+    marginLeft:-200,
+    textAlign: 'center',
+    display: 'inline-block',
+    position:'fixed',
 };
 
 const cardHeaderStyle = {
-  textAlign: 'center',
-  background: blue50,
+    textAlign: 'center',
+    background: blue50,
 };
 export default class LoginForm extends React.Component{
     /*@Constructor
-      @params: props*/
+       @params: props*/
     constructor(props){
         super(props);
         this.state={
@@ -46,9 +46,9 @@ export default class LoginForm extends React.Component{
     }
 
     /*@function: tests if the username s state has the needed pattern
-      @params: event->value of state username
-      @return: nil
-    */
+       @params: event->value of state username
+       @return: nil
+     */
     validarUsuario(event){
         const username = event.target.value;
         const alphanumeric = /^[a-z0-9]+$/i;
@@ -102,45 +102,45 @@ export default class LoginForm extends React.Component{
         console.log(this.props.route);
     }
     render(){
-      return (
-        <div>
-                                <AppBar
-                                                title="Hotel Tabuba"
-                                                showMenuIconButton = {false}
-                                />
-                                <Card>
+        return (
+            <div>
+              <AppBar
+                  title="Hotel Tabuba"
+                  showMenuIconButton = {false}
+              />
+              <Card>
 
-                                                <CardMedia>
-                                                                <img src='images/login-background/tabubaHostal.jpg' />
+                <CardMedia>
+                  <img src='images/login-background/tabubaHostal.jpg' />
                                                 </CardMedia>
                                 </Card>
 
                                 <Paper style={paperStyle} zDepth={1} >
-                                                <h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
-                                                <Divider/>
-                                                <br/>
-                                                <br/>
-                                                <TextField
-                                                                hintText="Username"
-                                                                value={this.state.username}
-                                                                floatingLabelFixed={true}
-                                                                onChange={this.onUsernameChange}
-                                                                value={this.state.username}
-                                                                errorText={this.state.errorUsername}
-                                                />
-                                                <br/>
-                                                <TextField
-                                                                hintText="Password"
-                                                                type="password"
-                                                                value={this.state.password}
-                                                                onChange={this.onPasswordChange}
-                                                /><br />
-                                                <RaisedButton label="Login" primary={true}
-                                        onClick={this.onLoginSubmit}
-                                />
+                                  <h3 style={{color:cyan400}}>Iniciar sesi&oacute;n</h3>
+                                  <Divider/>
+                                  <br/>
+                                  <br/>
+                                  <TextField
+                                      hintText="Username"
+                                      value={this.state.username}
+                                      floatingLabelFixed={true}
+                                      onChange={this.onUsernameChange}
+                                      value={this.state.username}
+                                      errorText={this.state.errorUsername}
+                                  />
+                                  <br/>
+                                  <TextField
+                                      hintText="Password"
+                                      type="password"
+                                      value={this.state.password}
+                                      onChange={this.onPasswordChange}
+                                  /><br />
+                                  <RaisedButton label="Login" primary={true}
+                                                onClick={this.onLoginSubmit}
+                                  />
                         </Paper>
 
-                </div>
+            </div>
         );
 
     }

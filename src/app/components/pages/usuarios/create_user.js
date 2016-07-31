@@ -40,7 +40,7 @@ export default class CreateUserForm extends React.Component
         this.handleClose = this.handleClose.bind(this);
     }
     handleAddOpen(){
-        this.setState({open: true, modalTitle:'Crear Cliente'});
+        this.setState({open: true, modalTitle:'Crear Usuario'});
     };
 
     handleEditOpen(){
@@ -71,7 +71,7 @@ export default class CreateUserForm extends React.Component
         const usernameIsValid = alphanumeric.test(username);
         var error;
 
-        if (usernameIsValid) {
+        if (usernameIsValid || username === "") {
             error = null;
             if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
                 this.setState({disabled:false});
@@ -89,7 +89,7 @@ export default class CreateUserForm extends React.Component
         const usernameIsValid = alphanumeric.test(username);
         var error;
 
-        if (usernameIsValid) {
+        if (usernameIsValid || username === "") {
             error = null;
             if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
                 this.setState({disabled:false});
@@ -107,7 +107,7 @@ export default class CreateUserForm extends React.Component
         const usernameIsValid = alphanumeric.test(username);
         var error;
 
-        if (usernameIsValid) {
+        if (usernameIsValid || username === "") {
             error = null;
             if(this.state.errorApellido === null && this.state.errorNombre === null && this.state.errorUsuario=== null){
                 this.setState({disabled:false});
@@ -152,30 +152,7 @@ export default class CreateUserForm extends React.Component
         //console.log(this.state);
     }
 
-    componentDidMount() {
-        /*        $.ajax({
-           url: this.props.url,
-           dataType: 'json',
-           type: 'POST',
-           cache: false,
-           data:{
-           username: this.state.username,
-           password: this.state.password,
-           apellido: this.state.apellido,
-           nombre: this.state.nombre,
-           rol: this.state.rol.name
-           },
-           success: function(data) {
-           console.log(data);
-           console.log("se creo el nuevo usuario en la base.");
-
-           }.bind(this),
-           error: function(xhr, status, err) {
-           console.error(this.props.url, status, err.toString());
-           }.bind(this)
-           });*/
-        console.log("cargo formulario");
-    }
+    componentDidMount() {}
     render(){
         const actions = [
             <FlatButton
@@ -206,24 +183,28 @@ export default class CreateUserForm extends React.Component
                             value={this.state.nombre}
                             onChange={this.onNameChange}
                             errorText={this.state.errorNombre}
+			    maxLength="30"
                         /><br />
                         <TextField
                             hintText="Apellido Completo"
                             value={this.state.apellido}
                             onChange={this.onLastNameChange}
                             errorText={this.state.errorApellido}
+			    maxLength="30"
                         /><br />
                         <TextField
-                            hintText="Username"
+                            hintText="Usuario"
                             value={this.state.username}
                             onChange={this.onUsernameChange}
                             errorText={this.state.errorUsuario}
+			    maxLength="20"
                         /><br />
                         <TextField
                             hintText="Password"
                             type="password"
                             value={this.state.password}
                             onChange={this.onPasswordChange}
+			    maxLength="20"
                         /><br />
                         <SelectField maxHeight={300} value={this.state.rol.value} onChange={this.onRolChange}>
                             <MenuItem value={1} primaryText="ADMINISTRADOR" />

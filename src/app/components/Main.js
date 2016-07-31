@@ -58,12 +58,13 @@ export default class Header extends Component {
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/habitaciones"  >Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/tipo-habitacion"   value="/tipo-habitacion">Tipos de Habitación</MenuItem>
                   <MenuItem onTouchTap={this.handleClose} linkButton href="/#/usuario"   linkButton={true}>usuarios</MenuItem>
+                  <MenuItem onTouchTap={this.handleClose} linkButton href="/#/payments"   linkButton={true}>Pagos</MenuItem>
               </List>
             </Drawer>
 
             {this.props.children}
-        </div>
-    );
+            </div>
+        );
     }
 }
 

@@ -48,10 +48,10 @@ class RoomCell extends React.Component {
 
     render (){
         return (
-			       <TableRowColumn onTouchTap={this.onRoomCellClicked}>
-					        <RoomStatusIcon roomStatus={this.props.roomStatus}/>
-			       </TableRowColumn>
-	  )}
+                               <TableRowColumn onTouchTap={this.onRoomCellClicked}>
+                                                <RoomStatusIcon roomStatus={this.props.roomStatus}/>
+                               </TableRowColumn>
+          )}
 }
 
 class Sidebar extends React.Component {
@@ -126,8 +126,8 @@ class RoomTable extends ResizableComponent {
 
         return (
           <div>
-  					<Table height={this.state.height} selectable={false} fixedHeader={true}>
-  						<TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                                        <Table height={this.state.height} selectable={false} fixedHeader={true}>
+                                                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
                   <TableHeaderColumn key={-1} style={firstHeaderStyle}></TableHeaderColumn>
                   { columns.map(function(it, i) {
@@ -139,34 +139,34 @@ class RoomTable extends ResizableComponent {
                   }
                 </TableRow>
               </TableHeader>
-  						<TableBody displayRowCheckbox={false}>
-  								{this.props.rooms.map(function (roomData, i) {
+                                                <TableBody displayRowCheckbox={false}>
+                                                                {this.props.rooms.map(function (roomData, i) {
                       return (
-  												<TableRow  key={roomData.roomId}>
-  													<TableRowColumn key={-1} style={this.getRoomNumberStyle()}>
-  														<div >{roomData.roomId}</div>
-  													</TableRowColumn>
+                                                                                                <TableRow  key={roomData.roomId}>
+                                                                                                        <TableRowColumn key={-1} style={this.getRoomNumberStyle()}>
+                                                                                                                <div >{roomData.roomId}</div>
+                                                                                                        </TableRowColumn>
 
-  												{roomData.days.map(function(status, j) {
+                                                                                                {roomData.days.map(function(status, j) {
                               const roomIsSelected = i === this.props.newReservation.roomIndex
                               const openRoomInfo = () =>
                               { this.props.displayInfo(i, j, 'Gabriela Garcia',
                               new Date(), new Date())  }
-  															return (
-  																<RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
+                                                                                                                        return (
+                                                                                                                                <RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
                                     roomStatus={status} roomIndex={i}
                                       roomIsSelected={roomIsSelected}
                                       spreadsheetStatus={this.props.status}
                                       startIndex={this.props.newReservation.startIndex}
                                       escogerIntervalo={this.props.escogerIntervalo}
-  																	escogerHabitacion={this.props.escogerHabitacion}/>)
-  														}, this)
-  													}
-  												</TableRow>)
-  									}, this)
-  								}
-  						</TableBody>
-  					</Table>
+                                                                                                                                        escogerHabitacion={this.props.escogerHabitacion}/>)
+                                                                                                                }, this)
+                                                                                                        }
+                                                                                                </TableRow>)
+                                                                        }, this)
+                                                                }
+                                                </TableBody>
+                                        </Table>
             <Sidebar rooms={this.props.rooms} roomInfo={this.props.roomInfo}
               cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status} />
             <NewReservationDialog open={this.props.status === SpreadsheetStatus.selectCliente}

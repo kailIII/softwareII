@@ -16,6 +16,7 @@ import Suites from './components/pages/habitacion/Suites';
 import VerClientes from './components/pages/clientes/verClientes';
 import LoginForm from './components/Login';
 import spreadsheet from './components/pages/spreadsheet/SpreadsheetController'
+import show_payments from './components/pages/payments/payments_controller'
 import { Provider } from 'react-redux'
 import store, { history } from './store'
 
@@ -24,15 +25,16 @@ class AppRoutes extends React.Component {
         return (
             <Provider store={store}>
                 <Router history={history}>
-                    <Route path="/" component={LoginForm}/>
-                    <Route path="/main" component={Header} >
-                        <Route path="/home" component={spreadsheet}/>
-                        <Route path="/usuario" component={Mostrar_Usuarios}/>
-                        <Route path="/usuario/crear" component={Crear_Usuario}/>
-                        <Route path="/usuario/editar" component={Editar_Usuario}/>
-                        <Route path="/tipo-habitacion" component={RoomTypesShow}/>
-                        <Route path="/habitaciones" component={Suites}/>
-                        <Route path="/clientes" component={VerClientes}/>
+                                        <Route path="/" component={LoginForm}/>
+                                        <Route path="/main" component={Header} >
+                                                <Route path="/home" component={spreadsheet}/>
+                                                <Route path="/usuario" component={Mostrar_Usuarios}/>
+                      <Route path="/usuario/crear" component={Crear_Usuario}/>
+                      <Route path="/usuario/editar" component={Editar_Usuario}/>
+                      <Route path="/tipo-habitacion" component={RoomTypesShow}/>
+                      <Route path="/habitaciones" component={Suites}/>
+                      <Route path="/clientes" component={VerClientes}/>
+                      <Route path="/payments" component={show_payments}/>
                   </Route>
                 </Router>
             </Provider>)
