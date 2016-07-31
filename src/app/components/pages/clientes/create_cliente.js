@@ -124,7 +124,7 @@ export default class CreateClienteForm extends React.Component
     }
     validarNacionalidad(event){
         const username = event.target.value;
-        const alphanumeric = /^[0-9]+$/i;
+        const alphanumeric = /^[a-zA-Z]+$/i;
         const usernameIsValid = alphanumeric.test(username);
         var error;
 

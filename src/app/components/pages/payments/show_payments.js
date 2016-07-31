@@ -37,10 +37,12 @@ const headerTableStyle = {
 class Show_Payments extends React.Component {
     constructor(props){
         super(props);
-        this.state = {open: false,}
+        this.state = {open: false,
+                      addOpen: false,}
         this.handleClick = this.handleClick.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.update = this.update.bind(this);
         this.handleShowPayments = this.handleShowPayments.bind(this);
         this.iconButtonElement = (
             <IconButton
@@ -50,8 +52,14 @@ class Show_Payments extends React.Component {
               <MoreVertIcon color={grey400} /></IconButton>
         );
     }
+    update(){
+        this.forceUpdate();
+    }
     handleAddOpen() {
-        console.log("add new payment to guest");
+        this.setState({addOpen: true});
+        this.refs['create_payment'].setState({cedula: -1});
+        this.refs['create_payment'].handleAddOpen();
+
     }
 
     componentWillMount() {
@@ -61,17 +69,27 @@ class Show_Payments extends React.Component {
     handleShowPayments() {
     }
     handleClick(){
-        this.props.addPayment("o8989",100,"adasd");
+
         return true;
     }
 
     render() {
-        let guests = Array(this.props.guests);
-        let payments = Array(this.props.payments);
-	console.log(this.props.payments);
-        for(var i = 0; i < guests.length; i++) {
-            for(var j = 0; j < payments.length; j++) {
-                console.log(i);
+        console.log("render mostrar pagos");
+        let guests = this.props.guests;
+        let payments = this.props.payments;
+        let guest_payment = new Array();
+        for(let i = 0; i < guests.length; i++) {
+            guest_payment[guests[i].cedula] = 0;
+        }
+        for(let i = 0; i < guests.length; i++) {
+            for(let j = 0; j < payments.length; j++) {
+                if (guests[i]["cedula"]=== payments[j]["cedula"]) {
+                    if (payments[j].pagado === false) {
+                        guest_payment[guests[i].cedula] += payments[j].valor;
+                    }
+
+
+                }
             }
         };
 
@@ -89,26 +107,16 @@ class Show_Payments extends React.Component {
         ];
 
         return (
-
-
             <div>
-              <CreatePaymentForm ref='create_payment' url='/#/null'  onTouchTap={null} />
-              <Dialog
-                  title="Eliminar pago"
-                  actions={actions}
-                  modal={true}
-                  open={this.state.open}>
-                Esta seguro que desea eliminar este pago?
-                </Dialog>
-                <div style={divTableStyle}>
-                  <Table onRowSelection={this.onRowSelection}>
-
-                    <TableHeader
-                        displaySelectAll={showCheckB}
-                        adjustForCheckbox={showCheckB}>
-                      <TableRow>
-                        <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                          <span style={{color: darkBlack}}><h3>Pagos</h3></span>
+              <CreatePaymentForm ref="create_payment" guests={this.props.guests} payments={this.props.payments} update={this.update}/>
+              <div style={divTableStyle}>
+                <Table onRowSelection={this.onRowSelection}>
+                  <TableHeader
+                      displaySelectAll={showCheckB}
+                      adjustForCheckbox={showCheckB}>
+                    <TableRow>
+                      <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                        <span style={{color: darkBlack}}><h3>Pagos</h3></span>
                 </TableHeaderColumn>
                 <TableHeaderColumn colSpan="1" tooltip="Agregar Pago" style={{textAlign: 'center'}}>
                   <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
@@ -120,7 +128,8 @@ class Show_Payments extends React.Component {
                 <TableRow>
                   <TableHeaderColumn>Cliente</TableHeaderColumn>
                   <TableHeaderColumn>Identificacion</TableHeaderColumn>
-                  <TableHeaderColumn>Mostrar Pagos</TableHeaderColumn>
+                  <TableHeaderColumn>Total de pagos a realizar</TableHeaderColumn>
+                  <TableHeaderColumn>Mostrar desglose de Pagos</TableHeaderColumn>
                 </TableRow>
                 </TableHeader>
 
@@ -131,26 +140,27 @@ class Show_Payments extends React.Component {
                            <TableRow key={i}>
                              <TableRowColumn key={i}>{guest.nombre}</TableRowColumn>
                              <TableRowColumn key={i}>{guest.cedula}</TableRowColumn>
+                             <TableRowColumn key={i}>{guest_payment[guest.cedula]}</TableRowColumn>
                              <TableRowColumn><span>
                                <ShowPaymentsForm
-				   payments ={this.props.payments}
-				   cedula = {guest["cedula"]}
-				   nombre_guest ={guest["nombre"]}
-			       />
+                                   payments ={this.props.payments}
+                                   cedula = {guest["cedula"]}
+                                   nombre_guest ={guest["nombre"]}
+                               />
                              </span></TableRowColumn>
                             </TableRow>
                        );
                    },this)}
             </TableBody>
             </Table>
-                </div>
+              </div>
 
-                <Snackbar
-                    open={false}
-                    message={null}
-                    autoHideDuration={1500}
-                    onRequestClose={null}
-                />
+              <Snackbar
+                  open={false}
+                  message={null}
+                  autoHideDuration={1500}
+                  onRequestClose={null}
+              />
             </div>
         );
     }
