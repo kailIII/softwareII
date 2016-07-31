@@ -8,6 +8,7 @@ import roomTable from './RoomTable.js';
 function mapStateToProps(state) {
     return {
         rooms: state.rooms,
+        reservations: state.reservations,
         newReservation: state.spreadsheet.newReservation,
         roomInfo: state.spreadsheet.roomInfo,
         status: state.spreadsheet.status,

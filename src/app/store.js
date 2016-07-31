@@ -6,12 +6,14 @@ import rootReducer from './reducers/index';
 
 import rooms from './data/rooms';
 import guests from './data/guests';
+import reservations from './data/reservations';
 
 import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
 
 const defaultState = {
     rooms: rooms,
     guests: guests,
+    reservations: reservations,
 
     spreadsheet: {
         newReservation:  {
