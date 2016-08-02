@@ -62,25 +62,32 @@ class Sidebar extends React.Component {
     }
 
     render(){
-        const info = this.props.roomInfo
-        if(info.roomIndex === -1)
-            return(<Drawer open={false} openSecondary={true}/>)
+        const nodata = (<Drawer open={false} openSecondary={true}/>)
+        if(this.props.reservations.length === 0)
+            return nodata
 
-        const room = this.props.rooms[info.roomIndex]
-        const title = `Habitación #${room.roomId}`
-        const dayStatus = room.days[info.dayIndex]
+        const reservation = this.props.reservations[this.props.reservationIndex]
+        if(!reservation)
+            return nodata
+
+        const clientName = reservation.clientName
+        const title = `Habitación #${reservation.roomIndex + 1}` //HACK
+        const dayStatus = reservation.status
 
         let subtitle, checkboxLabel
-        if(dayStatus === RoomTypes.ocupado){
-            subtitle = 'Ocupado por:'
-            checkboxLabel = "Checked-out"
-        } else if(dayStatus === RoomTypes.reservado){
+        if(dayStatus === ReservationStatus.waiting){
             subtitle = 'Reservado para:'
             checkboxLabel = "Checked-in"
+        } else {
+            subtitle = 'Ocupado por:'
+            checkboxLabel = "Checked-out"
         }
 
-        const desde = dateformat(info.startDate, "dddd, mmmm dS")
-        const hasta = dateformat(info.endDate, "dddd, mmmm dS")
+        const startDate = this.props.indexToDate(reservation.startIndex)
+        const endDate = this.props.indexToDate(reservation.startIndex
+          + reservation.totalDays - 1)
+        const desde = dateformat(startDate, "dddd, mmmm dS")
+        const hasta = dateformat(endDate, "dddd, mmmm dS")
 
         //const useSecondary = (100 * info.dayIndex / room.days.length) < 50
         return(
@@ -91,7 +98,7 @@ class Sidebar extends React.Component {
           </ListItem>
           <Divider style={{marginTop: '15px'}}/>
           <Subheader>{subtitle}</Subheader>
-          <ListItem disabled={true} style={{textAlign:'center'}}>{info.clientName}</ListItem>
+          <ListItem disabled={true} style={{textAlign:'center'}}>{clientName}</ListItem>
           <Subheader>Desde: </Subheader>
           <ListItem disabled={true} style={{textAlign:'center'}}>{desde}</ListItem>
           <Subheader disabled={true}>Hasta: </Subheader>
@@ -135,16 +142,16 @@ class RoomTable extends ResizableComponent {
     * @return Un objeto con dos propiedades:
     * 'roomReservations' es una lista con todas las reservaciones de la habitacion.
     * 'updatedReservations' es una nueva lista de la forma
+    * 'offset' un entero con la posicion de la primera reservacion que no es
+    * de la habitacion deseada en el arreglo 'reservations'
     * (reservations - roomReservations)
     */
     getAllReservationsForRoom(reservations, roomIndex){
         const roomReservations = []
         let i
-        console.log(`reservs for #${roomIndex}: ${JSON.stringify(reservations)}`)
         if(reservations.length > 0)
             for(i = 0; reservations[i] && reservations[i].roomIndex <= roomIndex; i++){
                 const reserv = reservations[i]
-                console.log(`${roomIndex} got ${JSON.stringify(reserv)}`)
                 if(reserv.roomIndex === roomIndex)
                     roomReservations.push(reserv)
             }
@@ -152,6 +159,7 @@ class RoomTable extends ResizableComponent {
         return {
             updatedReservations: reservations.slice(i),
             roomReservations: roomReservations,
+            offset: i,
         }
     }
 
@@ -179,6 +187,9 @@ class RoomTable extends ResizableComponent {
     * 'status' es un valor de 'RoomTypes' con el estado de la habitacion.
     * 'updatedRoomReservations' es la misma lista de 'roomReservations' pero se
     * le sustraen todas las reservaciones que terminan en el dia de 'dayIndex'
+    * 'offset' un entero 1 o 0. Es 1 solo si dayIndex es el ultimo dia de la
+    * reservacion, lo cual quiere decir que updatedRoomReservations tiene un
+    * item menos que roomReservations.
     */
     getStatusForRoomDay(roomReservations, dayIndex){
         if(roomReservations.length > 0){
@@ -197,11 +208,13 @@ class RoomTable extends ResizableComponent {
                 return {
                     status: this.mapReservationStatusToRoomTypes(firstReservation.status),
                     updatedRoomReservations: updatedRR,
+                    offset: 1,
                 }
             } else if(firstReservationStart <= dayIndex) {
                 return {
                     status: this.mapReservationStatusToRoomTypes(firstReservation.status),
                     updatedRoomReservations: roomReservations,
+                    offset: 0,
                 }
             }
         }
@@ -209,6 +222,7 @@ class RoomTable extends ResizableComponent {
         return {
             status: RoomTypes.disponible,
             updatedRoomReservations: roomReservations,
+            offset: 0,
         }
     }
 
@@ -217,6 +231,7 @@ class RoomTable extends ResizableComponent {
         let i = 0;
         for(i = 0; i < columns.length; i++) columns[i] = 0
         let reservations = [ ...this.props.reservations ]
+        let roomOffset = 0
         return (
           <div>
   					<Table height={this.state.height} selectable={false} fixedHeader={true}>
@@ -238,6 +253,9 @@ class RoomTable extends ResizableComponent {
                       reservations = reservObject.updatedReservations
                       let roomReservations = reservObject.roomReservations
                       const roomIsSelected = i === this.props.newReservation.roomIndex
+                      const currentOffset = roomOffset
+                      roomOffset += reservObject.offset
+                      let reservOffset = 0
                       return (
   												<TableRow  key={roomData.roomId}>
   													<TableRowColumn key={-1} style={this.getRoomNumberStyle()}>
@@ -245,19 +263,19 @@ class RoomTable extends ResizableComponent {
   													</TableRowColumn>
 
   												{Array.apply(null, new Array(this.props.totalDays)).map(function(status, j) {
+                              const reservationIndex = currentOffset + reservOffset
                               const statusObject = this.getStatusForRoomDay(roomReservations, j)
                               roomReservations = statusObject.updatedRoomReservations
                               const dayStatus = statusObject.status
-                              console.log(`room #${i} is ${dayStatus} on ${j}. ${JSON.stringify(roomReservations)}`)
+                              reservOffset += statusObject.offset
                               const openRoomInfo = () =>
-                              { this.props.displayInfo(i, j, 'Gabriela Garcia',
-                              new Date(), new Date())  }
+                              { this.props.displayInfo(reservationIndex)  }
   															return (
   																<RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
                                     roomStatus={dayStatus} roomIndex={i}
                                       roomIsSelected={roomIsSelected}
                                       spreadsheetStatus={this.props.status}
-                                      startIndex={this.props.newReservation.startIndex}
+                                      startIndex={statusObject.startIndex}
                                       escogerIntervalo={this.props.escogerIntervalo}
   																	escogerHabitacion={this.props.escogerHabitacion}/>)
   														}, this)
@@ -267,7 +285,8 @@ class RoomTable extends ResizableComponent {
   								}
   						</TableBody>
   					</Table>
-            <Sidebar rooms={this.props.rooms} roomInfo={this.props.roomInfo}
+            <Sidebar reservations={this.props.reservations}
+            reservationIndex={this.props.displayReservationIndex} indexToDate={this.props.indexToDate}
               cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status} />
             <NewReservationDialog open={this.props.status === SpreadsheetStatus.selectCliente}
                 newReservation={this.props.newReservation}
