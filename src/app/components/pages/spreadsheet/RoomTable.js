@@ -41,7 +41,7 @@ class RoomCell extends React.Component {
         case SpreadsheetStatus.selectFecha:
             if(this.props.roomIsSelected && this.props.dayIndex >= this.props.startIndex
               && this.props.roomStatus === RoomTypes.disponible)
-                this.props.escogerIntervalo(this.props.dayIndex)
+                this.props.escogerIntervalo(this.props.dayIndex - this.props.startIndex + 1)
             else if(this.props.roomStatus !== RoomTypes.disponible)
                 this.props.openRoomInfo()
             break;
@@ -275,7 +275,7 @@ class RoomTable extends ResizableComponent {
                                     roomStatus={dayStatus} roomIndex={i}
                                       roomIsSelected={roomIsSelected}
                                       spreadsheetStatus={this.props.status}
-                                      startIndex={statusObject.startIndex}
+                                      startIndex={this.props.newReservation.startIndex}
                                       escogerIntervalo={this.props.escogerIntervalo}
   																	escogerHabitacion={this.props.escogerHabitacion}/>)
   														}, this)

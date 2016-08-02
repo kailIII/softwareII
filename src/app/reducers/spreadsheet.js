@@ -3,8 +3,10 @@ import SpreadsheetStatus from '../../../constants/SpreadsheetStatus.js'
 const defaultNewReservation = {
     roomIndex: -1,
     startIndex: -1,
-    endIndex: -1,
+    totalDays: -1,
+    clientName: '',
 }
+
 
 function spreadsheet (state = [], action) {
     switch(action.type){
@@ -15,7 +17,8 @@ function spreadsheet (state = [], action) {
             newReservation : {
                 roomIndex: action.roomIndex,
                 startIndex: action.startIndex,
-                emdIndex: -1,
+                totalDays: -1,
+                clientName: '',
             },
 
         }
@@ -26,7 +29,7 @@ function spreadsheet (state = [], action) {
             status : SpreadsheetStatus.selectCliente,
             newReservation: {
                 ...(state.newReservation),
-                endIndex: action.endIndex,
+                totalDays: action.totalDays,
             },
           }
         break;

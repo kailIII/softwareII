@@ -28,7 +28,7 @@ class NewReservationDialog extends React.Component {
 
     onGuardarBtnClick() {
         if(this.state.guestName.length > 3)
-            this.props.reservarHabitacion(this.props.newReservation)
+            this.props.reservarHabitacion(this.props.newReservation, this.state.guestName)
     }
 
     onInputUpdated(value) {
@@ -47,11 +47,12 @@ class NewReservationDialog extends React.Component {
         const selectedRoomId = this.props.rooms[newReservation.roomIndex].roomId
         let msg = "Reservar habitación #" + selectedRoomId + ' '
         const format = "fullDate"
+        const endIndex = newReservation.startIndex + newReservation.totalDays - 1
         if(newReservation.startIndex === newReservation.endIndex)
             msg += " el día " + dateformat(indexToDate(newReservation.startIndex), format) + " para: "
         else {
             const startDate = dateformat(indexToDate(newReservation.startIndex), format)
-            const endDate = dateformat(indexToDate(newReservation.endIndex), format)
+            const endDate = dateformat(indexToDate(endIndex), format)
             msg += " entre el " + startDate + " y " + endDate + " para:"
         }
 

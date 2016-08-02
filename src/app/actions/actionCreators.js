@@ -6,10 +6,10 @@ export function escogerHabitacion(roomIndex, startIndex) {
     }
 }
 
-export function escogerIntervalo(endIndex) {
+export function escogerIntervalo(totalDays) {
     return  {
         type: 'ESCOGER_INTERVALO',
-        endIndex: endIndex,
+        totalDays: totalDays,
     }
 }
 
@@ -19,10 +19,11 @@ export function cancelarNuevaReservacion() {
     }
 }
 
-export function reservarHabitacion(newReservation) {
+export function reservarHabitacion(newReservation, clientName) {
     return  {
         type: 'NEW_RESERVATION',
         newReservation: newReservation,
+        clientName: clientName,
     }
 }
 
