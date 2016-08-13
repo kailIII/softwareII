@@ -9,7 +9,7 @@ function mapStateToProps(state) {
     return {
         rooms: state.rooms,
         reservations: state.reservations,
-        newReservation: state.spreadsheet.newReservation,
+        latestReservation: state.spreadsheet.latestReservation,
         displayReservationIndex: state.spreadsheet.displayReservationIndex,
         status: state.spreadsheet.status,
         firstDate: state.spreadsheet.firstDate,

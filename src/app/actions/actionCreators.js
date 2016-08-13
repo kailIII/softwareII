@@ -19,11 +19,17 @@ export function cancelarNuevaReservacion() {
     }
 }
 
-export function reservarHabitacion(newReservation, clientName) {
+export function crearNuevaReservacion() {
+    return  {
+        type: 'CREATE_NEW_RESERVATION',
+    }
+}
+
+export function reservarHabitacion(newReservation, roomId) {
     return  {
         type: 'NEW_RESERVATION',
         newReservation: newReservation,
-        clientName: clientName,
+        roomId: roomId,
     }
 }
 
@@ -37,5 +43,33 @@ export function displayInfo(reservationIndex) {
 export function cancelarDisplayInfo() {
     return  {
         type: 'CANCEL_DISPLAY_INFO',
+    }
+}
+
+export function checkIn(reservationIndex) {
+    return  {
+        type: 'CHECK_IN',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function checkOut(reservationIndex) {
+    return  {
+        type: 'CHECK_OUT',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function undoCheckIn(reservationIndex) {
+    return  {
+        type: 'UNDO_CHECK_IN',
+        reservationIndex: reservationIndex,
+    }
+}
+
+export function undoCheckOut(reservationIndex) {
+    return  {
+        type: 'UNDO_CHECK_OUT',
+        reservationIndex: reservationIndex,
     }
 }

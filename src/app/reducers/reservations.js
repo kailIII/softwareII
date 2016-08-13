@@ -21,7 +21,6 @@ function reservations (state = [], action) {
     case 'NEW_RESERVATION':
         const newReservation = action.newReservation
         newReservation.status = ReservationStatus.waiting
-        newReservation.clientName = action.clientName
         const newPosition = getLastIndexOfRoom(state, newReservation.roomIndex,
           newReservation.startIndex)
 

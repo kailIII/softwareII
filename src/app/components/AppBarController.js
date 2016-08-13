@@ -5,9 +5,10 @@ import * as actionCreators from '../actions/actionCreators'
 
 import main from './Main';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
         spreadSheetStatus: state.spreadsheet.status,
+        currentRoute: ownProps.location.pathname,
     }
 }
 

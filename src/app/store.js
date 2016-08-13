@@ -9,23 +9,24 @@ import guests from './data/guests';
 import reservations from './data/reservations';
 
 import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
-
+const today = new Date()
 const defaultState = {
     rooms: rooms,
     guests: guests,
     reservations: reservations,
 
     spreadsheet: {
-        newReservation:  {
+        latestReservation:  {
             roomIndex: -1,
+            roomNumber: -1,
             startIndex: -1,
             totalDays: -1,
             clientName: '',
         },
         reservationIndex: 0,
         status: SpreadsheetStatus.normal,
-        firstDate: new Date(),
-        totalDays: 7,
+        firstDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
+        totalDays: 12,
     },
 
 };

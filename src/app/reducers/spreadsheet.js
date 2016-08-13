@@ -2,6 +2,7 @@ import SpreadsheetStatus from '../../../constants/SpreadsheetStatus.js'
 
 const defaultNewReservation = {
     roomIndex: -1,
+    roomNumber: 0,
     startIndex: -1,
     totalDays: -1,
     clientName: '',
@@ -10,41 +11,29 @@ const defaultNewReservation = {
 
 function spreadsheet (state = [], action) {
     switch(action.type){
-    case 'ESCOGER_HABITACION':
+    case 'CREATE_NEW_RESERVATION':
         return {
             ...state,
-            status : SpreadsheetStatus.selectFecha,
-            newReservation : {
-                roomIndex: action.roomIndex,
-                startIndex: action.startIndex,
-                totalDays: -1,
-                clientName: '',
-            },
-
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.reservationDialog,
         }
-        break;
-    case 'ESCOGER_INTERVALO':
+    case 'CANCEL_NEW_RESERVATION':
         return {
             ...state,
-            status : SpreadsheetStatus.selectCliente,
-            newReservation: {
-                ...(state.newReservation),
-                totalDays: action.totalDays,
-            },
-          }
-        break;
-    case 'CANCEL_NEW_RESERVATION':
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.normal,
+        }
     case 'NEW_RESERVATION':
         return {
             ...state,
-            newReservation:  { ...defaultNewReservation },
+            latestReservation:  { ...action.newReservation, roomId: action.roomId },
             status: SpreadsheetStatus.normal,
         }
     case 'DISPLAY_INFO':
         return {
             ...state,
             displayReservationIndex: action.reservationIndex,
-            newReservation:  { ...defaultNewReservation },
+            latestReservation:  { ...defaultNewReservation },
             status: SpreadsheetStatus.displayInfo,
         }
     case 'CANCEL_DISPLAY_INFO':

@@ -7,12 +7,14 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
+import Snackbar from 'material-ui/Snackbar';
 import { purple500 } from 'material-ui/styles/colors'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 import dateformat from 'dateformat';
 import RoomStatusIcon from './RoomStatusIcon';
 import NewReservationDialog from './NewReservationDialog';
+import SpreadsheetDates from './SpreadsheetDates';
 import * as RoomTypes from '../../../../../constants/RoomTypes'
 import * as ReservationStatus from '../../../../../constants/ReservationStatus'
 import * as SpreadsheetStatus from '../../../../../constants/SpreadsheetStatus'
@@ -33,16 +35,7 @@ class RoomCell extends React.Component {
         switch(this.props.spreadsheetStatus){
         case SpreadsheetStatus.normal:
         case SpreadsheetStatus.displayInfo:
-            if(this.props.roomStatus === RoomTypes.disponible)
-                this.props.escogerHabitacion(this.props.roomIndex, this.props.dayIndex)
-            else
-                this.props.openRoomInfo()
-            break;
-        case SpreadsheetStatus.selectFecha:
-            if(this.props.roomIsSelected && this.props.dayIndex >= this.props.startIndex
-              && this.props.roomStatus === RoomTypes.disponible)
-                this.props.escogerIntervalo(this.props.dayIndex - this.props.startIndex + 1)
-            else if(this.props.roomStatus !== RoomTypes.disponible)
+            if(this.props.roomStatus !== RoomTypes.disponible)
                 this.props.openRoomInfo()
             break;
         }
@@ -56,9 +49,73 @@ class RoomCell extends React.Component {
 	  )}
 }
 
+class NewReservationSnack extends React.Component {
+    render(){
+        const latestReservation = this.props.latestReservation
+        let snackMessage = ""
+        const open =  latestReservation.roomIndex !== -1
+        if(open){
+            const startDate = dateformat(SpreadsheetDates.indexToDate(this.props.firstDate,
+              latestReservation.startIndex), "dddd, mmmm dS")
+            snackMessage = `Habitación #${latestReservation.roomId} reservada para ` +
+            ` el ${startDate} por ${latestReservation.totalDays} días para ${latestReservation.clientName}`
+        }
+        return (<Snackbar open={open} message={snackMessage} autoHideDuration={15000} />)
+
+    }
+}
 class Sidebar extends React.Component {
     constructor(props){
         super(props)
+        this.getDisplayData = this.getDisplayData.bind(this)
+    }
+
+    getDisplayData(reservation){
+        const clientName = reservation.clientName
+        const title = `Habitación #${reservation.roomIndex + 1}` //HACK
+        const dayStatus = reservation.status
+
+        const startDate = this.props.indexToDate(reservation.startIndex)
+        startDate.setHours(0,0,0,0)
+        const endDate = this.props.indexToDate(reservation.startIndex
+          + reservation.totalDays - 1)
+        endDate.setHours(0,0,0,0)
+        const today = new Date()
+        let subtitle, checkboxLabel
+        let isChecked = true
+        let disabled = false
+        let iconLetter
+        if(dayStatus === ReservationStatus.waiting){
+            subtitle = 'Reservado para:'
+            checkboxLabel = "Checked-in"
+            isChecked = false
+            iconLetter = 'R'
+            if(today < startDate)
+                disabled = true
+        } else {
+            subtitle = 'Ocupado por:'
+            checkboxLabel = "Checked-out"
+            iconLetter = 'O'
+            if (dayStatus === ReservationStatus.checkedOut)
+                isChecked = true
+            else if (dayStatus === ReservationStatus.checkedIn)
+                isChecked = false
+        }
+
+        const desde = dateformat(startDate, "dddd, mmmm dS")
+        const hasta = dateformat(endDate, "dddd, mmmm dS")
+
+        return {
+            clientName: clientName,
+            title: title,
+            subtitle: subtitle,
+            isChecked: isChecked,
+            checkboxLabel: checkboxLabel,
+            desde: desde,
+            hasta: hasta,
+            iconLetter: iconLetter,
+            disabled: disabled,
+        }
     }
 
     render(){
@@ -70,41 +127,28 @@ class Sidebar extends React.Component {
         if(!reservation)
             return nodata
 
-        const clientName = reservation.clientName
-        const title = `Habitación #${reservation.roomIndex + 1}` //HACK
-        const dayStatus = reservation.status
-
-        let subtitle, checkboxLabel
-        if(dayStatus === ReservationStatus.waiting){
-            subtitle = 'Reservado para:'
-            checkboxLabel = "Checked-in"
-        } else {
-            subtitle = 'Ocupado por:'
-            checkboxLabel = "Checked-out"
-        }
-
-        const startDate = this.props.indexToDate(reservation.startIndex)
-        const endDate = this.props.indexToDate(reservation.startIndex
-          + reservation.totalDays - 1)
-        const desde = dateformat(startDate, "dddd, mmmm dS")
-        const hasta = dateformat(endDate, "dddd, mmmm dS")
-
-        //const useSecondary = (100 * info.dayIndex / room.days.length) < 50
+        const display = this.getDisplayData(reservation)
+          //const useSecondary = (100 * info.dayIndex / room.days.length) < 50
         return(
         <Drawer open={(this.props.status === SpreadsheetStatus.displayInfo) } openSecondary={true}>
           <ListItem style={{marginTop: '15px', fontWeight: '400'}} disabled={true}
-            leftAvatar={ <Avatar style={{fontWeight: 'normal'}} backgroundColor={purple500} >R</Avatar> } >
-            {title}
+            leftAvatar={
+              <Avatar style={{fontWeight: 'normal'}} backgroundColor={purple500} >
+                {display.iconLetter}
+              </Avatar> } >
+            {display.title}
           </ListItem>
           <Divider style={{marginTop: '15px'}}/>
-          <Subheader>{subtitle}</Subheader>
-          <ListItem disabled={true} style={{textAlign:'center'}}>{clientName}</ListItem>
+          <Subheader>{display.subtitle}</Subheader>
+          <ListItem disabled={true} style={{textAlign:'center'}}>{display.clientName}</ListItem>
           <Subheader>Desde: </Subheader>
-          <ListItem disabled={true} style={{textAlign:'center'}}>{desde}</ListItem>
+          <ListItem disabled={true} style={{textAlign:'center'}}>{display.desde}</ListItem>
           <Subheader disabled={true}>Hasta: </Subheader>
-          <ListItem disabled={true} style={{textAlign:'center'}}>{hasta}</ListItem>
+          <ListItem disabled={true} style={{textAlign:'center'}}>{display.hasta}</ListItem>
           <Divider style={{marginTop: '15px', marginBottom: '15px'}}/>
-          <Checkbox style={{marginLeft: '15px', fontSize: 'medium'}} label={checkboxLabel} />
+          <Checkbox style={{marginLeft: '15px', fontSize: 'medium'}}
+          defaultChecked={display.isChecked} label={display.checkboxLabel}
+          disabled={display.disabled}/>
           <div style={{textAlign: 'right', marginRight: '8px', marginTop: '8px'}} >
             <FlatButton label="Cerrar" secondary={true} onTouchTap={this.props.cancelarDisplayInfo} />
           </div>
@@ -252,7 +296,6 @@ class RoomTable extends ResizableComponent {
                       const reservObject = this.getAllReservationsForRoom(reservations, i)
                       reservations = reservObject.updatedReservations
                       let roomReservations = reservObject.roomReservations
-                      const roomIsSelected = i === this.props.newReservation.roomIndex
                       const currentOffset = roomOffset
                       roomOffset += reservObject.offset
                       let reservOffset = 0
@@ -273,11 +316,7 @@ class RoomTable extends ResizableComponent {
   															return (
   																<RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
                                     roomStatus={dayStatus} roomIndex={i}
-                                      roomIsSelected={roomIsSelected}
-                                      spreadsheetStatus={this.props.status}
-                                      startIndex={this.props.newReservation.startIndex}
-                                      escogerIntervalo={this.props.escogerIntervalo}
-  																	escogerHabitacion={this.props.escogerHabitacion}/>)
+                                      spreadsheetStatus={this.props.status} />)
   														}, this)
   													}
   												</TableRow>)
@@ -287,11 +326,15 @@ class RoomTable extends ResizableComponent {
   					</Table>
             <Sidebar reservations={this.props.reservations}
             reservationIndex={this.props.displayReservationIndex} indexToDate={this.props.indexToDate}
-              cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status} />
-            <NewReservationDialog open={this.props.status === SpreadsheetStatus.selectCliente}
-                newReservation={this.props.newReservation}
+              cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status}
+              checkIn={this.props.checkIn} undoCheckIn={this.props.undoCheckIn}
+              checkOut={this.props.checkIn} undoCheckOut={this.props.undoCheckOut} />
+            <NewReservationSnack firstDate={this.props.firstDate}
+            latestReservation={this.props.latestReservation} />
+            <NewReservationDialog open={this.props.status === SpreadsheetStatus.reservationDialog}
+                reservations={this.props.reservations}
                 reservarHabitacion={this.props.reservarHabitacion}
-                indexToDate={this.props.indexToDate} rooms={this.props.rooms}
+                firstDate={this.props.firstDate} rooms={this.props.rooms}
                 cancelarNuevaReservacion={this.props.cancelarNuevaReservacion}/>
           </div>
         )
