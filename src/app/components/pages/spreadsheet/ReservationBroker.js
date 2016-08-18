@@ -36,6 +36,25 @@ function getRoomAvailability(reservations, requestedType, startIndex, endIndex, 
         }
 }
 
+/**
+* busca todas las reservaciones para el dia actual para un huesped en especifico
+* @param lista de todas las reservaciones que comienzan en el dia actual. Los
+* objetos en esta lista deben de tener un attributo reservationIndex, con el indice
+* de la reservacion en el arreglo de reservaciones del state, y un attributo
+* clientName, con el nombre del cliente que tiene esa reservacion
+* @param guestName el nombre del huespued cuyas reservaciones se buscaran
+* @return un arreglo de enteros. cada uno es un indice valido en el arreglo de
+* reservaciones del state a nombre de guestName
+*/
+function findTodaysReservationsOfGuest(suggestions, guestName){
+    const reservs = []
+    for(let i = 0; i < suggestions.length; i++){
+        if(suggestions[i].clientName === guestName)
+            reservs.push(suggestions[i].reservationIndex)
+    }
+    return reservs
+}
+
 module.exports = {
     findAvailableRoom: function (rooms, reservations, requestedType, startIndex, endIndex){
         let roomIndex, reservIndex = 0
@@ -52,4 +71,6 @@ module.exports = {
         }
         return -1
     },
+
+    findTodaysReservationsOfGuest: findTodaysReservationsOfGuest,
 }

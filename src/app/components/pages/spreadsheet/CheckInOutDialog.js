@@ -6,6 +6,7 @@ import SpreadsheetDates from './SpreadsheetDates'
 
 import dateformat from 'dateformat'
 import SpreadsheetStatus from '../../../../../constants/SpreadsheetStatus'
+import ReservationBroker from './ReservationBroker'
 
 class CheckInOutDialog extends React.Component {
 
@@ -14,7 +15,6 @@ class CheckInOutDialog extends React.Component {
         this.onCancelBtnClick = this.onCancelBtnClick.bind(this)
         this.onGuardarBtnClick = this.onGuardarBtnClick.bind(this)
         this.getDefaultState = this.getDefaultState.bind(this)
-        this.findGuestsReservations = this.findGuestsReservations.bind(this)
         this.onGuestSelected = this.onGuestSelected.bind(this)
 
         this.state = this.getDefaultState()
@@ -32,19 +32,11 @@ class CheckInOutDialog extends React.Component {
     }
 
     onGuardarBtnClick(){
-        const waitingReservs = this.findGuestsReservations(this.state.guestName)
+        const waitingReservs = ReservationBroker.findTodaysReservationsOfGuest(
+          this.props.reservations, this.state.guestName)
         this.props.checkIn(waitingReservs)
     }
 
-    findGuestsReservations(name){
-        const reservs = []
-        const suggestions = this.props.reservations
-        for(let i = 0; i < suggestions.length; i++){
-            if(suggestions[i].clientName === name)
-                reservs.push(suggestions[i].reservationIndex)
-        }
-        return reservs
-    }
     onGuestSelected(guest, index){
         if(index === -1){
             this.setState({guestNameError: "No se encontraron reservaciones para ese huésped"})
@@ -66,7 +58,7 @@ class CheckInOutDialog extends React.Component {
         onTouchTap={this.onCancelBtnClick}
       />,
             <FlatButton
-        label={title} disabled = {this.state.guestName.length == 0}
+        label={title} disabled = {this.state.guestName.length === 0}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onGuardarBtnClick}

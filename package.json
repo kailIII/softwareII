@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node app.js",
     "build": "webpack --progress --colors",
-    "test": "mocha --compilers js:babel-core/register ",
+    "test": "mocha --compilers js:babel-core/register --full-trace",
     "dev": "webpack-dev-server --port 8080 --hot --inline",
     "lint": "eslint src && echo \"eslint: no lint errors\""
   },
