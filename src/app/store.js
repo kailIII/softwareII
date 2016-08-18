@@ -17,8 +17,10 @@ const defaultState = {
     guests: guests,
     payments: payments,
     clients: clients,
-    reservations: reservations,
-
+    reservations: {
+        values: reservations,
+        suggestions: [],
+    },
     spreadsheet: {
         latestReservation:  {
             roomIndex: -1,

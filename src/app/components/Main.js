@@ -42,8 +42,9 @@ export default class Header extends Component {
     getRightIcon(){
         switch(this.props.currentRoute){
         case '/home':
-            return (<SpreadsheetMenu
+            return (<SpreadsheetMenu firstDate={this.props.firstDate}
               crearNuevaReservacion={this.props.crearNuevaReservacion}
+              newCheckIn={this.props.newCheckIn} newCheckOut={this.props.newCheckOut}
                />)
         }
         return <div />

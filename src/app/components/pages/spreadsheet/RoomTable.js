@@ -13,6 +13,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 import dateformat from 'dateformat';
 import RoomStatusIcon from './RoomStatusIcon';
+import CheckInOutDialog from './CheckInOutDialog';
 import NewReservationDialog from './NewReservationDialog';
 import SpreadsheetDates from './SpreadsheetDates';
 import * as RoomTypes from '../../../../../constants/RoomTypes'
@@ -217,7 +218,7 @@ class RoomTable extends ResizableComponent {
         else if(reservationStatus === ReservationStatus.checkedOut)
             return RoomTypes.ocupado
 
-        throw new Exception(`${reservationStatus} no es un estado conocido`)
+        throw `${reservationStatus} no es un estado conocido`
     }
 
     /**
@@ -241,9 +242,9 @@ class RoomTable extends ResizableComponent {
             const firstReservationStart = firstReservation.startIndex
             const firstReservationEnd = firstReservationStart + firstReservation.totalDays -1
             if(firstReservationEnd < dayIndex)
-                throw new Exception("el indice del dia es mayor que el final de la " +
-                "primera reservacion. Tienes que llamar a esta funcion incrementando " +
-                "dayIndex ordenadamente")
+                throw `el indice del dia ${dayIndex} es mayor que el final de la ` +
+                `primera reservacion ${firstReservationEnd}. Tienes que llamar a esta ` +
+                "funcion incrementando dayIndex ordenadamente"
 
             if(firstReservationEnd === dayIndex){
                 let updatedRR = []
@@ -276,8 +277,8 @@ class RoomTable extends ResizableComponent {
         const todayColStyle = { backgroundColor: cyan100}
         let columns = Array(this.props.totalDays)
         let i = 0;
-        for(i = 0; i < columns.length; i++) columns[i] = 0
-        let reservations = [ ...this.props.reservations ]
+        for(i = 0; i < columns.length; i++) columns[i] = 0;
+        let reservations = [ ...this.props.reservations.values]; //BUG IN SPREAD OPERATORRR!??
         let roomOffset = 0
         return (
           <div>
@@ -334,7 +335,7 @@ class RoomTable extends ResizableComponent {
   								}
   						</TableBody>
   					</Table>
-            <Sidebar reservations={this.props.reservations}
+            <Sidebar reservations={this.props.reservations.values}
             reservationIndex={this.props.displayReservationIndex} indexToDate={this.props.indexToDate}
               cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status}
               checkIn={this.props.checkIn} undoCheckIn={this.props.undoCheckIn}
@@ -342,10 +343,13 @@ class RoomTable extends ResizableComponent {
             <NewReservationSnack firstDate={this.props.firstDate}
             latestReservation={this.props.latestReservation} />
             <NewReservationDialog open={this.props.status === SpreadsheetStatus.reservationDialog}
-                reservations={this.props.reservations}
+                reservations={this.props.reservations.values}
                 reservarHabitacion={this.props.reservarHabitacion}
                 firstDate={this.props.firstDate} rooms={this.props.rooms}
                 cancelarNuevaReservacion={this.props.cancelarNuevaReservacion}/>
+            <CheckInOutDialog  open={this.props.status === SpreadsheetStatus.checkInDialog}
+                cancel={this.props.cancelCheckInOut}
+                reservations={this.props.reservations.suggestions} checkIn={this.props.checkIn}/>
           </div>
         )
     }

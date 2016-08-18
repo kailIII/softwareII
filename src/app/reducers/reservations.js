@@ -16,24 +16,87 @@ function getLastIndexOfRoom(reservations, roomIndex, startIndex){
 
     return 0
 }
-function reservations (state = [], action) {
+
+function updateReservationStatus(values, indexes, newStatus){
+    if(indexes.length === 1){
+        const index = indexes[0]
+        const checkedInReservation = {...values[index], status: newStatus}
+        const newState = [
+            ...values.slice(0, index),
+            checkedInReservation,
+            ...values.slice(index + 1),
+        ]
+        return newState
+    } else {
+        const newState = [ ...values ]
+        for(let i = 0; i < indexes.length; i++){
+            newState[indexes[i]].status = newStatus
+        }
+        return newState
+    }
+}
+
+function getWaitingReservations(values, todayIndex){
+    const result = []
+    for(let i = 0; i < values.length; i++){
+        const reservation = { ...values[i] }
+        if(reservation.status === ReservationStatus.waiting
+          && reservation.startIndex === todayIndex){
+            reservation.reservationIndex = i
+            result.push(reservation)
+        }
+    }
+    return result
+}
+
+function reservations (state = {}, action) {
     switch(action.type){
-    case 'NEW_RESERVATION':
+    case 'NEW_RESERVATION':{
         const newReservation = action.newReservation
         newReservation.status = ReservationStatus.waiting
-        const newPosition = getLastIndexOfRoom(state, newReservation.roomIndex,
+        const newPosition = getLastIndexOfRoom(state.values, newReservation.roomIndex,
           newReservation.startIndex)
 
         if(newPosition === 0)
-            return [newReservation, ...state]
+            return { values: [newReservation, ...state.values],
+              suggestions: [],
+            }
+
         if(newPosition >= state.length)
-            return [ ...state, newReservation]
-        const newState = [
-            ...state.slice(0, newPosition),
+            return { values: [ ...state.values, newReservation],
+              suggestions: [] }
+        return { values: [
+            ...state.values.slice(0, newPosition),
             newReservation,
-            ...state.slice(newPosition),
-        ]
-        return newState
+            ...state.values.slice(newPosition),
+        ],
+        suggestions: [],
+      }
+    }
+    case 'NEW_CHECK_IN':{
+        return { values: state.values,
+          suggestions: getWaitingReservations(state.values, action.todayIndex)}
+    }
+    case 'CHECK_IN':{
+        const indexes = action.reservationIndexes
+        return { values: updateReservationStatus(state.values, indexes,
+          ReservationStatus.checkedIn),
+          suggestions: [],
+        }
+    }
+    case 'CANCEL_CHECK_IN_OUT': {
+        return {
+            values: state.values,
+            suggestions: [],
+        }
+    }
+    case 'CHECK_OUT':{
+        const newPosition = action.reservationIndexes
+        return { values: updateReservationStatus(state.values, indexes,
+          ReservationStatus.checkedOut),
+          suggestions: [],
+        }
+    }
     }
 
     return state;

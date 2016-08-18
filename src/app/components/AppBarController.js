@@ -8,6 +8,7 @@ import main from './Main';
 function mapStateToProps(state, ownProps) {
     return {
         spreadSheetStatus: state.spreadsheet.status,
+        firstDate: state.spreadsheet.firstDate,
         currentRoute: ownProps.location.pathname,
     }
 }
