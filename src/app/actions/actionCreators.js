@@ -46,30 +46,35 @@ export function cancelarDisplayInfo() {
     }
 }
 
-export function checkIn(reservationIndex) {
+export function newCheckOut() {
+    return  {
+        type: 'NEW_CHECK_OUT',
+    }
+}
+
+export function newCheckIn(todayIndex) {
+    return  {
+        type: 'NEW_CHECK_IN',
+        todayIndex: todayIndex,
+    }
+}
+
+export function checkIn(reservationIndexes) {
     return  {
         type: 'CHECK_IN',
-        reservationIndex: reservationIndex,
+        reservationIndexes: reservationIndexes,
     }
 }
 
-export function checkOut(reservationIndex) {
+export function checkOut(reservationIndexes) {
     return  {
         type: 'CHECK_OUT',
-        reservationIndex: reservationIndex,
+        reservationIndexes: reservationIndexes,
     }
 }
 
-export function undoCheckIn(reservationIndex) {
+export function cancelCheckInOut() {
     return  {
-        type: 'UNDO_CHECK_IN',
-        reservationIndex: reservationIndex,
-    }
-}
-
-export function undoCheckOut(reservationIndex) {
-    return  {
-        type: 'UNDO_CHECK_OUT',
-        reservationIndex: reservationIndex,
+        type: 'CANCEL_CHECK_IN_OUT',
     }
 }

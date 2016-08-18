@@ -29,6 +29,25 @@ function spreadsheet (state = [], action) {
             latestReservation:  { ...action.newReservation, roomId: action.roomId },
             status: SpreadsheetStatus.normal,
         }
+    case 'NEW_CHECK_IN':
+        return {
+            ...state,
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.checkInDialog,
+        }
+    case 'NEW_CHECK_OUT':
+        return {
+            ...state,
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.checkOutDialog,
+        }
+    case 'CANCEL_CHECK_IN_OUT':
+    case 'CHECK_IN':
+        return {
+            ...state,
+            latestReservation:  { ...defaultNewReservation },
+            status: SpreadsheetStatus.normal,
+        }
     case 'DISPLAY_INFO':
         return {
             ...state,

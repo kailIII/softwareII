@@ -7,5 +7,5 @@ module.exports = {
 
     dateToIndex: function(firstDate, myDate){
         return Math.floor((myDate - firstDate) / (1000 * 60 * 60 * 24))
-    }
+    },
 }

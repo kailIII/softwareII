@@ -46,6 +46,7 @@ class NewReservationDialog extends React.Component {
     }
 
     onCancelBtnClick() {
+        this.setState(this.getDefaultState())
         this.props.cancelarNuevaReservacion()
     }
 
@@ -89,8 +90,8 @@ class NewReservationDialog extends React.Component {
         }
 
         if(error){
-            console.log("error: " + JSON.stringify(errorState))
-            this.setState(errorState);
+            console.log("error: " + JSON.stringify(newState))
+            this.setState(newState);
             return;
         }
 

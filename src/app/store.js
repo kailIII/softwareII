@@ -13,8 +13,10 @@ const today = new Date()
 const defaultState = {
     rooms: rooms,
     guests: guests,
-    reservations: reservations,
-
+    reservations: {
+        values: reservations,
+        suggestions: [],
+    },
     spreadsheet: {
         latestReservation:  {
             roomIndex: -1,
