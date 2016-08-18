@@ -265,7 +265,7 @@ export default class VerClientes extends Component {
                 adjustForCheckbox={showCheckB}
               >
                 <TableRow>
-                  <TableHeaderColumn colSpan="6" style={{textAlign: 'center'}}>
+                  <TableHeaderColumn colSpan="5" style={{textAlign: 'center'}}>
                     <span style={{color: darkBlack}}><h2>Clientes</h2></span>
                   </TableHeaderColumn>
                   <TableHeaderColumn colSpan="1" tooltip="Agregar Cliente" style={{textAlign: 'center'}}>
@@ -277,7 +277,6 @@ export default class VerClientes extends Component {
                 </TableRow>
                 <TableRow>
                   <TableHeaderColumn style={headerTableStyle}>Nombre</TableHeaderColumn>
-                  <TableHeaderColumn style={headerTableStyle}>Apellido</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Cedula</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Nacionalidad</TableHeaderColumn>
                   <TableHeaderColumn style={headerTableStyle}>Telefono</TableHeaderColumn>
@@ -294,11 +293,10 @@ export default class VerClientes extends Component {
                   return (
                       <TableRow key={i}>
                       <TableRowColumn key={i} style={columnTableStyle}>{client.nombre} </TableRowColumn>
-                      <TableRowColumn key={i} style={columnTableStyle}>{client.apellido}</TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{client.cedula}</TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{client.nombre_nacionalidad}</TableRowColumn>
                       <TableRowColumn key={i} style={columnTableStyle}>{client.telefono}</TableRowColumn>
-                      <TableRowColumn key={i} style={columnTableStyle}>{client.mail}</TableRowColumn>
+                      <TableRowColumn key={i} style={columnTableStyle}>{client.email}</TableRowColumn>
                       <TableRowColumn style={columnTableStyle}>
                         <span>
                         {

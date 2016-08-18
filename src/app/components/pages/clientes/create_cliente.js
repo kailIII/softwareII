@@ -50,7 +50,6 @@ export default class CreateClienteForm extends React.Component
     }
     onCreateClientSubmit(){
         console.log(this.state); //valores a enviar en formulario
-        /*Validaciones*/
 
     }
     handleAddOpen(){
@@ -75,67 +74,68 @@ export default class CreateClienteForm extends React.Component
         this.setState({openSnack: false});
     }
 
-    onKeypressNombre(event){
+    isValidExpFormat(exp,chr){ //Valida los caracteres ingresados en los campos de formularios con una expresion dada
+        let isValidExp = !exp.test(chr)
+        let controlKeysAllowed =  (chr!=='Backspace' && chr!==' ' && chr!=='Tab' && chr!=='Shift')
+        let arrowKeysAllowed =  (chr!=='ArrowLeft' && chr!=='ArrowRight' )
+
+        return (isValidExp && controlKeysAllowed && arrowKeysAllowed) 
+    }
+
+    preventMaxLength(field,maxLen){ //Verifica si el string ingresado a un cierto campo llego a us maxima longitud
+        let controlKeysAllowed =  (chr!=='Backspace' && chr!=='Tab' && chr!=='Shift')
+        let arrowKeysAllowed =  (chr!=='ArrowLeft' && chr!=='ArrowRight' )
+
+        return (state.length>=maxLen && controlKeysAllowed && arrowKeysAllowed) 
+    }
+
+    onKeypressNombre(event){ //previene ingresar numero o caracteres especiales en campo nombre
         var chr = event.key;
-        var exp = /^[a-z]$/i
-        console.log(chr);
-        if (!exp.test(chr) && chr!=='Backspace' && chr!==' ' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+        
+        if (this.isValidExpFormat(/^[a-z]$/i,chr)){ 
           event.preventDefault();
-        }else if(this.state.nombre.length>=25 && chr !== 'Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        }else if(this.preventMaxLength(this.state.nombre,25))
         {
           event.preventDefault();  
         } 
     }
 
-    onKeypressApellido(event){
-        var chr = event.key;
-        var exp = /^[a-z]$/i
-        console.log(chr);
-        if (!exp.test(chr) && chr!=='Backspace' && chr!==' ' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+    onKeypressApellido(event){ //previene ingresar numero o caracteres especiales en campo apellido
+        
+        if (this.isValidExpFormat(/^[a-z]$/i, event.key)){ 
           event.preventDefault();
-        }else if(this.state.apellido.length>=25 && chr !== 'Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        }else if(this.preventMaxLength(this.state.apellido,25))
         {
           event.preventDefault();  
         } 
     }
 
-    onKeypressCedula(event){
-        var chr = event.key;
-        var exp = /^[0-9]$/i
-        console.log(chr);
-        if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+    onKeypressCedula(event){ //previene ingresar caracteres que no sean digitos en campo Cedula
+        
+        if (this.isValidExpFormat(/^[0-9]$/i, event.key)){ 
           event.preventDefault();
-        }else if(this.state.cedula.length>=10 && chr !== 'Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        }else if(this.preventMaxLength(this.state.cedula,10))
         {
           event.preventDefault();  
         } 
         
     }
 
-    onKeypressTelefono(event){
+    onKeypressTelefono(event){ //previene ingresar caracteres que no sean digitos en campo telefono
         var chr = event.key;
         var exp = /^[0-9]$/i
-        console.log(chr);
-        if (!exp.test(chr) && chr!=='Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift'){ 
+    
+        if (this.isValidExpFormat(/^[0-9]$/i, event.key)){ 
           event.preventDefault();
-        }else if(this.state.telefono.length>=10 && chr !== 'Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        }else if(this.preventMaxLength(this.state.telefono,10))
         {
           event.preventDefault();  
         }  
     }
 
-    onKeypressMail(event){
+    onKeypressMail(event){ //previene ingresar un numero de caracteres mayor a us maximo en el campo mail
         var chr = event.key;
-        if(this.state.mail.length>=30 && chr !== 'Backspace' && chr!=='Tab' 
-                && chr!=='ArrowLeft' && chr!=='ArrowRight' && chr!=='Shift')
+        if(this.preventMaxLength(this.state.mail,30))
         {
           event.preventDefault();  
         }
