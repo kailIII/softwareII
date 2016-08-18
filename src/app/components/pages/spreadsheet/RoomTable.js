@@ -8,7 +8,7 @@ import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import Snackbar from 'material-ui/Snackbar';
-import { purple500 } from 'material-ui/styles/colors'
+import { cyan100, cyan700 } from 'material-ui/styles/colors'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 import dateformat from 'dateformat';
@@ -42,8 +42,9 @@ class RoomCell extends React.Component {
     }
 
     render (){
+        //const centerStyle = {margin: 'auto', display: 'block'}
         return (
-			       <TableRowColumn onTouchTap={this.onRoomCellClicked}>
+			       <TableRowColumn style={this.props.style} onTouchTap={this.onRoomCellClicked}>
 					        <RoomStatusIcon roomStatus={this.props.roomStatus}/>
 			       </TableRowColumn>
 	  )}
@@ -133,7 +134,7 @@ class Sidebar extends React.Component {
         <Drawer open={(this.props.status === SpreadsheetStatus.displayInfo) } openSecondary={true}>
           <ListItem style={{marginTop: '15px', fontWeight: '400'}} disabled={true}
             leftAvatar={
-              <Avatar style={{fontWeight: 'normal'}} backgroundColor={purple500} >
+              <Avatar style={{fontWeight: 'normal'}} backgroundColor={cyan700} >
                 {display.iconLetter}
               </Avatar> } >
             {display.title}
@@ -147,8 +148,7 @@ class Sidebar extends React.Component {
           <ListItem disabled={true} style={{textAlign:'center'}}>{display.hasta}</ListItem>
           <Divider style={{marginTop: '15px', marginBottom: '15px'}}/>
           <Checkbox style={{marginLeft: '15px', fontSize: 'medium'}}
-          defaultChecked={display.isChecked} label={display.checkboxLabel}
-          disabled={display.disabled}/>
+          checked={display.isChecked} label={display.checkboxLabel} />
           <div style={{textAlign: 'right', marginRight: '8px', marginTop: '8px'}} >
             <FlatButton label="Cerrar" secondary={true} onTouchTap={this.props.cancelarDisplayInfo} />
           </div>
@@ -271,6 +271,9 @@ class RoomTable extends ResizableComponent {
     }
 
     render() {
+        const todayIndex = SpreadsheetDates.dateToIndex(this.props.firstDate, new Date());
+        const borderStyle = '1px solid ' + cyan700
+        const todayColStyle = { backgroundColor: cyan100}
         let columns = Array(this.props.totalDays)
         let i = 0;
         for(i = 0; i < columns.length; i++) columns[i] = 0
@@ -284,8 +287,10 @@ class RoomTable extends ResizableComponent {
                   <TableHeaderColumn key={-1} style={firstHeaderStyle}></TableHeaderColumn>
                   { columns.map(function(it, i) {
                       return (
-                        <TableHeaderColumn key={i}>
+                        <TableHeaderColumn key={i} >
+                          <p style={{textAlign:'center'}}>
                           {dateformat(this.props.indexToDate(i), "dd-mmm")}
+                        </p>
                         </TableHeaderColumn>)
                   }, this)
                   }
@@ -313,8 +318,13 @@ class RoomTable extends ResizableComponent {
                               reservOffset += statusObject.offset
                               const openRoomInfo = () =>
                               { this.props.displayInfo(reservationIndex)  }
+
+                              let todayStyle
+                              if(j === todayIndex)
+                                  todayStyle = todayColStyle
   															return (
-  																<RoomCell key={i} dayIndex={j} openRoomInfo = {openRoomInfo}
+  																<RoomCell key={i} style={todayStyle} dayIndex={j}
+                                  openRoomInfo = {openRoomInfo}
                                     roomStatus={dayStatus} roomIndex={i}
                                       spreadsheetStatus={this.props.status} />)
   														}, this)

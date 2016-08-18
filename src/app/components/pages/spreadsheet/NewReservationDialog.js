@@ -5,6 +5,11 @@ import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import ReservationBroker from './ReservationBroker'
 import SpreadsheetDates from './SpreadsheetDates'
+import AccountBox from 'material-ui/svg-icons/action/account-box';
+import DateRange from 'material-ui/svg-icons/action/date-range';
+import Today from 'material-ui/svg-icons/action/today';
+import Hotel from 'material-ui/svg-icons/maps/hotel';
+import { cyan800 } from 'material-ui/styles/colors'
 
 import dateformat from 'dateformat'
 
@@ -111,20 +116,20 @@ class NewReservationDialog extends React.Component {
         })
     }
 
-    getStartPicker(){
+    getStartPicker(style){
         const hintText = "Inicio de la reservación"
         const minDate = new Date()
         const setStartDate = (e, newDate) => {this.setState({startDate: newDate, startDateError: ''})}
-        return (<DatePicker minDate={minDate} value={this.state.startDate}
+        return (<DatePicker minDate={minDate} value={this.state.startDate} style={style}
           onChange={ setStartDate } errorText={this.state.startDateError} hintText={hintText} />)
     }
 
-    getEndPicker(){
+    getEndPicker(style){
         const hintText = "Fin de la reservación"
         const minDate = this.state.startDate || new Date()
         const setEndDate = (e, newDate) => {this.setState({endDate: newDate, endDateError: ""})}
         return (<DatePicker minDate={minDate} value={this.state.endDate}
-          errorText={this.state.endDateError}
+          errorText={this.state.endDateError} style={style}
           onChange={ setEndDate } hintText={hintText} />)
     }
     render() {
@@ -144,20 +149,35 @@ class NewReservationDialog extends React.Component {
         ]
 
         let startPicker, endPicker
-
+        const iconStyle = {position: 'absolute', margin: '12px'}
+        const divStyle = {position: 'relative', display: 'block'}
+        const inputStyle = {marginLeft: '48px'}
         return (
           <Dialog open={this.props.open}
             title={"Nueva Reservación"}
             actions={actions}
             modal={true}>
-              <AutoComplete onUpdateInput={this.onInputUpdated} dataSource={this.state.suggestions}
-                hintText="Huésped" errorText={this.state.guestNameError}/>
-              { this.getStartPicker() }
-              { this.getEndPicker() }
-              <AutoComplete onUpdateInput={(input) => this.setState({roomTypeError: ""})}
-              filter={AutoComplete.fuzzyFilter} openOnFocus={true}
-              onNewRequest={(req, i) => {this.setState({desiredRoom: req})}}
-              errorText={this.state.roomTypeError} dataSource={this.state.roomTypes} hintText="Tipo de habitación" />
+              <div style={divStyle}>
+                <AccountBox color={cyan800} style={iconStyle}/>
+                <AutoComplete style={inputStyle} onUpdateInput={this.onInputUpdated} dataSource={this.state.suggestions}
+                  hintText="Huésped" errorText={this.state.guestNameError}/>
+              </div>
+              <div style={divStyle}>
+                <Today color={cyan800} style={iconStyle}/>
+                { this.getStartPicker(inputStyle) }
+              </div>
+              <div style={divStyle}>
+                <DateRange color={cyan800} style={iconStyle}/>
+                { this.getEndPicker(inputStyle) }
+              </div>
+              <div style={divStyle}>
+                <Hotel color={cyan800} style={iconStyle}/>
+                <AutoComplete onUpdateInput={(input) => this.setState({roomTypeError: ""})}
+                  filter={AutoComplete.fuzzyFilter} openOnFocus={true}
+                  onNewRequest={(req, i) => {this.setState({desiredRoom: req})}}
+                  style={inputStyle}
+                  errorText={this.state.roomTypeError} dataSource={this.state.roomTypes} hintText="Tipo de habitación" />
+              </div>
           </Dialog>
         )
     }
