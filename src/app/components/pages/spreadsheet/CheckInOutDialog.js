@@ -34,7 +34,10 @@ class CheckInOutDialog extends React.Component {
     onGuardarBtnClick(){
         const waitingReservs = ReservationBroker.findTodaysReservationsOfGuest(
           this.props.reservations, this.state.guestName)
-        this.props.checkIn(waitingReservs)
+        if(this.props.status === SpreadsheetStatus.checkInDialog)
+            this.props.checkIn(waitingReservs)
+        else
+            this.props.checkOut(waitingReservs)
     }
 
     onGuestSelected(guest, index){
@@ -66,10 +69,9 @@ class CheckInOutDialog extends React.Component {
         ]
 
         return (
-          <Dialog open={this.props.open}
-            title={title}
-            actions={actions}
-            modal={true}>
+          <Dialog open={this.props.status === SpreadsheetStatus.checkInDialog ||
+              this.props.status === SpreadsheetStatus.checkOutDialog}
+            title={title} actions={actions} modal={true}>
               <AutoComplete
               filter={AutoComplete.fuzzyFilter} maxSearchResults={5}
               onNewRequest={this.onGuestSelected}

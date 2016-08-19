@@ -347,9 +347,9 @@ class RoomTable extends ResizableComponent {
                 reservarHabitacion={this.props.reservarHabitacion}
                 firstDate={this.props.firstDate} rooms={this.props.rooms}
                 cancelarNuevaReservacion={this.props.cancelarNuevaReservacion}/>
-            <CheckInOutDialog  open={this.props.status === SpreadsheetStatus.checkInDialog}
-                cancel={this.props.cancelCheckInOut}
-                reservations={this.props.reservations.suggestions} checkIn={this.props.checkIn}/>
+            <CheckInOutDialog  status={this.props.status} cancel={this.props.cancelCheckInOut}
+                reservations={this.props.reservations.suggestions}
+                checkIn={this.props.checkIn} checkOut={this.props.checkOut}/>
           </div>
         )
     }

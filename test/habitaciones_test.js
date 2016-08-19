@@ -116,10 +116,10 @@ describe("Proceso de reservacion de habitacion", function () {
             expect(newReservations).to.be.not.equal(state.reservations)
             expect(newReservations.suggestions.length).to.be.equal(0)
             const reservationsArray = newReservations.values
-            let reservation = reservationsArray[1]
+            let reservation = reservationsArray[1] //la nueva reservacion se pone en uno
             expect(reservation.status).to.be.equal(ReservationStatus.checkedIn)
             expect(reservation.clientName).to.be.equal(newReservation.clientName)
-            reservation = reservationsArray[3]
+            reservation = reservationsArray[4] //la reservaciones estaba en un 3, pero con la nueva suma 4
             expect(reservation.status).to.be.equal(ReservationStatus.checkedIn)
             expect(reservation.clientName).to.be.equal(newReservation.clientName)
             state.reservations = newReservations

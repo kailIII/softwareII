@@ -43,6 +43,7 @@ function spreadsheet (state = [], action) {
         }
     case 'CANCEL_CHECK_IN_OUT':
     case 'CHECK_IN':
+    case 'CHECK_OUT':
         return {
             ...state,
             latestReservation:  { ...defaultNewReservation },

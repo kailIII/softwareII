@@ -46,9 +46,10 @@ export function cancelarDisplayInfo() {
     }
 }
 
-export function newCheckOut() {
+export function newCheckOut(todayIndex) {
     return  {
         type: 'NEW_CHECK_OUT',
+        todayIndex: todayIndex,
     }
 }
 
