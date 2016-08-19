@@ -7,26 +7,11 @@ module.exports = {
         login: "./src/login_app/LoginApp.js",
     },
     output: {
-        path: "./public",
+        path: "./production/",
         filename: "[name].js",
-    },
-    devServer: {
-        contentBase: 'public',
-        proxy: {
-            "/api/*": {
-                target : {
-                    host: "localhost",
-                    port: 8192,
-                },
-            },
-        },
     },
     module: {
         loaders: [
-            {
-                test: /\.json$/,
-                loader: "json",
-            },
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,

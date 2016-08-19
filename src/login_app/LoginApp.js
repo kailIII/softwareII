@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import AppRoutes from './AppRoutes';
-import { muiTheme } from '../TabubaTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { muiTheme } from '../TabubaTheme'
+import LoginComponent from './LoginComponent'
+
 
 injectTapEventPlugin();
 
+
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <AppRoutes />
+    <LoginComponent />
   </MuiThemeProvider>
 );
 

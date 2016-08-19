@@ -2,33 +2,17 @@
   "name": "softwareii",
   "version": "0.0.0",
   "engines": {
-    "node": ">=4"
+    "node": "6.4.0"
   },
   "private": true,
   "scripts": {
-    "start": "node app.js",
-    "build": "webpack --progress --colors",
+    "start": "npm run build && node API/app.js",
+    "build": "webpack --progress --colors --config webpack.production.config.js",
     "test": "mocha --compilers js:babel-core/register --full-trace",
     "dev": "webpack-dev-server --port 8080 --hot --inline",
     "lint": "eslint src && echo \"eslint: no lint errors\""
   },
   "dependencies": {
-    "cookie-parser": "^1.4.3",
-    "dateformat": "^1.0.12",
-    "express-session": "^1.14.0",
-    "material-ui": "^0.15.0",
-    "mysql": "^2.11.1",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.4.1",
-    "react-router-redux": "^4.0.5",
-    "react-tap-event-plugin": "^1.0.0",
-    "redux": "^3.5.2",
-    "sequelize": "^3.24.1",
-    "serve-favicon": "^2.3.0"
-  },
-  "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
@@ -37,16 +21,34 @@
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
-    "chai": "^3.5.0",
-    "eslint": "^2.5.1",
-    "eslint-plugin-babel": "^3.1.0",
-    "eslint-plugin-react": "^4.0.0",
-    "mocha": "^2.5.3",
-    "request": "^2.74.0",
+    "body-parser": "^1.15.2",
+    "client-sessions": "^0.7.0",
+    "cookie-parser": "^1.4.3",
+    "dateformat": "^1.0.12",
+    "express-session": "^1.14.0",
+    "material-ui": "^0.15.0",
+    "mysql": "^2.11.1",
+    "node-persist": "0.0.12",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.1",
+    "react-router-redux": "^4.0.5",
+    "react-tap-event-plugin": "^1.0.0",
+    "redux": "^3.5.2",
+    "sequelize": "^3.24.1",
+    "serve-favicon": "^2.3.0",
     "superagent": "^2.2.0",
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.3.0",
+    "eslint-plugin-babel": "^3.1.0",
+    "eslint-plugin-react": "^4.0.0",
+    "mocha": "^2.5.3"
   },
   "author": ""
 }

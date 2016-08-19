@@ -1,5 +1,5 @@
 
-const rooms = [{roomId:1,type:"sencilla" },
+module.exports = [{roomId:1,type:"sencilla" },
 {roomId:2,type:"sencilla" },
 {roomId:3,type:"sencilla"},
 {roomId:4,type:"sencilla"},
@@ -29,5 +29,3 @@ const rooms = [{roomId:1,type:"sencilla" },
 {roomId:28,type:"doble"},
 {roomId:29,type:"matrimonial"},
 {roomId:30,type:"suite"}]
-
-export default rooms;

@@ -25,11 +25,12 @@ export function crearNuevaReservacion() {
     }
 }
 
-export function reservarHabitacion(newReservation, firstDate, roomId) {
+export function reservarHabitacion(newReservation, firstDate, position, roomId) {
     return  {
         type: 'NEW_RESERVATION',
         newReservation: newReservation,
         firstDate: firstDate,
+        position: position,
         roomId: roomId,
     }
 }

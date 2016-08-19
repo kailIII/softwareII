@@ -9,9 +9,11 @@ import AccountBox from 'material-ui/svg-icons/action/account-box';
 import DateRange from 'material-ui/svg-icons/action/date-range';
 import Today from 'material-ui/svg-icons/action/today';
 import Hotel from 'material-ui/svg-icons/maps/hotel';
-import { cyan800 } from 'material-ui/styles/colors'
 
 import dateformat from 'dateformat'
+import roomTypes from '../../../data/roomTypes'
+import API from '../../../../clientAPI'
+import { primaryColor800 } from '../../../../TabubaTheme'
 
 class NewReservationDialog extends React.Component {
 
@@ -29,10 +31,8 @@ class NewReservationDialog extends React.Component {
     }
 
     getDefaultState() {
-        const roomTypes = ["sencilla", "doble", "matrimonial"]
         return {
             suggestions: [],
-            roomSuggestions: [...roomTypes],
             desiredRoom: "",
             roomTypes: roomTypes, //eventualmente tengo que sacar esto del state
             roomTypeError: "",
@@ -51,52 +51,30 @@ class NewReservationDialog extends React.Component {
     }
 
     onGuardarBtnClick() {
-        let error = false
-        const newState = {
-            roomTypeError: "",
-            guestNameError: "",
-            startDateError: "",
-            endDateError: "",
-        }
+        const validation = ReservationBroker.validateNewReservation(this.state.desiredRoom,
+          this.state.guestName, this.props.firstDate, this.state.startDate, this.state.endDate)
 
-        if(!this.state.desiredRoom || this.state.desiredRoom.length === 0){
-            error = true
-            newState.roomTypeError = "Tipo de habitación inválido"
-        } else if(!this.state.roomTypes.includes(this.state.desiredRoom)){
-            error = true
-            newState.roomTypeError = "Tipo de habitación inválido"
-        }
-
-        if(this.state.guestName.length < 3){
-            error = true
-            newState.guestNameError = "Nombre de huésped inválido"
-        }
-
-        const startReservDate = this.state.startDate
-        const endReservDate = this.state.endDate
-        const startIndex = SpreadsheetDates.dateToIndex(this.props.firstDate, startReservDate)
-        const endIndex = SpreadsheetDates.dateToIndex(this.props.firstDate, endReservDate)
-        if(!startReservDate || !endReservDate){
-            error = true
-            if(!startReservDate){
-                newState.startDateError = "Por favor ingresa la fecha inicial"
-            }
-            if(!endReservDate){
-                newState.endDateError = "Por favor ingresa la fecha final"
-            }
-        } else if(endIndex < startIndex){
-            error = true
-            newState.endDateError = "La fecha final no puede ser anterior a la inicial"
-        }
-
-        if(error){
-            console.log("error: " + JSON.stringify(newState))
-            this.setState(newState);
+        if(validation.error){
+            this.setState(validation.newState);
             return;
         }
 
-        const roomToReserve = ReservationBroker.findAvailableRoom(this.props.rooms,
-        this.props.reservations, this.state.desiredRoom, startIndex, endIndex)
+        console.log('new reserva')
+        API.newReservation(this.state.desiredRoom, this.state.guestName,
+          this.state.startDate, this.state.endDate, (err, res) => {
+              if(!err && res.statusCode === 200){
+                  console.log(JSON.stringify(res))
+                  const response = JSON.parse(res.text)
+                  const firstDateStr = dateformat(this.state.startDate, 'dddd, mmmm, dS')
+                  this.setState(this.getDefaultState())
+                  this.props.reservarHabitacion(response.newReservation,
+                    firstDateStr, response.reservationIndex, 
+                    this.props.rooms[response.newReservation.roomIndex].roomId)
+                  //this.props.reservarHabitacion()
+              }
+          })
+
+          /*
         if(roomToReserve !== -1){
             const newReservation = {
                 roomIndex: roomToReserve,
@@ -104,11 +82,10 @@ class NewReservationDialog extends React.Component {
                 totalDays: endIndex - startIndex + 1,
                 clientName: this.state.guestName,
             }
-            const firstDateStr = dateformat(this.state.firstDate, 'dddd, mmmm, dS')
-            this.setState(this.getDefaultState())
             this.props.reservarHabitacion(newReservation, firstDateStr,
                this.props.rooms[roomToReserve].roomId)
         }
+        */
     }
 
     onInputUpdated(value) {
@@ -161,20 +138,20 @@ class NewReservationDialog extends React.Component {
             actions={actions}
             modal={true}>
               <div style={divStyle}>
-                <AccountBox color={cyan800} style={iconStyle}/>
-                <AutoComplete style={inputStyle} onUpdateInput={this.onInputUpdated} dataSource={this.state.suggestions}
+                <AccountBox color={primaryColor800} style={iconStyle}/>
+                <AutoComplete style={inputStyle} onUpdateInput={this.onInputUpdated} dataSource={roomTypes}
                   hintText="Huésped" errorText={this.state.guestNameError}/>
               </div>
               <div style={divStyle}>
-                <Today color={cyan800} style={iconStyle}/>
+                <Today color={primaryColor800} style={iconStyle}/>
                 { this.getStartPicker(inputStyle) }
               </div>
               <div style={divStyle}>
-                <DateRange color={cyan800} style={iconStyle}/>
+                <DateRange color={primaryColor800} style={iconStyle}/>
                 { this.getEndPicker(inputStyle) }
               </div>
               <div style={divStyle}>
-                <Hotel color={cyan800} style={iconStyle}/>
+                <Hotel color={primaryColor800} style={iconStyle}/>
                 <AutoComplete onUpdateInput={(input) =>
                   this.setState({desiredRoom: "", roomTypeError: ""})}
                   filter={AutoComplete.fuzzyFilter} openOnFocus={true}

@@ -4,11 +4,12 @@ import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import SpreadsheetDates from './SpreadsheetDates'
 import AccountBox from 'material-ui/svg-icons/action/account-box';
-import { cyan800 } from 'material-ui/styles/colors'
 
 import dateformat from 'dateformat'
 import SpreadsheetStatus from '../../../../../constants/SpreadsheetStatus'
+import { primaryColor800 } from '../../../../TabubaTheme'
 import ReservationBroker from './ReservationBroker'
+import clientAPI from '../../../../clientAPI'
 
 class CheckInOutDialog extends React.Component {
 
@@ -65,10 +66,23 @@ class CheckInOutDialog extends React.Component {
             const waitingReservs = ReservationBroker.findTodaysReservationsOfGuest(
               this.props.reservations, this.state.guestName)
             if(this.props.status === SpreadsheetStatus.checkInDialog)
-                this.props.checkIn(waitingReservs, this.getSnackMessage(waitingReservs, false))
+                clientAPI.checkIn(waitingReservs, (err, res) => {
+                    if(res.statusCode === 200){
+                        this.props.checkIn(waitingReservs,
+                          this.getSnackMessage(waitingReservs, false))
+                        this.setState(this.getDefaultState())
+                    } else
+                        this.setState({guestNameError: "Error en el servidor."})
+                })
             else
-                this.props.checkOut(waitingReservs, this.getSnackMessage(waitingReservs, true))
-            this.setState(this.getDefaultState())
+                clientAPI.checkOut(waitingReservs, (err, res) => {
+                    if(res.statusCode === 200){
+                        this.props.checkOut(waitingReservs,
+                          this.getSnackMessage(waitingReservs, false))
+                        this.setState(this.getDefaultState())
+                    } else 
+                        this.setState({guestNameError: "Error en el servidor."})
+                })
         } else {
             this.setState({guestNameError: "No se encontraron reservaciones para ese huésped"})
         }
@@ -112,7 +126,7 @@ class CheckInOutDialog extends React.Component {
               this.props.status === SpreadsheetStatus.checkOutDialog}
             title={title} actions={actions} modal={true}>
             <div style={divStyle}>
-                <AccountBox color={cyan800} style={iconStyle} viewBox={'0 0 48 48'}/>
+                <AccountBox color={primaryColor800} style={iconStyle} viewBox={'0 0 48 48'}/>
                 <AutoComplete
                 filter={AutoComplete.fuzzyFilter} maxSearchResults={5}
                 onNewRequest={this.onGuestSelected} style={inputStyle}

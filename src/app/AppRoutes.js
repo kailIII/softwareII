@@ -14,7 +14,6 @@ import Editar_Usuario from './components/pages/usuarios/editar_usuario';
 import RoomTypesShow from './components/pages/tipos-habitacion/Page';
 import Suites from './components/pages/habitacion/Suites';
 import VerClientes from './components/pages/clientes/clients_controller';
-import LoginForm from './components/Login';
 import spreadsheet from './components/pages/spreadsheet/SpreadsheetController'
 import show_payments from './components/pages/payments/payments_controller'
 import { Provider } from 'react-redux'
@@ -25,16 +24,15 @@ class AppRoutes extends React.Component {
         return (
             <Provider store={store}>
                 <Router history={history}>
-                                        <Route path="/" component={LoginForm}/>
-                                        <Route path="/main" component={Header} >
-                                                <Route path="/home" component={spreadsheet}/>
-                                                <Route path="/usuario" component={Mostrar_Usuarios}/>
-                      <Route path="/usuario/crear" component={Crear_Usuario}/>
-                      <Route path="/usuario/editar" component={Editar_Usuario}/>
-                      <Route path="/tipo-habitacion" component={RoomTypesShow}/>
-                      <Route path="/habitaciones" component={Suites}/>
-                      <Route path="/clientes" component={VerClientes}/>
-                      <Route path="/payments" component={show_payments}/>
+                    <Route path="/main" component={Header} >
+                        <Route path="/" component={spreadsheet}/>
+                        <Route path="/usuario" component={Mostrar_Usuarios}/>
+                        <Route path="/usuario/crear" component={Crear_Usuario}/>
+                        <Route path="/usuario/editar" component={Editar_Usuario}/>
+                        <Route path="/tipo-habitacion" component={RoomTypesShow}/>
+                        <Route path="/habitaciones" component={Suites}/>
+                        <Route path="/clientes" component={VerClientes}/>
+                        <Route path="/payments" component={show_payments}/>
                   </Route>
                 </Router>
             </Provider>)
