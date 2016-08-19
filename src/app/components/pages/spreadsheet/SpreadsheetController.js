@@ -6,6 +6,7 @@ import * as actionCreators from '../../../actions/actionCreators.js'
 import roomTable from './RoomTable.js';
 
 function mapStateToProps(state) {
+    console.log(state.spreadsheet.firstDate)
     return {
         rooms: state.rooms,
         reservations: state.reservations,

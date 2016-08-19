@@ -4,27 +4,13 @@ import { hashHistory } from 'react-router';
 
 import rootReducer from './reducers/index';
 
-import rooms from './data/rooms';
-import guests from './data/guests';
-import reservations from './data/reservations';
+let defaultState
 
-import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
-const today = new Date()
-const defaultState = {
-    rooms: rooms,
-    guests: guests,
-    reservations: {
-        values: reservations,
-        suggestions: [],
-    },
-    spreadsheet: {
-        snackMessage: '',
-        status: SpreadsheetStatus.normal,
-        firstDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
-        totalDays: 12,
-    },
-
-};
+if(window.__PRELOADED_STATE__){
+    defaultState = window.__PRELOADED_STATE__
+    defaultState.spreadsheet.firstDate = new Date(defaultState.spreadsheet.firstDate)
+}else
+    defaultState = require('./data/defaultStore.js')
 
 const store = createStore(rootReducer, defaultState);
 
