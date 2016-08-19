@@ -25,14 +25,7 @@ const state = {
         suggestions: [],
     },
     spreadsheet: {
-        latestReservation:  {
-            roomIndex: -1,
-            roomNumber: -1,
-            startIndex: -1,
-            totalDays: -1,
-            clientName: '',
-        },
-        reservationIndex: 0,
+        snackMessage:  '',
         status: SpreadsheetStatus.normal,
         firstDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
         totalDays: 12,
@@ -47,7 +40,6 @@ describe("Proceso de reservacion de habitacion", function () {
         const newSpreadsheet = spreadsheet(state.spreadsheet, newDialogAction)
         expect(newSpreadsheet).to.be.not.equal(state.spreadsheet)
         expect(newSpreadsheet.status).to.be.equal(SpreadsheetStatus.reservationDialog)
-        expect(newSpreadsheet.latestReservation.roomIndex).to.be.equal(-1)
         state.spreadsheet = newSpreadsheet
 
     })
@@ -67,11 +59,11 @@ describe("Proceso de reservacion de habitacion", function () {
             expect(newSpreadsheet.status).to.be.equal(SpreadsheetStatus.normal)
             state.spreadsheet = newSpreadsheet
         })
-        it(" spreadsheet tiene un latestReservation igual a la reservacion realizada",
+        it(" snackbar message muestra informacion de la reservacion realizada",
           function() {
-              expect(state.spreadsheet.latestReservation.clientName).to.be.equal(newReservation.clientName)
-              expect(state.spreadsheet.latestReservation.roomIndex).to.be.equal(newReservation.roomIndex)
-              expect(state.spreadsheet.latestReservation.startIndex).to.be.equal(newReservation.startIndex)
+              expect(state.spreadsheet.snackMessage).to.have.string(newReservation.clientName)
+              expect(state.spreadsheet.snackMessage).to.have.string(newReservationAction.roomId)
+              expect(state.spreadsheet.snackMessage).to.have.string(newReservationAction.totalDays)
           })
 
         it("La nueva reservacion se agrego a la lista del state en la posicion 1",
@@ -93,7 +85,6 @@ describe("Proceso de reservacion de habitacion", function () {
             const newSpreadsheet = spreadsheet(state.spreadsheet, newCheckInDialogAction)
             expect(newSpreadsheet).to.be.not.equal(state.spreadsheet)
             expect(newSpreadsheet.status).to.be.equal(SpreadsheetStatus.checkInDialog)
-            expect(newSpreadsheet.latestReservation.roomIndex).to.be.equal(-1)
 
 
         })

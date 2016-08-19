@@ -51,21 +51,6 @@ class RoomCell extends React.Component {
 	  )}
 }
 
-class NewReservationSnack extends React.Component {
-    render(){
-        const latestReservation = this.props.latestReservation
-        let snackMessage = ""
-        const open =  latestReservation.roomIndex !== -1
-        if(open){
-            const startDate = dateformat(SpreadsheetDates.indexToDate(this.props.firstDate,
-              latestReservation.startIndex), "dddd, mmmm dS")
-            snackMessage = `Habitación #${latestReservation.roomId} reservada para ` +
-            ` el ${startDate} por ${latestReservation.totalDays} días para ${latestReservation.clientName}`
-        }
-        return (<Snackbar open={open} message={snackMessage} autoHideDuration={15000} />)
-
-    }
-}
 class Sidebar extends React.Component {
     constructor(props){
         super(props)
@@ -343,8 +328,8 @@ class RoomTable extends ResizableComponent {
               cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status}
               checkIn={this.props.checkIn} undoCheckIn={this.props.undoCheckIn}
               checkOut={this.props.checkIn} undoCheckOut={this.props.undoCheckOut} />
-            <NewReservationSnack firstDate={this.props.firstDate}
-            latestReservation={this.props.latestReservation} />
+            <Snackbar open={this.props.snackMessage.length > 0}
+            message={this.props.snackMessage} autoHideDuration={6000} />
             <NewReservationDialog open={this.props.status === SpreadsheetStatus.reservationDialog}
                 reservations={this.props.reservations.values}
                 reservarHabitacion={this.props.reservarHabitacion}

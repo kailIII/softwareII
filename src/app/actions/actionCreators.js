@@ -25,10 +25,11 @@ export function crearNuevaReservacion() {
     }
 }
 
-export function reservarHabitacion(newReservation, roomId) {
+export function reservarHabitacion(newReservation, firstDate, roomId) {
     return  {
         type: 'NEW_RESERVATION',
         newReservation: newReservation,
+        firstDate: firstDate,
         roomId: roomId,
     }
 }
@@ -60,16 +61,18 @@ export function newCheckIn(todayIndex) {
     }
 }
 
-export function checkIn(reservationIndexes) {
+export function checkIn(reservationIndexes, snackMessage) {
     return  {
         type: 'CHECK_IN',
+        snackMessage: snackMessage,
         reservationIndexes: reservationIndexes,
     }
 }
 
-export function checkOut(reservationIndexes) {
+export function checkOut(reservationIndexes, snackMessage) {
     return  {
         type: 'CHECK_OUT',
+        snackMessage: snackMessage,
         reservationIndexes: reservationIndexes,
     }
 }

@@ -67,6 +67,6 @@ describe('Check-Out: ', function() {
     it("Colocar sugerencias en el dialog", function() {
         const newReservations = reservationsReducer(state.reservations, action)
         expect(newReservations).to.be.not.equal(state.reservations)
-        expect(newReservations.suggestions.length).to.be.equal(3)
+        expect(newReservations.suggestions.length).to.be.equal(2)
     })
 })

@@ -18,14 +18,7 @@ const defaultState = {
         suggestions: [],
     },
     spreadsheet: {
-        latestReservation:  {
-            roomIndex: -1,
-            roomNumber: -1,
-            startIndex: -1,
-            totalDays: -1,
-            clientName: '',
-        },
-        reservationIndex: 0,
+        snackMessage: '',
         status: SpreadsheetStatus.normal,
         firstDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
         totalDays: 12,

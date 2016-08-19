@@ -1,7 +1,7 @@
 const ReservationStatus = require('../../../constants/ReservationStatus.js')
 const reservations = [{roomIndex:0, clientName:"Wilson Nieto", startIndex: 0, totalDays: 2, status: ReservationStatus.checkedOut},
 {roomIndex:1, clientName:"Lissette Andrade", startIndex: 0, totalDays: 3, status: ReservationStatus.checkedIn},
-{roomIndex:2, clientName:"Dolores Baquerizo", startIndex: 0, totalDays: 1, status: ReservationStatus.checkedIn},
+{roomIndex:2, clientName:"Dolores Baquerizo", startIndex: 0, totalDays: 1, status: ReservationStatus.checkedOut},
 {roomIndex:2, clientName:"Maria Jose Riera", startIndex: 3, totalDays: 3, status: ReservationStatus.waiting},
 {roomIndex:4, clientName:"Ana Davila", startIndex: 1, totalDays: 3, status: ReservationStatus.checkedIn},
 {roomIndex:5, clientName:"Jose Coronel", startIndex: 1, totalDays: 3, status: ReservationStatus.checkedIn},

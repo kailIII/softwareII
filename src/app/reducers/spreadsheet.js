@@ -1,12 +1,5 @@
 import SpreadsheetStatus from '../../../constants/SpreadsheetStatus.js'
-
-const defaultNewReservation = {
-    roomIndex: -1,
-    roomNumber: 0,
-    startIndex: -1,
-    totalDays: -1,
-    clientName: '',
-}
+import SpreadsheetDates from '../components/pages/spreadsheet/SpreadsheetDates'
 
 
 function spreadsheet (state = [], action) {
@@ -14,46 +7,54 @@ function spreadsheet (state = [], action) {
     case 'CREATE_NEW_RESERVATION':
         return {
             ...state,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: '',
             status: SpreadsheetStatus.reservationDialog,
         }
     case 'CANCEL_NEW_RESERVATION':
         return {
             ...state,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: '',
             status: SpreadsheetStatus.normal,
         }
     case 'NEW_RESERVATION':
+        const newReservation = action.newReservation
         return {
             ...state,
-            latestReservation:  { ...action.newReservation, roomId: action.roomId },
+            snackMessage: `Habitación #${action.roomId} reservada para el ` +
+            `${action.firstDate} por ` +
+            `${newReservation.totalDays} días para ${newReservation.clientName}`,
             status: SpreadsheetStatus.normal,
         }
     case 'NEW_CHECK_IN':
         return {
             ...state,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: '',
             status: SpreadsheetStatus.checkInDialog,
         }
     case 'NEW_CHECK_OUT':
         return {
             ...state,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: '',
             status: SpreadsheetStatus.checkOutDialog,
         }
     case 'CANCEL_CHECK_IN_OUT':
+        return {
+            ...state,
+            snackMessage: '',
+            status: SpreadsheetStatus.normal,
+        }
     case 'CHECK_IN':
     case 'CHECK_OUT':
         return {
             ...state,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: action.snackMessage,
             status: SpreadsheetStatus.normal,
         }
     case 'DISPLAY_INFO':
         return {
             ...state,
             displayReservationIndex: action.reservationIndex,
-            latestReservation:  { ...defaultNewReservation },
+            snackMessage: '',
             status: SpreadsheetStatus.displayInfo,
         }
     case 'CANCEL_DISPLAY_INFO':
