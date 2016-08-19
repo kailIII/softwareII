@@ -14,6 +14,7 @@ function mapStateToProps(state) {
         status: state.spreadsheet.status,
         firstDate: state.spreadsheet.firstDate,
         totalDays: state.spreadsheet.totalDays,
+        snackMessage: state.spreadsheet.snackMessage,
         initialMarginY: 2 * (64 + 8), //AppBar default height
         indexToDate: function(i){
             return new Date(state.spreadsheet.firstDate.getFullYear(),

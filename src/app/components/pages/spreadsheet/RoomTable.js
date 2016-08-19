@@ -51,21 +51,6 @@ class RoomCell extends React.Component {
 	  )}
 }
 
-class NewReservationSnack extends React.Component {
-    render(){
-        const latestReservation = this.props.latestReservation
-        let snackMessage = ""
-        const open =  latestReservation.roomIndex !== -1
-        if(open){
-            const startDate = dateformat(SpreadsheetDates.indexToDate(this.props.firstDate,
-              latestReservation.startIndex), "dddd, mmmm dS")
-            snackMessage = `Habitación #${latestReservation.roomId} reservada para ` +
-            ` el ${startDate} por ${latestReservation.totalDays} días para ${latestReservation.clientName}`
-        }
-        return (<Snackbar open={open} message={snackMessage} autoHideDuration={15000} />)
-
-    }
-}
 class Sidebar extends React.Component {
     constructor(props){
         super(props)
@@ -77,6 +62,7 @@ class Sidebar extends React.Component {
         const title = `Habitación #${reservation.roomIndex + 1}` //HACK
         const dayStatus = reservation.status
 
+        const roomType = this.props.rooms[reservation.roomIndex].type
         const startDate = this.props.indexToDate(reservation.startIndex)
         startDate.setHours(0,0,0,0)
         const endDate = this.props.indexToDate(reservation.startIndex
@@ -117,6 +103,7 @@ class Sidebar extends React.Component {
             hasta: hasta,
             iconLetter: iconLetter,
             disabled: disabled,
+            roomType: roomType,
         }
     }
 
@@ -134,11 +121,11 @@ class Sidebar extends React.Component {
         return(
         <Drawer open={(this.props.status === SpreadsheetStatus.displayInfo) } openSecondary={true}>
           <ListItem style={{marginTop: '15px', fontWeight: '400'}} disabled={true}
+          primaryText={display.title} secondaryText={display.roomType}
             leftAvatar={
               <Avatar style={{fontWeight: 'normal'}} backgroundColor={cyan700} >
                 {display.iconLetter}
               </Avatar> } >
-            {display.title}
           </ListItem>
           <Divider style={{marginTop: '15px'}}/>
           <Subheader>{display.subtitle}</Subheader>
@@ -336,20 +323,21 @@ class RoomTable extends ResizableComponent {
   						</TableBody>
   					</Table>
             <Sidebar reservations={this.props.reservations.values}
-            reservationIndex={this.props.displayReservationIndex} indexToDate={this.props.indexToDate}
+            rooms={this.props.rooms} indexToDate={this.props.indexToDate}
+            reservationIndex={this.props.displayReservationIndex}
               cancelarDisplayInfo={this.props.cancelarDisplayInfo} status={this.props.status}
               checkIn={this.props.checkIn} undoCheckIn={this.props.undoCheckIn}
               checkOut={this.props.checkIn} undoCheckOut={this.props.undoCheckOut} />
-            <NewReservationSnack firstDate={this.props.firstDate}
-            latestReservation={this.props.latestReservation} />
+            <Snackbar open={this.props.snackMessage.length > 0}
+            message={this.props.snackMessage} autoHideDuration={6000} />
             <NewReservationDialog open={this.props.status === SpreadsheetStatus.reservationDialog}
                 reservations={this.props.reservations.values}
                 reservarHabitacion={this.props.reservarHabitacion}
                 firstDate={this.props.firstDate} rooms={this.props.rooms}
                 cancelarNuevaReservacion={this.props.cancelarNuevaReservacion}/>
-            <CheckInOutDialog  open={this.props.status === SpreadsheetStatus.checkInDialog}
-                cancel={this.props.cancelCheckInOut}
-                reservations={this.props.reservations.suggestions} checkIn={this.props.checkIn}/>
+            <CheckInOutDialog  status={this.props.status} cancel={this.props.cancelCheckInOut}
+                reservations={this.props.reservations.suggestions}
+                checkIn={this.props.checkIn} checkOut={this.props.checkOut}/>
           </div>
         )
     }

@@ -25,7 +25,9 @@ export default class SpreadsheetMenu extends React.Component {
               onTouchTap={() => {
                 this.props.newCheckIn(SpreadsheetDates.dateToIndex(
                   this.props.firstDate, new Date())) }}/>
-            <MenuItem primaryText="Realizar check-out" />
+            <MenuItem primaryText="Realizar check-out" onTouchTap={() => {
+                this.props.newCheckOut(SpreadsheetDates.dateToIndex(
+                  this.props.firstDate, new Date())) }}/>
           </IconMenu>
         )
     }

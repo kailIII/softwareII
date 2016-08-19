@@ -33,7 +33,7 @@ class NewReservationDialog extends React.Component {
         return {
             suggestions: [],
             roomSuggestions: [...roomTypes],
-            desiredRoom: null,
+            desiredRoom: "",
             roomTypes: roomTypes, //eventualmente tengo que sacar esto del state
             roomTypeError: "",
             guestName: "",
@@ -104,8 +104,10 @@ class NewReservationDialog extends React.Component {
                 totalDays: endIndex - startIndex + 1,
                 clientName: this.state.guestName,
             }
+            const firstDateStr = dateformat(this.state.firstDate, 'dddd, mmmm, dS')
             this.setState(this.getDefaultState())
-            this.props.reservarHabitacion(newReservation, this.props.rooms[roomToReserve].roomId)
+            this.props.reservarHabitacion(newReservation, firstDateStr,
+               this.props.rooms[roomToReserve].roomId)
         }
     }
 
@@ -173,7 +175,8 @@ class NewReservationDialog extends React.Component {
               </div>
               <div style={divStyle}>
                 <Hotel color={cyan800} style={iconStyle}/>
-                <AutoComplete onUpdateInput={(input) => this.setState({roomTypeError: ""})}
+                <AutoComplete onUpdateInput={(input) =>
+                  this.setState({desiredRoom: "", roomTypeError: ""})}
                   filter={AutoComplete.fuzzyFilter} openOnFocus={true}
                   onNewRequest={(req, i) => {this.setState({desiredRoom: req})}}
                   style={inputStyle}

@@ -36,17 +36,45 @@ function updateReservationStatus(values, indexes, newStatus){
     }
 }
 
-function getWaitingReservations(values, todayIndex){
+function getSubsetOfReservations(values, predicate){
     const result = []
     for(let i = 0; i < values.length; i++){
         const reservation = { ...values[i] }
-        if(reservation.status === ReservationStatus.waiting
-          && reservation.startIndex === todayIndex){
+        if(predicate(reservation)){
             reservation.reservationIndex = i
             result.push(reservation)
         }
     }
     return result
+}
+
+/**
+* Obitiene todas las reservaciones con status checkedIn que terminan amtes del dia
+* actual.
+* @param values array con objetos de reservacion del state.
+* @param todayIndex indice en el spreadsheet del dia actual
+* @return un array con todas las reservaciones con status checkedIn que terminan
+* antes del dia actual. Adicionalmente el objeto reservacion tiene un attributo
+* reservationIndex con el indice de la reservacion en el array del store.
+*/
+function getOccupiedReservations(values, todayIndex){
+    return getSubsetOfReservations(values,
+      (reservation) => { return reservation.status === ReservationStatus.checkedIn
+          && reservation.startIndex + reservation.totalDays <= todayIndex})
+}
+/**
+* Obitiene todas las reservaciones con status waiting que comienzan en el dia
+* actual.
+* @param values array con objetos de reservacion del state.
+* @param todayIndex indice en el spreadsheet del dia actual
+* @return un array con todas las reservaciones con status waiting que comienzan
+* en el dia. Adicionalmente el objeto reservacion tiene un attributo
+* reservationIndex con el indice de la reservacion en el array del store.
+*/
+function getWaitingReservations(values, todayIndex){
+    return getSubsetOfReservations(values,
+      (reservation) => {return reservation.status === ReservationStatus.waiting
+          && reservation.startIndex === todayIndex})
 }
 
 function reservations (state = {}, action) {
@@ -77,6 +105,11 @@ function reservations (state = {}, action) {
         return { values: state.values,
           suggestions: getWaitingReservations(state.values, action.todayIndex)}
     }
+    case 'NEW_CHECK_OUT':{
+        const newStatus =  { values: state.values,
+          suggestions: getOccupiedReservations(state.values, action.todayIndex)}
+        return newStatus
+    }
     case 'CHECK_IN':{
         const indexes = action.reservationIndexes
         return { values: updateReservationStatus(state.values, indexes,
@@ -91,7 +124,7 @@ function reservations (state = {}, action) {
         }
     }
     case 'CHECK_OUT':{
-        const newPosition = action.reservationIndexes
+        const indexes = action.reservationIndexes
         return { values: updateReservationStatus(state.values, indexes,
           ReservationStatus.checkedOut),
           suggestions: [],
