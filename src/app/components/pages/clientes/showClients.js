@@ -12,7 +12,6 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Snackbar from 'material-ui/Snackbar';
 
 import ClientDialog from './addOrEditDialog';
-import UpdateClienteForm from './update_cliente';
 
 const showCheckB = false;
 var divTableStyle = {
