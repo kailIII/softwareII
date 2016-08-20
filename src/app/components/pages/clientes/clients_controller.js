@@ -1,19 +1,19 @@
 import { bindActionCreators } from 'redux';
 
 import { connect } from 'react-redux'
-import * as actionCreators from '../../../actions/clients.js'
+import * as actionClients from '../../../actions/clients.js'
 
-import Show_Payments from './verClientes.js';
+import VerClientes from './showClients.js';
 
 function mapStateToProps(state) {
     return {
-        clients: state.clients,
+        clients: state.clients
     }
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators(actionCreators, dispatch);
+    return bindActionCreators(actionClients, dispatch);
 }
 
-const controller = connect(mapStateToProps, mapDispatchToProps)(verClientes);
+const controller = connect(mapStateToProps, mapDispatchToProps)(VerClientes);
 export default controller;

@@ -8,7 +8,7 @@ import Snackbar from 'material-ui/Snackbar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class CreateClienteForm extends React.Component
+export default class ClientDialog extends React.Component
 {
     constructor(props) {
         super(props);
@@ -22,54 +22,64 @@ export default class CreateClienteForm extends React.Component
             open: false,
             openSnack: false,
             disable:false,
+            dialogText: "",
+            buttonText: "",
+            message: "",
+            client_id: 0
         };
 
         /*funciones utilizadas*/
-        this.onCreateClientSubmit = this.onCreateClientSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
-        this.onLastNameChange = this.onLastNameChange.bind(this);
         this.onCedulaChange = this.onCedulaChange.bind(this);
         this.onNacionalidadChange = this.onNacionalidadChange.bind(this);
         this.onTelefonoChange = this.onTelefonoChange.bind(this);
         this.onMailChange = this.onMailChange.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
+        this.handleEditOpen = this.handleEditOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.onKeypressNombre = this.onKeypressNombre.bind(this);
-        this.onKeypressApellido = this.onKeypressApellido.bind(this);
         this.onKeypressTelefono = this.onKeypressTelefono.bind(this);
         this.onKeypressCedula = this.onKeypressCedula.bind(this);
         this.onKeypressMail = this.onKeypressMail.bind(this);
+        this.addOrEditClient = this.addOrEditClient.bind(this);
     }
 
-    onLastNameChange(event){
-        this.setState({apellido:event.target.value});
-    }
-    onNameChange(event){
-        this.setState({nombre:event.target.value});
-    }
-    onCreateClientSubmit(){
-        console.log(this.state); //valores a enviar en formulario
-
-    }
     handleAddOpen(){
          this.setState({
             open: true,
-            apellido:'',
             nombre:'',
             cedula: "",
             telefono: "",
             nacionalidad: "Ecuatoriana",
             mail:'',
             openSnack: false,
-            disable:false
+            disable:false,
+            dialogText: "Nuevo Cliente",
+            buttonText: "Agregar",
+            message: "Se agrego nuevo cliente"
         });
-    };
+    }
+    handleEditOpen(client){
+         this.setState({
+            open: true,
+            nombre:client.nombre,
+            cedula: client.cedula,
+            telefono: client.telefono,
+            nacionalidad: client.nacionalidad,
+            mail:client.email,
+            openSnack: false,
+            disable:false,
+            dialogText: "Editar Cliente",
+            buttonText: "Actualizar",
+            message: "Se actualizaron los datos del cliente",
+            client_id: client.client_id
+        });
+    }
 
     handleClose(){
         this.setState({open: false});
-    };
-
+    }
     handleRequestClose(){
         this.setState({openSnack: false});
     }
@@ -81,66 +91,51 @@ export default class CreateClienteForm extends React.Component
 
         return (isValidExp && controlKeysAllowed && arrowKeysAllowed) 
     }
-
-    preventMaxLength(field,maxLen){ //Verifica si el string ingresado a un cierto campo llego a us maxima longitud
+    preventMaxLength(field,maxLen,chr){ //Verifica si el string ingresado a un cierto campo llego a us maxima longitud
         let controlKeysAllowed =  (chr!=='Backspace' && chr!=='Tab' && chr!=='Shift')
         let arrowKeysAllowed =  (chr!=='ArrowLeft' && chr!=='ArrowRight' )
 
-        return (state.length>=maxLen && controlKeysAllowed && arrowKeysAllowed) 
+        return (field.length>=maxLen && controlKeysAllowed && arrowKeysAllowed) 
     }
-
     onKeypressNombre(event){ //previene ingresar numero o caracteres especiales en campo nombre
-        var chr = event.key;
         
-        if (this.isValidExpFormat(/^[a-z]$/i,chr)){ 
+        if (this.isValidExpFormat(/^[a-z]$/i,event.key)){ 
           event.preventDefault();
-        }else if(this.preventMaxLength(this.state.nombre,25))
+        }else if(this.preventMaxLength(this.state.nombre,25,event.key))
         {
           event.preventDefault();  
         } 
     }
-
-    onKeypressApellido(event){ //previene ingresar numero o caracteres especiales en campo apellido
-        
-        if (this.isValidExpFormat(/^[a-z]$/i, event.key)){ 
-          event.preventDefault();
-        }else if(this.preventMaxLength(this.state.apellido,25))
-        {
-          event.preventDefault();  
-        } 
-    }
-
     onKeypressCedula(event){ //previene ingresar caracteres que no sean digitos en campo Cedula
         
         if (this.isValidExpFormat(/^[0-9]$/i, event.key)){ 
           event.preventDefault();
-        }else if(this.preventMaxLength(this.state.cedula,10))
+        }else if(this.preventMaxLength(this.state.cedula,10,event.key))
         {
           event.preventDefault();  
         } 
         
     }
-
     onKeypressTelefono(event){ //previene ingresar caracteres que no sean digitos en campo telefono
-        var chr = event.key;
-        var exp = /^[0-9]$/i
     
         if (this.isValidExpFormat(/^[0-9]$/i, event.key)){ 
           event.preventDefault();
-        }else if(this.preventMaxLength(this.state.telefono,10))
+        }else if(this.preventMaxLength(this.state.telefono,10, event.key))
         {
           event.preventDefault();  
         }  
     }
-
     onKeypressMail(event){ //previene ingresar un numero de caracteres mayor a us maximo en el campo mail
-        var chr = event.key;
-        if(this.preventMaxLength(this.state.mail,30))
+        
+        if(this.preventMaxLength(this.state.mail,30, event.key))
         {
           event.preventDefault();  
         }
     }
 
+    onNameChange(event){
+        this.setState({nombre:event.target.value});
+    }
     onCedulaChange(event){
         this.setState({cedula:event.target.value});
     }
@@ -165,6 +160,25 @@ export default class CreateClienteForm extends React.Component
         });
     }
 
+    addOrEditClient(){
+        let clients = this.props.clientProps.clients;
+        let props = this.props.clientProps;
+        let id = this.state.client_id;
+        let type = "EDIT_CLIENT";
+
+        if(this.state.buttonText === "Agregar"){
+            let lastClient = clients[clients.length - 1];
+            id = lastClient.client_id + 1;
+            type = "ADD_CLIENT";
+        }
+        
+        props.addOrEditClient(id, this.state.nombre, this.state.cedula, this.state.nacionalidad, 
+                                this.state.telefono, this.state.mail, type);
+
+        this.setState({open: false, openSnack: true});
+    }
+
+
     render(){
         const actions = [
           <FlatButton
@@ -173,9 +187,9 @@ export default class CreateClienteForm extends React.Component
             onTouchTap={this.handleClose}
           />,
           <FlatButton
-            label="Agregar"
+            label={this.state.buttonText}
             primary={true}
-            onTouchTap={this.props.onTouchTap}
+            onTouchTap={this.addOrEditClient}
             disabled={this.state.disabled}
           />,
         ];
@@ -183,7 +197,7 @@ export default class CreateClienteForm extends React.Component
         return (
             <div>
                 <Dialog
-                  title={"Nuevo Cliente"}
+                  title={this.state.dialogText}
                   actions={actions}
                   modal={true}
                   open={this.state.open}
@@ -197,13 +211,6 @@ export default class CreateClienteForm extends React.Component
                     floatingLabelText="Nombre"
                     onChange={this.onNameChange}
                     onKeyDown={this.onKeypressNombre}
-                        /><br />
-                        <TextField
-                    hintText="Apellido"
-                    floatingLabelText="Apellido"
-                    value={this.state.apellido}
-                    onChange={this.onLastNameChange}
-                    onKeyDown={this.onKeypressApellido}
                         /><br />
                         <TextField
                     hintText="Telefono"
@@ -247,7 +254,7 @@ export default class CreateClienteForm extends React.Component
 
                 <Snackbar
                   open={this.state.openSnack}
-                  message="Agregado nuevo Cliente"
+                  message={this.state.message}
                   autoHideDuration={4000}
                   onRequestClose={this.handleRequestClose}
                 />

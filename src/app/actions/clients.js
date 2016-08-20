@@ -1,19 +1,18 @@
-export function addClient(id_client, nombre, apellido, cedula, nacionalidad, telefono, email){
+export function addOrEditClient(client_id, nombre, cedula, nacionalidad, telefono, email, type){
 	return {
-		type: "ADD_CLIENT",
-		id_client: id_client,
+		type: type,
+		client_id: client_id,
 		nombre: nombre,
-		apellido: apellido,
 		cedula: cedula,
 		nacionalidad: nacionalidad,
 		telefono: telefono,
-		email: email,
+		email: email
 	}
 }
 
-export function removeClient(id_client){
+export function removeClient(client_id){
 	return {
 		type: "REMOVE_CLIENT",
-		id_client: id_client,
+		client_id: client_id
 	}
 }
