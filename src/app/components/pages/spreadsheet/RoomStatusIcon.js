@@ -1,8 +1,6 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import {
-    cyan700,
-} from 'material-ui/styles/colors'
+import { primaryColor700 } from '../../../../TabubaTheme'
 import * as RoomTypes from '../../../../../constants/RoomTypes.js';
 
 
@@ -18,13 +16,13 @@ class RoomStatusIcon extends React.Component {
         case RoomTypes.disponible:
             return (<div />)
         case RoomTypes.reservado:
-            return (<Avatar style={centerStyle} backgroundColor={cyan700} >R</Avatar>)
+            return (<Avatar style={centerStyle} backgroundColor={primaryColor700} >R</Avatar>)
         case RoomTypes.ocupado:
-            return (<Avatar style={centerStyle} backgroundColor={cyan700} >O</Avatar>)
+            return (<Avatar style={centerStyle} backgroundColor={primaryColor700} >O</Avatar>)
         case RoomTypes.sucio:
-            return (<Avatar backgroundColor={cyan700} >S</Avatar>)
+            return (<Avatar backgroundColor={primaryColor700} >S</Avatar>)
         case RoomTypes.mantenimiento:
-            return (<Avatar backgroundColor={cyan700} >M</Avatar>)
+            return (<Avatar backgroundColor={primaryColor700} >M</Avatar>)
         }
 
         return (<p>RIP</p>)

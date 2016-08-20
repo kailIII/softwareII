@@ -9,9 +9,9 @@ import AccountBox from 'material-ui/svg-icons/action/account-box';
 import DateRange from 'material-ui/svg-icons/action/date-range';
 import Today from 'material-ui/svg-icons/action/today';
 import Hotel from 'material-ui/svg-icons/maps/hotel';
-import { cyan800 } from 'material-ui/styles/colors'
 
 import dateformat from 'dateformat'
+import { primaryColor800 } from '../../../../TabubaTheme'
 
 class NewReservationDialog extends React.Component {
 
@@ -161,20 +161,20 @@ class NewReservationDialog extends React.Component {
             actions={actions}
             modal={true}>
               <div style={divStyle}>
-                <AccountBox color={cyan800} style={iconStyle}/>
+                <AccountBox color={primaryColor800} style={iconStyle}/>
                 <AutoComplete style={inputStyle} onUpdateInput={this.onInputUpdated} dataSource={this.state.suggestions}
                   hintText="Huésped" errorText={this.state.guestNameError}/>
               </div>
               <div style={divStyle}>
-                <Today color={cyan800} style={iconStyle}/>
+                <Today color={primaryColor800} style={iconStyle}/>
                 { this.getStartPicker(inputStyle) }
               </div>
               <div style={divStyle}>
-                <DateRange color={cyan800} style={iconStyle}/>
+                <DateRange color={primaryColor800} style={iconStyle}/>
                 { this.getEndPicker(inputStyle) }
               </div>
               <div style={divStyle}>
-                <Hotel color={cyan800} style={iconStyle}/>
+                <Hotel color={primaryColor800} style={iconStyle}/>
                 <AutoComplete onUpdateInput={(input) =>
                   this.setState({desiredRoom: "", roomTypeError: ""})}
                   filter={AutoComplete.fuzzyFilter} openOnFocus={true}

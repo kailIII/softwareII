@@ -8,7 +8,7 @@ import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import Snackbar from 'material-ui/Snackbar';
-import { cyan100, cyan700 } from 'material-ui/styles/colors'
+import { primaryColor100, primaryColor700 } from '../../../../TabubaTheme'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 import dateformat from 'dateformat';
@@ -123,7 +123,7 @@ class Sidebar extends React.Component {
           <ListItem style={{marginTop: '15px', fontWeight: '400'}} disabled={true}
           primaryText={display.title} secondaryText={display.roomType}
             leftAvatar={
-              <Avatar style={{fontWeight: 'normal'}} backgroundColor={cyan700} >
+              <Avatar style={{fontWeight: 'normal'}} backgroundColor={primaryColor700} >
                 {display.iconLetter}
               </Avatar> } >
           </ListItem>
@@ -260,8 +260,8 @@ class RoomTable extends ResizableComponent {
 
     render() {
         const todayIndex = SpreadsheetDates.dateToIndex(this.props.firstDate, new Date());
-        const borderStyle = '1px solid ' + cyan700
-        const todayColStyle = { backgroundColor: cyan100}
+        const borderStyle = '1px solid ' + primaryColor700
+        const todayColStyle = { backgroundColor: primaryColor100}
         let columns = Array(this.props.totalDays)
         let i = 0;
         for(i = 0; i < columns.length; i++) columns[i] = 0;
