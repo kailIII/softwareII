@@ -3,21 +3,17 @@ const path = require('path')
 module.exports = {
     devtool: 'eval-source-map',
     entry:  [
-        "./src/app/app.js",
+        "./src/login_app/LoginApp.js",
     ],
     output: {
-        path: "./public",
-        filename: "bundle.js",
+        path: "./login_assets/",
+        filename: "login_bundle.js",
     },
     devServer: {
-        contentBase: 'public',
+        contentBase: 'login_assets',
     },
     module: {
         loaders: [
-            {
-                test: /\.json$/,
-                loader: "json",
-            },
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,

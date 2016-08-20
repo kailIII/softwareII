@@ -14,7 +14,6 @@ import Editar_Usuario from './components/pages/usuarios/editar_usuario';
 import RoomTypesShow from './components/pages/tipos-habitacion/Page';
 import Suites from './components/pages/habitacion/Suites';
 import VerClientes from './components/pages/clientes/verClientes';
-import LoginForm from './components/Login';
 import spreadsheet from './components/pages/spreadsheet/SpreadsheetController'
 import { Provider } from 'react-redux'
 import store, { history } from './store'
@@ -24,9 +23,8 @@ class AppRoutes extends React.Component {
         return (
             <Provider store={store}>
                 <Router history={history}>
-                    <Route path="/" component={LoginForm}/>
                     <Route path="/main" component={Header} >
-                        <Route path="/home" component={spreadsheet}/>
+                        <Route path="/" component={spreadsheet}/>
                         <Route path="/usuario" component={Mostrar_Usuarios}/>
                         <Route path="/usuario/crear" component={Crear_Usuario}/>
                         <Route path="/usuario/editar" component={Editar_Usuario}/>

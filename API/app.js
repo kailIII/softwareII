@@ -27,7 +27,6 @@ function renderFullPage(preloadedState) {
           rel="stylesheet">
         <style>html {font-family: 'Roboto', sans-serif;} body {font-size: 13px; line-height: 20px;}
         </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
       </head>
       <body>
         <div id="root"></div>
