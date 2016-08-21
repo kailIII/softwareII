@@ -55,5 +55,8 @@ config/configdb.json
 
 #webpack
 public/bundle.js
+public/main.js
+public/login.js
+production
 
 #database

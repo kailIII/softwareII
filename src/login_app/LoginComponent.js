@@ -12,6 +12,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 
+import request from 'superagent'
+
 import ResizableComponent from '../app/components/ResizableComponent';
 import { primaryColor } from '../TabubaTheme';
 
@@ -32,18 +34,22 @@ export default class LoginComponent extends React.Component {
       @params: props*/
     constructor(props){
         super(props);
-        this.state={
-            username:"",
-            password:"",
-            errorUsername:null,
-        };
-
+        this.getDefaultState = this.getDefaultState.bind(this);
+        this.state= this.getDefaultState()
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.validarUsuario = this.validarUsuario.bind(this);
         this.onLoginSubmit = this.onLoginSubmit.bind(this);
     }
 
+    getDefaultState(){
+        return {
+            username:"",
+            password:"",
+            errorPass:null,
+            errorUsername:null,
+        };
+    }
     /*@function: tests if the username s state has the needed pattern
       @params: event->value of state username
       @return: nil
@@ -71,6 +77,19 @@ export default class LoginComponent extends React.Component {
     }
 
     onLoginSubmit(){
+        console.log('click')
+        request.post('/authenticate').
+          send({user: this.state.username, pass:this.state.password}).
+          set('Accept', 'application/json').
+          end((err, res) => {
+              console.log(res.statusCode)
+              if(res.statusCode === 200){
+                  console.log('success')
+                  window.location = '/'
+                  this.setState(this.getDefaultState())
+              } else
+                  this.setState({errorPass: "Error al verificar credenciales"})
+          })
     }
 
     componentDidMount(){
@@ -82,7 +101,7 @@ export default class LoginComponent extends React.Component {
           <AppBar title="Hotel Tabuba" showMenuIconButton = {false} />
           <Card>
             <CardMedia>
-              <img src='images/login-background/tabubaHostal.jpg' />
+              <img src='/images/login-background/tabubaHostal.jpg' />
             </CardMedia>
           </Card>
           <Paper style={paperStyle} zDepth={1} >
@@ -101,11 +120,11 @@ export default class LoginComponent extends React.Component {
               hintText="Password"
               type="password"
               value={this.state.password}
-              onChange={this.onPasswordChange} />
+              onChange={this.onPasswordChange} errorText={this.state.errorPass} />
             <br /><br />
             <br />
             <RaisedButton label="Login" primary={true}
-              onClick={this.onLoginSubmit} />
+              onTouchTap={this.onLoginSubmit} />
           </Paper>
         </div>
         );
