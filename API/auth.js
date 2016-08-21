@@ -14,25 +14,28 @@ function setLoginRoute(app){
             res.send(HTML(loginBundle, true))
     })
 
-    app.post('/authenticate', function (req, res){
+    app.post('/api/authenticate', function (req, res){
         const postedData = req.body
+        let msg
         if(postedData.user === userInfo.user &&
            postedData.pass === userInfo.pass){
             req.tabubaSession.loggedIn = true
+            msg = `Hola ${userInfo.user}`
             res.status(200)
-            res.send(`Hola ${userInfo.user}`)
         } else {
             res.status(401)
-            res.send("Credenciales no validas")
+            msg = "Credenciales no validas"
         }
+        console.log(msg)
+        res.send(msg)
     })
 }
 function init(app){
     app.use(sessions({
         cookieName: 'tabubaSession', // cookie name dictates the key name added to the request object
         secret: process.SESSION_SECRET || testingSecret, // should be a large unguessable string
-        duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-        activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+        duration: 10 * 1000, // how long the session will stay valid in ms
+        activeDuration: 1000 * 3, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
     }));
     setLoginRoute(app)
 }

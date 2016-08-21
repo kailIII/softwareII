@@ -12,6 +12,14 @@ module.exports = {
     },
     devServer: {
         contentBase: 'public',
+        proxy: {
+            "/api/*": {
+                target : {
+                    host: "localhost",
+                    port: 8192,
+                },
+            },
+        },
     },
     module: {
         loaders: [

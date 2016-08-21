@@ -7,13 +7,12 @@ const HTML = require('./dynamicHTML.js')
 const app = Express()
 const port = 8192
 
-const loginRoute = "/login"
 const mainBundle = "main.js"
 app.use(bodyParser.json()); // for parsing application/json
 app.use('/images', Express.static(path.join(__dirname, '..', '/login_assets/images')))
 app.use('/production', Express.static(path.join(__dirname, '..', '/production')))
 
-auth.init(app, loginRoute)
+auth.init(app)
 
 // We are going to fill these out in the sections to follow
 app.get('/', auth.loginRedirect, function (req, res) {
@@ -21,10 +20,5 @@ app.get('/', auth.loginRedirect, function (req, res) {
     defaultStore.spreadsheet.totalDays = 14
     res.send(HTML(mainBundle, false, defaultStore))
 });
-
-app.post('/hello', function (req, res) {
-    console.log('hello')
-    res.send("hello")
-})
 
 app.listen(port)

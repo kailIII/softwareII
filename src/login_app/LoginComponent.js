@@ -78,7 +78,7 @@ export default class LoginComponent extends React.Component {
 
     onLoginSubmit(){
         console.log('click')
-        request.post('/authenticate').
+        request.post('/api/authenticate').
           send({user: this.state.username, pass:this.state.password}).
           set('Accept', 'application/json').
           end((err, res) => {
