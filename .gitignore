@@ -60,3 +60,4 @@ public/login.js
 production
 
 #database
+API/persistedState

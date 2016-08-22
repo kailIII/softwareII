@@ -34,8 +34,8 @@ function init(app){
     app.use(sessions({
         cookieName: 'tabubaSession', // cookie name dictates the key name added to the request object
         secret: process.SESSION_SECRET || testingSecret, // should be a large unguessable string
-        duration: 10 * 1000, // how long the session will stay valid in ms
-        activeDuration: 1000 * 3, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+        duration: 30 * 60 * 1000, // how long the session will stay valid in ms
+        activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
     }));
     setLoginRoute(app)
 }
@@ -48,7 +48,17 @@ function loginRedirect(req, res, next){
     }
 }
 
+function verifyLoggedIn(req, res, next){
+    if(req.tabubaSession.loggedIn){
+        next()
+    } else {
+        res.status(401)
+        res.send("credenciales no válidas")
+    }
+}
+
 module.exports = {
     init: init,
     loginRedirect: loginRedirect,
+    verifyLoggedIn: verifyLoggedIn,
 }

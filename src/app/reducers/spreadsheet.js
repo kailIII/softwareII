@@ -18,13 +18,14 @@ function spreadsheet (state = [], action) {
         }
     case 'NEW_RESERVATION':
         const newReservation = action.newReservation
-        return {
+        const newSp = {
             ...state,
             snackMessage: `Habitación #${action.roomId} reservada para el ` +
             `${action.firstDate} por ` +
             `${newReservation.totalDays} días para ${newReservation.clientName}`,
             status: SpreadsheetStatus.normal,
         }
+        return newSp
     case 'NEW_CHECK_IN':
         return {
             ...state,

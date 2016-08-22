@@ -195,19 +195,6 @@ class RoomTable extends ResizableComponent {
         }
     }
 
-    mapReservationStatusToRoomTypes(reservationStatus){
-        if(!reservationStatus)
-            return RoomTypes.disponible
-        if(reservationStatus === ReservationStatus.waiting)
-            return RoomTypes.reservado
-        else if(reservationStatus === ReservationStatus.checkedIn)
-            return RoomTypes.ocupado
-        else if(reservationStatus === ReservationStatus.checkedOut)
-            return RoomTypes.ocupado
-
-        throw `${reservationStatus} no es un estado conocido`
-    }
-
     /**
     * Obtiene el estado de una habitacion para un dia especifico
     * @param roomReservations lista de reservaciones de la misma habitacion.
@@ -236,15 +223,15 @@ class RoomTable extends ResizableComponent {
             if(firstReservationEnd === dayIndex){
                 let updatedRR = []
                 if(roomReservations.length > 1)
-                    updatedRR =  roomReservations.slice(1)
+                    updatedRR = roomReservations.slice(1)
                 return {
-                    status: this.mapReservationStatusToRoomTypes(firstReservation.status),
+                    status: firstReservation.status,
                     updatedRoomReservations: updatedRR,
                     offset: 1,
                 }
             } else if(firstReservationStart <= dayIndex) {
                 return {
-                    status: this.mapReservationStatusToRoomTypes(firstReservation.status),
+                    status: firstReservation.status,
                     updatedRoomReservations: roomReservations,
                     offset: 0,
                 }

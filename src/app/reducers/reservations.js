@@ -1,5 +1,6 @@
 import RoomTypes from '../../../constants/RoomTypes'
 import ReservationStatus from '../../../constants/ReservationStatus'
+import ReservationBroker from '../../app/components/pages/spreadsheet/ReservationBroker'
 
 function getLastIndexOfRoom(reservations, roomIndex, startIndex){
     let i = reservations.length
@@ -81,32 +82,17 @@ function reservations (state = {}, action) {
     switch(action.type){
     case 'NEW_RESERVATION':{
         const newReservation = action.newReservation
-        newReservation.status = ReservationStatus.waiting
-        const newPosition = getLastIndexOfRoom(state.values, newReservation.roomIndex,
-          newReservation.startIndex)
 
-        if(newPosition === 0)
-            return { values: [newReservation, ...state.values],
-              suggestions: [],
-            }
-
-        if(newPosition >= state.length)
-            return { values: [ ...state.values, newReservation],
-              suggestions: [] }
-        return { values: [
-            ...state.values.slice(0, newPosition),
-            newReservation,
-            ...state.values.slice(newPosition),
-        ],
-        suggestions: [],
-      }
+        const newArray = ReservationBroker.newReservationArrayState(state.values,
+          newReservation, action.position)
+        return {values: newArray, suggestions: []}
     }
     case 'NEW_CHECK_IN':{
         return { values: state.values,
           suggestions: getWaitingReservations(state.values, action.todayIndex)}
     }
     case 'NEW_CHECK_OUT':{
-        const newStatus =  { values: state.values,
+        const newStatus = { values: state.values,
           suggestions: getOccupiedReservations(state.values, action.todayIndex)}
         return newStatus
     }
