@@ -2,7 +2,7 @@
   "name": "softwareii",
   "version": "0.0.0",
   "engines": {
-    "node": ">=4"
+    "node": "6.4.0"
   },
   "private": true,
   "scripts": {
