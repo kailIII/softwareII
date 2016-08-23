@@ -5,6 +5,7 @@ import spreadsheet from './spreadsheet'
 import rooms from './rooms'
 import guests from './guests'
 import payments from './payments';
-const rootReducer = combineReducers({rooms, guests, spreadsheet, payments, routing: routerReducer});
+import clients from './clients';
+const rootReducer = combineReducers({rooms, guests, spreadsheet, payments, clients, routing: routerReducer});
 
 export default rootReducer;
