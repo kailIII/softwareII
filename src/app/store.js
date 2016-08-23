@@ -7,6 +7,7 @@ import rootReducer from './reducers/index';
 import rooms from './data/rooms';
 import guests from './data/guests';
 import payments from './data/payments';
+import clients from './data/clients';
 
 import SpreadsheetStatus from '../../constants/SpreadsheetStatus'
 
@@ -14,6 +15,7 @@ const defaultState = {
     rooms: rooms,
     guests: guests,
     payments: payments,
+    clients: clients,
     spreadsheet: {
         newReservation:  {
             roomIndex: -1,
