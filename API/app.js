@@ -9,7 +9,7 @@ const storage = require('./stateStorage.js')
 const ReservationBroker = require('../src/app/components/pages/spreadsheet/ReservationBroker.js')
 const ReservationStatus = require('../constants/ReservationStatus.js')
 const app = Express()
-const port = 8192
+const port = process.env.PORT || 8192
 
 const mainBundle = "main.js"
 app.use(bodyParser.json()); // for parsing application/json

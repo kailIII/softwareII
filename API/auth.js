@@ -5,7 +5,7 @@ const loginPath ='/login'
 const loginBundle ='login.js'
 const testingSecret = 'aKdn3rzbvVra5DiZvWzESCrH4ZovKOMldVdUmrgJ9oDZi2TryCQT2VNDJ0SDFZ7'
 
-const userInfo = {user: 'jorge', pass: 'root1234'}
+const userInfo = {user: 'jorge', pass: process.env.USER_PASS || 'root1234'}
 function setLoginRoute(app){
     app.get(loginPath, function (req, res){
         if(req.tabubaSession.loggedIn)
@@ -33,7 +33,7 @@ function setLoginRoute(app){
 function init(app){
     app.use(sessions({
         cookieName: 'tabubaSession', // cookie name dictates the key name added to the request object
-        secret: process.SESSION_SECRET || testingSecret, // should be a large unguessable string
+        secret: process.env.SESSION_SECRET || testingSecret, // should be a large unguessable string
         duration: 30 * 60 * 1000, // how long the session will stay valid in ms
         activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
     }));
