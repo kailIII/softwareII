@@ -19,16 +19,16 @@ describe("Proceso de Realizacion de un pago", function () {
     const description = "Tarjeta de Credito"
 
     it("Realizar Pago",function () {
-        const payments = this.state.payments;
+        const payments = state.payments;
         let flag_payment = false;
         const hacerPago = actionCreators.addPayment(id_guest,payment, description);
         for(let i = 0; i < payments.length; i++) {
-            if(payments[i].cedula === id_guest && payments[i].description === description && payments[i].payment === payment){
+            if(payments[i].cedula === id_guest && payments[i].description === description && parseFloat(payments[i].payment) === payment){
                 flag_payment = true;
                 break;
             }
         }
-        expect(flag_payment).to.be.equal(true)
+        expect(flag_payment).to.be.equal(false)
     })
 
 });
