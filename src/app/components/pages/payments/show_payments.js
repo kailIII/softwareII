@@ -24,15 +24,16 @@ const showCheckB = false;
 import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
 
 const divTableStyle = {
-    padding:'10%',
-    background:blue50,
-
+    padding:'5%',
+    background:blue50
 };
 
 const headerTableStyle = {
     color:blue900,
+    textAlign:'center'
 };
 
+const columnTableStyle ={textAlign:'center'};
 
 class Show_Payments extends React.Component {
     constructor(props){
@@ -74,7 +75,7 @@ class Show_Payments extends React.Component {
     }
 
     render() {
-	/*         console.log("render mostrar pagos");*/
+        /*         console.log("render mostrar pagos");*/
         let guests = this.props.guests;
         let payments = this.props.payments;
         let guest_payment = new Array();
@@ -110,13 +111,11 @@ class Show_Payments extends React.Component {
             <div>
               <CreatePaymentForm ref="create_payment" guests={this.props.guests} payments={this.props.payments} update={this.update}/>
               <div style={divTableStyle}>
-                <Table onRowSelection={this.onRowSelection}>
-                  <TableHeader
-                      displaySelectAll={showCheckB}
-                      adjustForCheckbox={showCheckB}>
-                    <TableRow>
-                      <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
-                        <span style={{color: darkBlack}}><h3>Pagos</h3></span>
+            <Table onRowSelection={this.onRowSelection}>
+              <TableHeader>
+                <TableRow>
+                  <TableHeaderColumn colSpan="1" style={{textAlign: 'center'}}>
+                    <span style={{color: darkBlack}}><h2>Pagos</h2></span>
                 </TableHeaderColumn>
                 <TableHeaderColumn colSpan="1" tooltip="Agregar Pago" style={{textAlign: 'center'}}>
                   <span ><FloatingActionButton mini={true} onTouchTap={this.handleAddOpen}>
@@ -126,33 +125,31 @@ class Show_Payments extends React.Component {
                 </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
-                  <TableHeaderColumn>Cliente</TableHeaderColumn>
-                  <TableHeaderColumn>Identificacion</TableHeaderColumn>
-                  <TableHeaderColumn>Total de pagos a realizar</TableHeaderColumn>
-                  <TableHeaderColumn>Mostrar desglose de Pagos</TableHeaderColumn>
-                </TableRow>
-                </TableHeader>
-
-                <TableBody
-                    displayRowCheckbox={showCheckB}>
-                  {this.props.guests.map(function (guest,i) {
-                       return (
-                           <TableRow key={i}>
-                             <TableRowColumn key={i}>{guest.nombre}</TableRowColumn>
-                             <TableRowColumn key={i}>{guest.cedula}</TableRowColumn>
-                             <TableRowColumn key={i}>{guest_payment[guest.cedula]}</TableRowColumn>
-                             <TableRowColumn><span>
-                               <ShowPaymentsForm
-                                   payments ={this.props.payments}
-                                   cedula = {guest["cedula"]}
-                                   nombre_guest ={guest["nombre"]}
-                               />
-                             </span></TableRowColumn>
+                  <TableHeaderColumn >Cliente</TableHeaderColumn>
+                  <TableHeaderColumn >Identificacion</TableHeaderColumn>
+                  <TableHeaderColumn >Pagos a realizar</TableHeaderColumn>
+                  <TableHeaderColumn >Mostrar desglose de Pagos</TableHeaderColumn>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {this.props.guests.map(function (guest,i) {
+           return (
+               <TableRow key={i}>                
+                 <TableRowColumn key={i}>{guest.nombre}</TableRowColumn>
+                 <TableRowColumn key={i} >{guest.cedula}</TableRowColumn>
+                 <TableRowColumn key={i} >{guest_payment[guest.cedula]}</TableRowColumn>
+                 <TableRowColumn><span>
+                   <ShowPaymentsForm
+                       payments ={this.props.payments}
+                       cedula = {guest["cedula"]}
+                       nombre_guest ={guest["nombre"]}
+                   />
+                 </span></TableRowColumn>
                             </TableRow>
-                       );
-                   },this)}
-            </TableBody>
-            </Table>
+           );
+       },this)}
+    </TableBody>
+  </Table>
               </div>
 
               <Snackbar
