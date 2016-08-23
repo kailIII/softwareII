@@ -13,7 +13,7 @@ import Crear_Usuario from './components/pages/usuarios/crear_usuario';
 import Editar_Usuario from './components/pages/usuarios/editar_usuario';
 import RoomTypesShow from './components/pages/tipos-habitacion/Page';
 import Suites from './components/pages/habitacion/Suites';
-import VerClientes from './components/pages/clientes/verClientes';
+import VerClientes from './components/pages/clientes/clients_controller';
 import LoginForm from './components/Login';
 import spreadsheet from './components/pages/spreadsheet/SpreadsheetController'
 import show_payments from './components/pages/payments/payments_controller'
