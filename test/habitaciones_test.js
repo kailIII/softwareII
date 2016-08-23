@@ -36,9 +36,10 @@ describe("Proceso de reservacion de habitacion", function () {
             startIndex: 3,
             totalDays: 3,
             clientName: "Maria Jose Riera",
+            status: ReservationStatus.waiting,
         }
 
-        const newReservationAction = actionCreators.reservarHabitacion(newReservation, 1)
+        const newReservationAction = actionCreators.reservarHabitacion(newReservation, `Jueves, 21 de Agosto`, 1, 1)
         it("spreadsheet cambia a status normal", function() {
             const newSpreadsheet = spreadsheet(state.spreadsheet, newReservationAction)
             expect(newSpreadsheet).to.be.not.equal(state.spreadsheet)
@@ -49,7 +50,7 @@ describe("Proceso de reservacion de habitacion", function () {
           function() {
               expect(state.spreadsheet.snackMessage).to.have.string(newReservation.clientName)
               expect(state.spreadsheet.snackMessage).to.have.string(newReservationAction.roomId)
-              expect(state.spreadsheet.snackMessage).to.have.string(newReservationAction.totalDays)
+              expect(state.spreadsheet.snackMessage).to.have.string(newReservation.totalDays)
           })
 
         it("La nueva reservacion se agrego a la lista del state en la posicion 1",

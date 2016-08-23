@@ -200,5 +200,5 @@ module.exports = {
 
     updateReservationStatus: updateReservationStatus,
 
-    assertReservationsWithStatus: assertReservationsWithStatus
+    assertReservationsWithStatus: assertReservationsWithStatus,
 }
