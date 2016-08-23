@@ -6,7 +6,6 @@ const auth = require('./auth.js')
 const HTML = require('./dynamicHTML.js')
 const storage = require('./stateStorage.js')
 
-const reservationCtrl = require('./controller/reservations.js')
 const ReservationBroker = require('../src/app/components/pages/spreadsheet/ReservationBroker.js')
 const ReservationStatus = require('../constants/ReservationStatus.js')
 const app = Express()

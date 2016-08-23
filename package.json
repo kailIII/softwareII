@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "npm run build && node API/app.js",
     "build": "webpack --progress --colors --config webpack.production.config.js",
     "test": "mocha --compilers js:babel-core/register --full-trace",
     "dev": "webpack-dev-server --port 8080 --hot --inline",
