@@ -21,7 +21,7 @@ export default class ClientDialog extends React.Component
             mail:'',
             open: false,
             openSnack: false,
-            disable:false,
+            disabled:true,
             dialogText: "",
             buttonText: "",
             message: "",
@@ -54,7 +54,7 @@ export default class ClientDialog extends React.Component
             nacionalidad: "Ecuatoriana",
             mail:'',
             openSnack: false,
-            disable:false,
+            disabled:true,
             dialogText: "Nuevo Cliente",
             buttonText: "Agregar",
             message: "Se agrego nuevo cliente"
@@ -69,7 +69,7 @@ export default class ClientDialog extends React.Component
             nacionalidad: client.nacionalidad,
             mail:client.email,
             openSnack: false,
-            disable:false,
+            disabled:true,
             dialogText: "Editar Cliente",
             buttonText: "Actualizar",
             message: "Se actualizaron los datos del cliente",
@@ -134,10 +134,18 @@ export default class ClientDialog extends React.Component
     }
 
     onNameChange(event){
-        this.setState({nombre:event.target.value});
+        let disable = true;
+        if(event.target.value != "" && this.state.cedula !="")
+            disable = false
+
+        this.setState({nombre:event.target.value, disabled:disable});
     }
     onCedulaChange(event){
-        this.setState({cedula:event.target.value});
+        let disable = true;
+        if(event.target.value != "" && this.state.nombre !="")
+            disable = false
+
+        this.setState({cedula:event.target.value, disabled:disable});
     }
     onNacionalidadChange(event, index, value){
         this.setState({nacionalidad:value});
@@ -208,7 +216,7 @@ export default class ClientDialog extends React.Component
                         <TextField
                     hintText="Nombre"
                     value={this.state.nombre}
-                    floatingLabelText="Nombre"
+                    floatingLabelText="Nombre *"
                     onChange={this.onNameChange}
                     onKeyDown={this.onKeypressNombre}
                         /><br />
@@ -221,7 +229,7 @@ export default class ClientDialog extends React.Component
                         /><br />
                                 <TextField
                     hintText="Cedula"
-                    floatingLabelText="Cedula"
+                    floatingLabelText="Cedula *"
                     value={this.state.cedula}
                     onChange={this.onCedulaChange}
                     onKeyDown={this.onKeypressCedula}
