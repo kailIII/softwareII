@@ -38,7 +38,7 @@ class Show_Payments extends React.Component {
     constructor(props){
         super(props);
         this.state = {open: false,
-                      addOpen: false,}
+                      addOpen: false}
         this.handleClick = this.handleClick.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.handleAddOpen = this.handleAddOpen.bind(this);
@@ -74,7 +74,7 @@ class Show_Payments extends React.Component {
     }
 
     render() {
-        console.log("render mostrar pagos");
+	/*         console.log("render mostrar pagos");*/
         let guests = this.props.guests;
         let payments = this.props.payments;
         let guest_payment = new Array();

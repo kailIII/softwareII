@@ -2,16 +2,16 @@
 module.exports = function(sequelize, DataTypes) {
   var Pago = sequelize.define('Pago', {
       id_pago: {type: DataTypes.INTEGER,
-		primaryKey:true,
-		autoIncrement:true},
+                primaryKey:true,
+                autoIncrement:true},
     valor: DataTypes.FLOAT,
     forma_pago: DataTypes.STRING,
     descripcion: DataTypes.TEXT,
       fecha_emision: DataTypes.DATE,
       fk_reservacion: {
-	  type: DataTypes.INTEGER,
-	  references: 'Reservacion',
-	  referencesKey: 'id_reservacion'
+          type: DataTypes.INTEGER,
+          references: 'Reservacion',
+          referencesKey: 'id_reservacion'
       }
   },{
               timestamps: false,

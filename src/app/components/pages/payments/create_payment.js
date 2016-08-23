@@ -1,4 +1,5 @@
 import React from 'react';
+import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -114,6 +115,18 @@ export default class CreatePaymentForm extends React.Component
                       onChange={this.onDescriptionChange}
                       errorText={this.state.errorDescription}
                   /><br />
+                  <AutoComplete
+                      floatingLabelText="Escriba el nombre del cliente"
+                      filter={AutoComplete.fuzzyFilter}
+                      dataSource={this.props.guests.map(function (guest, i) {
+                              return (
+                                  <MenuItem value={guest.cedula} primaryText={guest.nombre + " "+ guest.cedula} onChange={this.onCedulaChange}/>
+                              );
+                          }, this)}
+		      maxSearchResults={5}		      
+                  >
+
+                  </AutoComplete>
                   <SelectField maxHeight={300} value={this.state.cedula} onChange={this.onCedulaChange}>
                     {this.props.guests.map(function (guest, i) {
                          return (
