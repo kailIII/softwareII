@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dialog, FlatButton, RaisedButton} from 'material-ui';
 import Subheader from 'material-ui/Subheader';
-import {grey400, grey900, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900} from 'material-ui/styles/colors';
+import {grey400, indigo50, blueGrey50, darkBlack, lightBlack, blue50, cyan200, blue900, lightBlue50} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
@@ -10,13 +10,15 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Snackbar from 'material-ui/Snackbar';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import TextField from 'material-ui/TextField';
 
 import ClientDialog from './addOrEditDialog';
 
 const showCheckB = false;
 var divTableStyle = {
   padding:'5%',
-  background:blue50
+  background:lightBlue50
 
 };
 
@@ -37,7 +39,8 @@ export default class VerClientes extends Component {
     this.state = {
       open: false,
       openSnack: false,
-      client_id: 0
+      client_id: 0,
+      filter: "Nombre"
     };
 
     //metodos usados en esta clase
@@ -47,6 +50,8 @@ export default class VerClientes extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleDeleteClient = this.handleDeleteClient.bind(this);
     this.handleSnackClose = this.handleSnackClose.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
+    this.onFilterChange = this.onFilterChange.bind(this);
     
     this.iconButtonElement = (
       <IconButton
@@ -85,6 +90,16 @@ export default class VerClientes extends Component {
     this.setState({openSnack: false});
   }
 
+  onNameChange(event){
+    if(this.state.filter === "Nombre")
+      this.props.filterForName(event.target.value);
+    else
+      this.props.filterForId(event.target.value);
+  }
+
+  onFilterChange(event, i, value){
+    this.setState({filter:value});
+  }
 
   render() {
 
@@ -118,6 +133,19 @@ export default class VerClientes extends Component {
               Esta seguro que desea eliminar este cliente?
             </Dialog>
             <div style={divTableStyle}>
+            <TextField
+                hintText=""
+                hintStyle= {{color:grey400}}
+                floatingLabelText="Buscar"
+                underlineStyle={ {borderColor:cyan200}}
+                onChange={this.onNameChange}
+            />
+            <label style={{marginLeft:'20px',color:blue900}}> Filtrar por:</label>
+            <DropDownMenu value={this.state.filter} onChange={this.onFilterChange} underlineStyle={ {borderColor:cyan200}} >
+                <MenuItem value={"Nombre"} primaryText="Nombre" />
+                <MenuItem value={"Cedula"} primaryText="Cedula" />
+            </DropDownMenu><br /><br />
+
              <Table >
               
               <TableHeader
