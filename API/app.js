@@ -1,6 +1,7 @@
 const path = require('path')
 const Express = require('express')
 const bodyParser = require('body-parser');
+const sequelize = require('sequelize')
 
 const auth = require('./auth.js')
 const HTML = require('./dynamicHTML.js')
@@ -96,4 +97,21 @@ app.post('/api/reservation/out', auth.loginRedirect, function (req, res) {
     handleGuestMovementReq(req, res, false)
 });
 
-app.listen(port)
+const models = require("../app/models");
+
+const usuarios = require('../app/controllers/api/usuarios');
+const habitaciones = require('../app/controllers/api/habitaciones');
+const tipos_habitacion = require('../app/controllers/api/tipos_habitacion');
+const clientes = require('../app/controllers/api/clientes');
+
+app.use('/api/usuarios',usuarios);
+app.use('/api/habitaciones', habitaciones);
+app.use('/api/tipos_habitacion',tipos_habitacion);
+app.use('/api/clientes', clientes);
+
+models.sequelize.sync(/*{force:true}*/).then(function () {
+    "use strict"
+    app.listen(port, function () {
+        console.log('Application listening on  port ' + port);
+    });
+});
