@@ -13,15 +13,20 @@
     "lint": "eslint src && echo \"eslint: no lint errors\""
   },
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "dateformat": "^1.0.12",
+    "express-session": "^1.14.0",
     "material-ui": "^0.15.0",
+    "mysql": "^2.11.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "react-router-redux": "^4.0.5",
     "react-tap-event-plugin": "^1.0.0",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "sequelize": "^3.24.1",
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
