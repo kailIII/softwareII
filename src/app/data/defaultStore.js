@@ -1,8 +1,8 @@
 const rooms = require('./rooms.js')
 const guests = require('./guests.js')
 const reservations = require('./reservations.js')
-const payments = require('./data/payments.js');
-const clients = require('./data/clients.js');
+const payments = require('./payments.js');
+const clients = require('./clients.js');
 
 const SpreadsheetStatus = require('../../../constants/SpreadsheetStatus.js')
 const today = new Date()
